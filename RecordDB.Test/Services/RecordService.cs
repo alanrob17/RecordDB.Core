@@ -1,4 +1,6 @@
-﻿using RecordDB.DAL.Models;
+﻿using RecordDB.DAL.DTOs;
+using RecordDB.DAL.Extensions;
+using RecordDB.DAL.Models;
 using RecordDB.DAL.Repositories;
 using System;
 using System.Collections.Generic;
@@ -10,15 +12,17 @@ namespace RecordDB.Test.Services
     public class RecordService : IRecordService
     {
         private readonly RecordRepository _recordRepository;
-
-        public RecordService(RecordRepository recordRepository)
+        private readonly ArtistRepository _artistRepository;
+        
+        public RecordService(RecordRepository recordRepository, ArtistRepository artistRepository)
         {
             _recordRepository = recordRepository;
+            _artistRepository = artistRepository;
         }
 
         public async Task RunAsync()
         {
-            //await GetRecordAsync();
+            // await GetRecordAsync();
             // await CountDiscsAsync();
             // await GetArtistRecordNumberAsync();
             // await GetFormattedRecordAsync();
@@ -27,7 +31,9 @@ namespace RecordDB.Test.Services
             // await SelectRecordsByArtistIdAsync();
             // await SelectRecordReviewsAsync();
             // await GetRecordedYearNumberAsync();
-            // await NoRecordReviewsAsync();
+            await NoRecordReviewsAsync();
+
+            // TODO: This uses Heinemnann's ToShortDate method, will only work in Windows. Needs to be migrated.
             // ToShortDate();
             // await GetTotalsAsync();
             // await InsertRecordAsync();
@@ -167,115 +173,150 @@ namespace RecordDB.Test.Services
         //    }
         //}
 
-        //public void ToShortDate()
-        //{
-        //    var dateStr = "28-12-2015";
-        //    var myDate = RecordDAL.Extensions.DateTimeExtensions.ToShortDate(dateStr);
+        public void ToShortDate()
+        {
+            var dateStr = "28-12-2015";
+            var myDate = DAL.Extensions.DateTimeExtensions.ToShortDate(dateStr);
 
-        //    Console.WriteLine(myDate);
-        //}
+            Console.WriteLine(myDate);
+        }
 
-        //public async Task NoRecordReviewsAsync()
-        //{
-        //    List<MissingReviewDto> records = await _recordRepository.NoRecordReviewsAsync();
+        public async Task NoRecordReviewsAsync()
+        {
+            List<MissingReviewDto> records = await _recordRepository.NoRecordReviewsAsync();
 
-        //    foreach (var record in records)
-        //    {
-        //        Console.WriteLine($"{record.RecordId}: {record.Name} - {record.Record}\n");
-        //    }
-        //}
+            foreach (var record in records)
+            {
+                Console.WriteLine($"{record.RecordId}: {record.Name} - {record.Record}\n");
+            }
+        }
 
-        //public async Task GetRecordedYearNumberAsync()
-        //{
-        //    var year = 1974;
-        //    var count = await _recordRepository.GetRecordedYearNumberAsync(year);
+        public async Task GetRecordedYearNumberAsync()
+        {
+            var year = 1974;
+            var count = await _recordRepository.GetRecordedYearNumberAsync(year);
 
-        //    Console.WriteLine($"Count: {count} discs");
-        //}
+            Console.WriteLine($"Count: {count} discs");
+        }
 
-        //public async Task SelectRecordReviewsAsync()
-        //{
-        //    var records = await _recordRepository.SelectRecordReviewsAsync();
+        public async Task SelectRecordReviewsAsync()
+        {
+            IEnumerable<RecordReviewDto> records = await _recordRepository.SelectRecordReviewsAsync();
 
-        //    foreach (var record in records)
-        //    {
-        //        Console.WriteLine($"{record.ArtistName} -- {record.Name}\n{record.Review}\n");
-        //    }
-        //}
+            foreach (var record in records)
+            {
+                Console.WriteLine($"{record.Name} -- {record.Title}\n{record.Review}\n");
+            }
+        }
 
-        //public async Task SelectRecordsByArtistIdAsync()
-        //{
-        //    var artistId = 114;
+        public async Task SelectRecordsByArtistIdAsync()
+        {
+            var artistId = 114;
 
-        //    var records = await _recordRepository.SelectArtistRecordsAsync(artistId);
+            var records = await _recordRepository.SelectArtistRecordsAsync(artistId);
 
-        //    foreach (var record in records)
-        //    {
-        //        Console.WriteLine($"{record.RecordId} -- {record.Name}");
-        //    }
-        //}
+            foreach (var record in records)
+            {
+                Console.WriteLine($"{record.RecordId} -- {record.Name}");
+            }
+        }
 
-        //public async Task SelectRecordsShow()
-        //{
-        //    var show = "r1974";
+        public async Task SelectRecordsShow()
+        {
+            var show = "r1974";
 
-        //    var records = _recordRepository.Select(show);
+            List<ArtistRecordDto> records = await _recordRepository.Select(show);
 
-        //    foreach (var record in records)
-        //    {
-        //        Console.WriteLine($"{record.ArtistName} -- {record.Name} {record.Recorded} - {record.Media} : {record.Bought:d}\n");
-        //    }
-        //}
+            foreach (var record in records)
+            {
+                Console.WriteLine($"{record.ArtistName} -- {record.Name} {record.Recorded} - {record.Media} : {record.Bought.ToShortDate()}\n");
+            }
+        }
 
-        //public async Task SelectRecordsAsync()
-        //{
-        //    var records = await _recordRepository.SelectAsync();
+        public async Task SelectRecordsAsync()
+        {
+            var records = await _recordRepository.SelectAsync();
 
-        //    foreach (var record in records)
-        //    {
-        //        Console.WriteLine($"{record.ArtistName} -- {record.Name} {record.Recorded} - {record.Media}\n");
-        //    }
-        //}
+            foreach (var record in records)
+            {
+                Console.WriteLine($"{record.ArtistName} -- {record.Name} {record.Recorded} - {record.Media}\n");
+            }
+        }
 
-        //public async Task GetFormattedRecordAsync()
-        //{
-        //    var recordId = 212;
-        //    var record = await _recordRepository.SelectAsync(recordId);
-        //    var recordDetails = await ToStringAsync(record);
+        public async Task GetFormattedRecordAsync()
+        {
+            var recordId = 212;
+            var record = await _recordRepository.SelectAsync(recordId);
+            var recordDetails = await ToStringAsync(record);
 
-        //    Console.WriteLine(recordDetails);
-        //}
+            Console.WriteLine(recordDetails);
+        }
 
-        //public async Task GetArtistRecordNumberAsync()
-        //{
-        //    var artistId = 114;
-        //    var count = await _recordRepository.GetArtistNumberOfRecordsAsync(artistId);
+        public async Task GetArtistRecordNumberAsync()
+        {
+            var artistId = 114;
+            var count = await _recordRepository.GetArtistNumberOfRecordsAsync(artistId);
 
-        //    Console.WriteLine($"Count: {count} discs");
-        //}
+            Console.WriteLine($"Count: {count} discs");
+        }
 
-        //public async Task CountDiscsAsync()
-        //{
-        //    var count = await _recordRepository.CountDiscsAsync("dvds");
+        public async Task CountDiscsAsync()
+        {
+            var count = await _recordRepository.CountDiscsAsync("dvds");
 
-        //    Console.WriteLine($"Count: {count} DVD's.");
+            Console.WriteLine($"Count: {count} DVD's.");
 
-        //    count = await _recordRepository.CountDiscsAsync("cd");
+            count = await _recordRepository.CountDiscsAsync("cd");
 
-        //    Console.WriteLine($"Count: {count} CD's");
-        //}
+            Console.WriteLine($"Count: {count} CD's");
+        }
 
-        //public async Task GetRecordAsync()
-        //{
-        //    var recordId = 1135;
+        public async Task GetRecordAsync()
+        {
+            var recordId = 1135;
 
-        //    var artist = await _ar.GetArtistByRecordIdAsync(recordId);
-        //    // var biography = await _ar.GetBiographyAsync(recordId); // not needed
-        //    var record = await _recordRepository.SelectAsync(recordId);
+            var artist = await _artistRepository.GetArtistByRecordIdAsync(recordId);
+            // var biography = await _ar.GetBiographyAsync(recordId); // not needed
+            var record = await _recordRepository.SelectAsync(recordId);
 
-        //    Console.WriteLine($"\n{artist.ArtistId}: - Artist {artist.Name}:\n");
+            Console.WriteLine($"\n{artist.ArtistId}: - Artist {artist.Name}:\n");
 
-        //    Console.WriteLine($"\nRecordId: {record.RecordId}\nName: {record.Name}\nField: {record.Field}\nRecorded: {record.Recorded}\nLabel: {record.Label}\nPressing: {record.Pressing}\nDiscs: {record.Discs}\nMedia: {record.Media}\nBought: {record.Bought.ToShortDateString()}\nCost: ${record.Cost}\nReview:\n{record.Review}\n\nBiography:\n{artist.Biography}");
-        //}
+            Console.WriteLine($"\nRecordId: {record.RecordId}\nName: {record.Name}\nField: {record.Field}\nRecorded: {record.Recorded}\nLabel: {record.Label}\nPressing: {record.Pressing}\nDiscs: {record.Discs}\nMedia: {record.Media}\nBought: {record.Bought?.ToShortDate() ?? null}\nCost: ${record.Cost:0.00}\nReview:\n{record.Review}\n\nBiography:\n{artist.Biography}");
+        }
+
+        public async Task<string> ToStringAsync(Record record)
+        {
+            var artist = await _artistRepository.SelectAsync(record.ArtistId);
+            var str = new StringBuilder();
+
+            str.Append("<strong>RecordId: </strong>" + record.RecordId + "<br/>");
+            str.Append("<strong>ArtistId: </strong>" + record.ArtistId + "<br/>");
+            str.Append("<strong>ArtistName: </strong>" + artist.Name + "<br/>");
+            str.Append("<strong>Name: </strong>" + record.Name + "<br/>");
+            str.Append("<strong>Field: </strong>" + record.Field + "<br/>");
+            str.Append("<strong>Recorded: </strong>" + record.Recorded + "<br/>");
+            str.Append("<strong>Label: </strong>" + record.Label + "<br/>");
+            str.Append("<strong>Pressing: </strong>" + record.Pressing + "<br/>");
+            str.Append("<strong>Rating: </strong>" + record.Rating + "<br/>");
+            str.Append("<strong>Discs: </strong>" + record.Discs + "<br/>");
+            str.Append("<strong>Media: </strong>" + record.Media + "<br/>");
+
+            if (record.Bought != null)
+            {
+                str.Append("<strong>Bought: </strong>" + record.Bought.ToShortDate() + "<br/>");
+            }
+
+            if (!string.IsNullOrEmpty(record.Cost.ToString()))
+            {
+                str.Append("<strong>Cost: </strong>" + record.Cost + "<br/>");
+            }
+
+            if (!string.IsNullOrEmpty(record.Review))
+            {
+                str.Append("<strong>Review: </strong>" + record.Review + "<br/>");
+            }
+
+            return str.ToString();
+        }
     }
 }

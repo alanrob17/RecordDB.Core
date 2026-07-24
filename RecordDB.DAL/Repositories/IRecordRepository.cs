@@ -1,4 +1,5 @@
-﻿using RecordDB.DAL.Models;
+﻿using RecordDB.DAL.DTOs;
+using RecordDB.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,11 +11,10 @@ namespace RecordDB.DAL.Repositories
         Task<Record> SelectAsync(int recordId);
         Task<string> CountDiscsAsync(string show);
         Task<string> GetArtistNumberOfRecordsAsync(int artistId);
-        Task<List<Record>> SelectAsync();
-        Task<List<Record>> Select(string show);
+        Task<List<ArtistRecordDto>> SelectAsync();
+        Task<List<ArtistRecordDto>> Select(string show);
         Task<List<Record>> SelectArtistRecordsAsync(int artistId);
-        Task<List<Record>> SelectRecordReviewsAsync();
-        Task<List<Record>> SelectRecordReviews();
+        Task<List<RecordReviewDto>> SelectRecordReviewsAsync();
         Task<string> GetRecordedYearNumberAsync(int year);
         Task<List<Total>> GetTotalCostsAsync();
         Task<int> InsertAsync(Record record);
