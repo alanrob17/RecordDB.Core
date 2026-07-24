@@ -17,28 +17,28 @@ namespace RecordDB.Test.Services
 
         public async Task RunAsync()
         {
-            // await FindAllArtists();
-            // await FindArtist(114);
-            // await CreateArtist();
-            // await GetArtistsAsync();
-            // await GetArtists();
-            // await GetArtistListAsync();
-            // await ShowArtistsAsync();
-            // await SelectAsync();
-            // await GetArtistNamesAsync();
-            // await GetSingleArtistAsync(114);
-            // await SelectArtistWithNoBioAsync();
-            // await InsertAsync();
-            // await Insert2Async();
-            // await UpdateArtistAsync();
-            // await UpdateArtist2Async();
-            // await GetArtistIdAsync();
-            // await GetArtistId2Async();
-            // await UpdateAsync();
-            // await Update2Async();
-            // await DeleteArtistAsync();
-            // await ShowArtistAsync();
-            // await GetBiographyAsync();
+            await FindAllArtists();
+            //await FindArtist(114);
+            //await CreateArtist();
+            //await GetArtistsAsync();
+            //await GetArtists();
+            //await GetArtistListAsync();
+            //await ShowArtistsAsync();
+            //await SelectAsync();
+            //await GetArtistNamesAsync();
+            //await GetSingleArtistAsync(114);
+            //await SelectArtistWithNoBioAsync();
+            //await InsertAsync();
+            //await Insert2Async();
+            //await UpdateArtistAsync();
+            //await UpdateArtist2Async();
+            //await GetArtistIdAsync();
+            //await GetArtistId2Async();
+            //await UpdateAsync();
+            //await Update2Async();
+            //await DeleteArtistAsync();
+            //await ShowArtistAsync();
+            //await GetBiographyAsync();
         }
 
         public async Task FindAllArtists()

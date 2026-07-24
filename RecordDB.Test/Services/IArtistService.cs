@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RecordDB.DAL.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,6 +10,24 @@ namespace RecordDB.Test.Services
         Task FindAllArtists();
         Task FindArtist(int artistId);
         Task<int> CreateArtist();
-        // TODO: Add methods for updating and deleting artists if needed
+        Task GetArtistsAsync();
+        Task GetArtists();
+        Task GetArtistListAsync();
+        Task ShowArtistsAsync();
+        Task SelectAsync();
+        Task GetArtistNamesAsync();
+        Task GetSingleArtistAsync(int artistId);
+        Task SelectArtistWithNoBioAsync();
+        Task InsertAsync();
+        Task Insert2Async();
+        Task UpdateArtistAsync();
+        Task UpdateArtist2Async();
+        Task GetArtistIdAsync();
+        Task GetArtistId2Async();
+        Task UpdateAsync();
+        Task Update2Async();
+        Task DeleteArtistAsync();
+        Task ShowArtistAsync();
+        Task GetBiographyAsync();
     }
 }
