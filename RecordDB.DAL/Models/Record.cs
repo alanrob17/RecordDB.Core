@@ -15,6 +15,9 @@ namespace RecordDB.DAL.Models
         public int ArtistId { get; set; }
 
         [StringLength(80)]
+        public string ArtistName { get; set; }
+
+        [StringLength(80)]
         public string? Name { get; set; }
 
         [StringLength(50)]
@@ -40,6 +43,9 @@ namespace RecordDB.DAL.Models
 
         [Column(TypeName = "money")]
         public decimal? Cost { get; set; }
+
+        [StringLength(50)]
+        public string? CoverName { get; set; }
 
         [Column(TypeName = "text")]
         public string? Review { get; set; }

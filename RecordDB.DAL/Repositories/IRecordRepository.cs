@@ -11,8 +11,8 @@ namespace RecordDB.DAL.Repositories
         Task<Record> SelectAsync(int recordId);
         Task<string> CountDiscsAsync(string show);
         Task<string> GetArtistNumberOfRecordsAsync(int artistId);
-        Task<List<ArtistRecordDto>> SelectAsync();
-        Task<List<ArtistRecordDto>> Select(string show);
+        Task<List<Record>> SelectAsync();
+        Task<List<Record>> Select(string show);
         Task<List<Record>> SelectArtistRecordsAsync(int artistId);
         Task<List<RecordReviewDto>> SelectRecordReviewsAsync();
         Task<string> GetRecordedYearNumberAsync(int year);

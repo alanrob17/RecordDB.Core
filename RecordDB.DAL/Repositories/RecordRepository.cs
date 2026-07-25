@@ -66,15 +66,15 @@ namespace RecordDB.DAL.Repositories
             return discs.ToString(CultureInfo.InvariantCulture);
         }
 
-        public async Task<List<ArtistRecordDto>> SelectAsync()
+        public async Task<List<Record>> SelectAsync()
         {
             var sproc = "up_RecordSelectAll";
-            var records = await _db.GetData<ArtistRecordDto, dynamic>(sproc, new { });
+            var records = await _db.GetData<Record, dynamic>(sproc, new { });
 
             return records.ToList();
         }
 
-        public async Task<List<ArtistRecordDto>> Select(string show)
+        public async Task<List<Record>> Select(string show)
         {
             if (show == null)
             {
@@ -86,7 +86,7 @@ namespace RecordDB.DAL.Repositories
             var parameter = new DynamicParameters();
             parameter.Add("@Show", show);
 
-            IEnumerable<ArtistRecordDto> records = await _db.GetData<ArtistRecordDto, dynamic>(sproc, parameter);
+            IEnumerable<Record> records = await _db.GetData<Record, dynamic>(sproc, parameter);
 
             return records.ToList();
         }

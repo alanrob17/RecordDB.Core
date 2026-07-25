@@ -31,12 +31,12 @@ namespace RecordDB.Test.Services
             // await SelectRecordsByArtistIdAsync();
             // await SelectRecordReviewsAsync();
             // await GetRecordedYearNumberAsync();
-            await NoRecordReviewsAsync();
+            // await NoRecordReviewsAsync();
 
             // TODO: This uses Heinemnann's ToShortDate method, will only work in Windows. Needs to be migrated.
             // ToShortDate();
             // await GetTotalsAsync();
-            // await InsertRecordAsync();
+            await InsertRecordAsync();
             // await InsertRecord2Async();
             // await UpdateRecordAsync();  
             // await UpdateRecord2Async();
@@ -139,39 +139,39 @@ namespace RecordDB.Test.Services
             Console.WriteLine(recordId);
         }
 
-        //public async Task InsertRecordAsync()
-        //{
-        //    var record = new Record
-        //    {
-        //        ArtistId = 907,
-        //        Name = "Fun In Paradise",
-        //        Recorded = 2025,
-        //        Label = "Whoppo",
-        //        Pressing = "Au",
-        //        Field = "Rock",
-        //        Rating = "****",
-        //        Discs = 1,
-        //        Media = "CD",
-        //        Bought = new DateTime(2025, 05, 06),
-        //        Cost = 10.99m,
-        //        CoverName = string.Empty,
-        //        Review = "This is James' first album."
-        //    };
+        public async Task InsertRecordAsync()
+        {
+            var record = new Record
+            {
+                ArtistId = 907,
+                Name = "Fun In Paradise",
+                Recorded = 2025,
+                Label = "Whoppo",
+                Pressing = "Au",
+                Field = "Rock",
+                Rating = "****",
+                Discs = 1,
+                Media = "CD",
+                Bought = "06-05-2025",
+                Cost = 10.99m,
+                CoverName = string.Empty,
+                Review = "This is James' first album."
+            };
 
-        //    var recordId = await _recordRepository.InsertAsync(record);
+            var recordId = await _recordRepository.InsertAsync(record);
 
-        //    Console.WriteLine($"New Id: {recordId}");
-        //}
+            Console.WriteLine($"New Id: {recordId}");
+        }
 
-        //public async Task GetTotalsAsync()
-        //{
-        //    var artists = await _recordRepository.GetTotalCostsAsync();
+        public async Task GetTotalsAsync()
+        {
+            var artists = await _recordRepository.GetTotalCostsAsync();
 
-        //    foreach (var artist in artists)
-        //    {
-        //        Console.WriteLine($"{artist.Name}: {artist.TotalDiscs}: {artist.TotalCost:C}\n");
-        //    }
-        //}
+            foreach (var artist in artists)
+            {
+                Console.WriteLine($"{artist.Name}: {artist.TotalDiscs}: {artist.TotalCost:C}\n");
+            }
+        }
 
         public void ToShortDate()
         {
@@ -225,7 +225,7 @@ namespace RecordDB.Test.Services
         {
             var show = "r1974";
 
-            List<ArtistRecordDto> records = await _recordRepository.Select(show);
+            List<Record> records = await _recordRepository.Select(show);
 
             foreach (var record in records)
             {
@@ -286,12 +286,11 @@ namespace RecordDB.Test.Services
 
         public async Task<string> ToStringAsync(Record record)
         {
-            var artist = await _artistRepository.SelectAsync(record.ArtistId);
             var str = new StringBuilder();
 
             str.Append("<strong>RecordId: </strong>" + record.RecordId + "<br/>");
             str.Append("<strong>ArtistId: </strong>" + record.ArtistId + "<br/>");
-            str.Append("<strong>ArtistName: </strong>" + artist.Name + "<br/>");
+            str.Append("<strong>ArtistName: </strong>" + record.ArtistName + "<br/>");
             str.Append("<strong>Name: </strong>" + record.Name + "<br/>");
             str.Append("<strong>Field: </strong>" + record.Field + "<br/>");
             str.Append("<strong>Recorded: </strong>" + record.Recorded + "<br/>");
@@ -309,6 +308,11 @@ namespace RecordDB.Test.Services
             if (!string.IsNullOrEmpty(record.Cost.ToString()))
             {
                 str.Append("<strong>Cost: </strong>" + record.Cost + "<br/>");
+            }
+
+            if (!string.IsNullOrEmpty(record.CoverName))
+            {
+                str.Append("<strong>CoverName: </strong>" + record.CoverName + "<br/>");
             }
 
             if (!string.IsNullOrEmpty(record.Review))
