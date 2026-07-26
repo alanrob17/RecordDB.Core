@@ -14,6 +14,7 @@ namespace RecordDB.DAL.Repositories
         Task<Artist> SelectAsync(int artistId);
         Task<List<Artist>> SelectArtistWithNoBioAsync();
         Task<int> InsertAsync(Artist artist);
+        Task<int> InsertAsync(string firstName, string lastName, string biography);
         Task<int> UpdateArtistAsync(Artist artist);
         Task<int> UpdateAsync(int artistId, string firstName, string lastName, string name, string biography);
         Task<int> GetArtistIdAsync(string firstName, string lastName);

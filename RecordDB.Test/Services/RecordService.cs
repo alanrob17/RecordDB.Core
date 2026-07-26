@@ -6,20 +6,24 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
+using System.Text.RegularExpressions;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace RecordDB.Test.Services
 {
     public class RecordService : IRecordService
     {
-        private readonly RecordRepository _recordRepository;
-        private readonly ArtistRepository _artistRepository;
-        
-        public RecordService(RecordRepository recordRepository, ArtistRepository artistRepository)
+        private readonly IRecordRepository _recordRepository;
+        private readonly IArtistRepository _artistRepository;
+        private readonly ITotalRepository _totalRepository;
+    
+        public RecordService(IRecordRepository recordRepository, IArtistRepository artistRepository, ITotalRepository totalRepository)
         {
             _recordRepository = recordRepository;
             _artistRepository = artistRepository;
+            _totalRepository = totalRepository;
         }
-
+    
         public async Task RunAsync()
         {
             // await GetRecordAsync();
@@ -36,81 +40,80 @@ namespace RecordDB.Test.Services
             // TODO: This uses Heinemnann's ToShortDate method, will only work in Windows. Needs to be migrated.
             // ToShortDate();
             // await GetTotalsAsync();
-            await InsertRecordAsync();
+            // await InsertRecordAsync();
             // await InsertRecord2Async();
             // await UpdateRecordAsync();  
             // await UpdateRecord2Async();
             // await DeleteRecordAsync();  
 
-            // GetTotalCosts();
+            GetTotalCosts();
         }
 
-        //public void GetTotalCosts()
-        //{
-        //    var totals = _tr.GetTotalCosts();
+        public void GetTotalCosts()
+        {
+            var totals = _totalRepository.GetTotalCosts().Result;
 
-        //    foreach (var artist in totals)
-        //    {
-        //        Console.WriteLine($"{artist.Name}: {artist.TotalDiscs}: {artist.TotalCost:C}\n");
-        //    }
+            foreach (var artist in totals)
+            {
+                Console.WriteLine($"{artist.Name}: {artist.TotalDiscs}: {artist.TotalCost:C}\n");
+            }
+        }
 
-        //}
+        public async Task DeleteRecordAsync()
+        {
+            var recordId = 5303;
+            await _recordRepository.DeleteAsync(recordId);
 
-        //public async Task DeleteRecordAsync()
-        //{
-        //    var recordId = 5295;
-        //    await _recordRepository.DeleteAsync(recordId);
+            Console.WriteLine("Record deleted");
+        }
 
-        //    Console.WriteLine("Record deleted");
-        //}
+        public async Task UpdateRecord2Async()
+        {
+            var date = "21-07-2025";
 
-        //public async Task UpdateRecord2Async()
-        //{
-        //    var date = "21-06-2025";
+            IFormatProvider culture = System.Threading.Thread.CurrentThread.CurrentCulture;
 
-        //    IFormatProvider culture = System.Threading.Thread.CurrentThread.CurrentCulture;
+            var record = new Record
+            {
+                RecordId = 5301,
+                ArtistId = 915,
+                Name = "Crying In Paradise",
+                Recorded = 1995,
+                Label = "Whoppo",
+                Pressing = "Aus",
+                Field = "Rock",
+                Rating = "***",
+                Discs = 1,
+                Media = "CD",
+                Bought = DateTime.Parse(date, culture, System.Globalization.DateTimeStyles.AssumeLocal),
+                Cost = 19.99m,
+                CoverName = null,
+                Review = "This is James' thirty-third album. His last before he turned to religion."
+            };
 
-        //    var record = new Record
-        //    {
-        //        RecordId = 5296,
-        //        ArtistId = 907,
-        //        Name = "Laughing In Paradise",
-        //        Recorded = 1991,
-        //        Label = "Whoppo DoDah",
-        //        Pressing = "Eng",
-        //        Field = "Soundtrack",
-        //        Rating = "****",
-        //        Discs = 3,
-        //        Media = "CD",
-        //        Bought = DateTime.Parse(date, culture, System.Globalization.DateTimeStyles.AssumeLocal),
-        //        Cost = 15.99m,
-        //        CoverName = string.Empty,
-        //        Review = "This is James' third album. His last before he turned to religion."
-        //    };
+            var recId = await _recordRepository.UpdateAsync(record);
 
-        //    var recId = await _recordRepository.UpdateAsync(record);
-
-        //    Console.WriteLine(recId);
-        //}
+            Console.WriteLine(recId);
+        }
 
         public async Task UpdateRecordAsync()
         {
             IFormatProvider culture = System.Threading.Thread.CurrentThread.CurrentCulture;
 
-            var recordId = 5296;
-            var artistId = 907;
-            var name = "Laughter In Paradise";
-            var recorded = 2026;
-            var label = "Whoppo";
-            var pressing = "Eng";
-            var field = "Jazz";
-            var rating = "***";
-            var discs = 2;
+            var recordId = 5300;
+            var artistId = 915;
+            var name = "Horror In Paradise";
+            var recorded = 2024;
+            var label = "Whoppo Doppo";
+            var pressing = "Aus";
+            var field = "Rock";
+            var rating = "****";
+            var discs = 1;
             var media = "CD";
-            var date = "28-03-2026";
+            var date = "28-05-2025";
             var bought = DateTime.Parse(date, culture, System.Globalization.DateTimeStyles.AssumeLocal);
             var cost = 12.99m;
-            var coverName = string.Empty;
+            string? coverName = null;
             var review = "This is James' third album. His last before he went mad.";
 
             recordId = await _recordRepository.UpdateAsync(recordId, artistId, name, field, recorded, label, pressing, rating, discs, media, bought, cost, coverName, review);
@@ -120,7 +123,9 @@ namespace RecordDB.Test.Services
 
         public async Task InsertRecord2Async()
         {
-            var artistId = 907;
+            IFormatProvider culture = System.Threading.Thread.CurrentThread.CurrentCulture;
+
+            var artistId = 915;
             var name = "Laughs In Paradise";
             var recorded = 2025;
             var label = "Whoppo";
@@ -129,9 +134,10 @@ namespace RecordDB.Test.Services
             var rating = "****";
             var discs = 1;
             var media = "CD";
-            var bought = new DateTime(2025, 11, 06);
+            var date = "28-05-2025";
+            var bought = DateTime.Parse(date, culture, System.Globalization.DateTimeStyles.AssumeLocal);
             var cost = 13.99m;
-            var coverName = string.Empty;
+            string? coverName = null;
             var review = "This is James' second album.";
 
             var recordId = await _recordRepository.InsertAsync(artistId, name, field, recorded, label, pressing, rating, discs, media, bought, cost, coverName, review);
@@ -141,21 +147,24 @@ namespace RecordDB.Test.Services
 
         public async Task InsertRecordAsync()
         {
+            IFormatProvider culture = System.Threading.Thread.CurrentThread.CurrentCulture;
+            var date = "06-07-2025";
+
             var record = new Record
             {
-                ArtistId = 907,
-                Name = "Fun In Paradise",
+                ArtistId = 915,
+                Name = "Rockin'n In Paradise",
                 Recorded = 2025,
-                Label = "Whoppo",
-                Pressing = "Au",
-                Field = "Rock",
-                Rating = "****",
+                Label = "Dapper",
+                Pressing = "Aus",
+                Field = "Jazz",
+                Rating = "***",
                 Discs = 1,
                 Media = "CD",
-                Bought = "06-05-2025",
-                Cost = 10.99m,
-                CoverName = string.Empty,
-                Review = "This is James' first album."
+                Bought = DateTime.Parse(date, culture, System.Globalization.DateTimeStyles.AssumeLocal),
+                Cost = 19.99m,
+                CoverName = null,
+                Review = "This is James' Fourth album."
             };
 
             var recordId = await _recordRepository.InsertAsync(record);
@@ -281,7 +290,7 @@ namespace RecordDB.Test.Services
 
             Console.WriteLine($"\n{artist.ArtistId}: - Artist {artist.Name}:\n");
 
-            Console.WriteLine($"\nRecordId: {record.RecordId}\nName: {record.Name}\nField: {record.Field}\nRecorded: {record.Recorded}\nLabel: {record.Label}\nPressing: {record.Pressing}\nDiscs: {record.Discs}\nMedia: {record.Media}\nBought: {record.Bought?.ToShortDate() ?? null}\nCost: ${record.Cost:0.00}\nReview:\n{record.Review}\n\nBiography:\n{artist.Biography}");
+            Console.WriteLine($"\nRecordId: {record.RecordId}\nName: {record.Name}\nField: {record.Field}\nRecorded: {record.Recorded}\nLabel: {record.Label}\nPressing: {record.Pressing}\nDiscs: {record.Discs}\nMedia: {record.Media}\nBought: {record.Bought.ToShortDate() ?? null}\nCost: ${record.Cost:0.00}\nReview:\n{record.Review}\n\nBiography:\n{artist.Biography}");
         }
 
         public async Task<string> ToStringAsync(Record record)

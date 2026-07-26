@@ -186,7 +186,6 @@ namespace RecordDB.DAL.Repositories
             try
             {
                 var parameters = new DynamicParameters();
-                parameters.Add("@RecordId", record.RecordId, dbType: DbType.Int32, direction: ParameterDirection.InputOutput);
                 parameters.Add("@ArtistId", record.ArtistId);
                 parameters.Add("@Name", record.Name);
                 parameters.Add("@Field", record.Field);
@@ -198,10 +197,11 @@ namespace RecordDB.DAL.Repositories
                 parameters.Add("@Media", record.Media);
                 parameters.Add("@Bought", record.Bought);
                 parameters.Add("@Cost", record.Cost);
+                parameters.Add("@CoverName", record.CoverName);
                 parameters.Add("@Review", record.Review);
+                parameters.Add("@Result", dbType: DbType.Int32, direction: ParameterDirection.InputOutput);
 
-                await _db.SaveData(sproc, parameters);
-                recordId = parameters.Get<int>("@RecordId");
+                recordId =await _db.SaveDataReturnId(sproc, parameters);
 
                 return recordId;
             }
@@ -219,7 +219,6 @@ namespace RecordDB.DAL.Repositories
             try
             {
                 var parameters = new DynamicParameters();
-                parameters.Add("@RecordId", recordId, dbType: DbType.Int32, direction: ParameterDirection.InputOutput);
                 parameters.Add("@ArtistId", artistId);
                 parameters.Add("@Name", name);
                 parameters.Add("@Field", field);
@@ -232,10 +231,10 @@ namespace RecordDB.DAL.Repositories
                 parameters.Add("@Bought", bought);
                 parameters.Add("@Cost", cost);
                 parameters.Add("@Review", review);
+                parameters.Add("@Result", dbType: DbType.Int32, direction: ParameterDirection.InputOutput);
 
-                await _db.SaveData(sproc, parameters);
-                recordId = parameters.Get<int>("@RecordId");
-
+                recordId = await _db.SaveDataReturnId(sproc, parameters);
+                
                 return recordId;
             }
             catch (Exception ex)

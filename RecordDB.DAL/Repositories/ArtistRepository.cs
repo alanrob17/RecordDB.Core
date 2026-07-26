@@ -77,7 +77,6 @@ namespace RecordDB.DAL.Repositories
                 var parameters = new DynamicParameters();
                 parameters.Add("@FirstName", artist.FirstName);
                 parameters.Add("@LastName", artist.LastName);
-                parameters.Add("@Name", artist.Name);
                 parameters.Add("@Biography", artist.Biography);
                 parameters.Add("@Result", dbType: DbType.Int32, direction: ParameterDirection.InputOutput);
 
@@ -90,15 +89,16 @@ namespace RecordDB.DAL.Repositories
             }
         }
 
-        public async Task<int> InsertAsync(int artistId, string firstName, string lastName, string biography)
+        public async Task<int> InsertAsync(string firstName, string lastName, string biography)
         {
+            int artistId = 0;
+
             try
             {
                 string sproc = "adm_ArtistInsert";
                 var parameters = new DynamicParameters();
                 parameters.Add("@FirstName", firstName);
                 parameters.Add("@LastName", lastName);
-                parameters.Add("@Name", null);
                 parameters.Add("@Biography", biography);
                 parameters.Add("@Result", dbType: DbType.Int32, direction: ParameterDirection.InputOutput);
 

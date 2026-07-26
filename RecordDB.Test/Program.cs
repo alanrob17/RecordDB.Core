@@ -20,8 +20,9 @@ namespace RecordDB.Test
             var services = new ServiceCollection();
             services.AddSingleton<IConfiguration>(configuration);
             services.AddSingleton<IDataAccess, DataAccess>();
-            services.AddTransient<ArtistRepository>();
-            services.AddTransient<RecordRepository>();
+            services.AddTransient<IArtistRepository, ArtistRepository>();
+            services.AddTransient<IRecordRepository, RecordRepository>();
+            services.AddTransient<ITotalRepository, TotalRepository>();
             //services.AddTransient<CreateArtistService>();
             //services.AddTransient<CreateRecordService>();
             services.AddTransient<ArtistService>();
@@ -39,12 +40,12 @@ namespace RecordDB.Test
             //var createRecordService = serviceProvider.GetRequiredService<CreateRecordService>();
             //await createRecordService.RunAsync(artistId);
 
-            // Search routines
-            //var artistService = serviceProvider.GetRequiredService<ArtistService>();
-            //await artistService.RunAsync();
+            // Call Services to run the tests
+            var artistService = serviceProvider.GetRequiredService<ArtistService>();
+            await artistService.RunAsync();
 
-            var recordService = serviceProvider.GetRequiredService<RecordService>();
-            await recordService.RunAsync();
+            //var recordService = serviceProvider.GetRequiredService<RecordService>();
+            //await recordService.RunAsync();
         }
 
         // --------------------------------------------------------------------

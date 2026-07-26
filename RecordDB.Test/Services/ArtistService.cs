@@ -8,9 +8,9 @@ namespace RecordDB.Test.Services
 {
     public class ArtistService : IArtistService
     {
-        private readonly ArtistRepository _artistRepository;
+        private readonly IArtistRepository _artistRepository;
 
-        public ArtistService(ArtistRepository artistRepository)
+        public ArtistService(IArtistRepository artistRepository)
         {
             _artistRepository = artistRepository;
         }
@@ -28,8 +28,8 @@ namespace RecordDB.Test.Services
             //await GetArtistNamesAsync();
             //await GetSingleArtistAsync(114);
             //await SelectArtistWithNoBioAsync();
-            //await InsertAsync();
-            //await Insert2Async();
+            // await InsertAsync();
+            // await Insert2Async();
             //await UpdateArtistAsync();
             //await UpdateArtist2Async();
             //await GetArtistIdAsync();
@@ -193,10 +193,9 @@ namespace RecordDB.Test.Services
         {
             var artist = new Artist
             {
-                ArtistId = 0,
-                FirstName = "Ethan",
+                FirstName = "Alan",
                 LastName = "Robson",
-                Biography = "<p>Ethan is a electronic pioneer.</p>"
+                Biography = "<p>Alan is a electronic pioneer.</p>"
             };
 
             var artistId = await _artistRepository.InsertAsync(artist);
@@ -206,12 +205,11 @@ namespace RecordDB.Test.Services
 
         public async Task Insert2Async()
         {
-            var artistId = 0;
             var firstName = "Andrew";
             var lastName = "Robson";
             var biography = "Andrew likes Pocopunk.";
 
-            var newArtistId = await _artistRepository.InsertAsync(artistId, firstName, lastName, biography);
+            var newArtistId = await _artistRepository.InsertAsync(firstName, lastName, biography);
 
             Console.WriteLine(newArtistId);
         }

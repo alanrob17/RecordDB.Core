@@ -18,6 +18,7 @@ namespace RecordDB.DAL.Repositories
         Task<string> GetRecordedYearNumberAsync(int year);
         Task<List<Total>> GetTotalCostsAsync();
         Task<int> InsertAsync(Record record);
+        Task<List<MissingReviewDto>> NoRecordReviewsAsync();
 
         Task<int> InsertAsync(int artistId, string name, string field, int recorded, string label, string pressing,
             string rating, int discs, string media, DateTime bought, decimal cost, string coverName, string review);
@@ -26,5 +27,6 @@ namespace RecordDB.DAL.Repositories
             string pressing, string rating, int discs, string media, DateTime bought, decimal cost, string coverName,
             string review);
         Task<int> UpdateAsync(Record record);
+        Task DeleteAsync(int recordId);
     }
 }
