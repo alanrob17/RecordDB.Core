@@ -23,22 +23,10 @@ namespace RecordDB.Test
             services.AddTransient<IArtistRepository, ArtistRepository>();
             services.AddTransient<IRecordRepository, RecordRepository>();
             services.AddTransient<ITotalRepository, TotalRepository>();
-            //services.AddTransient<CreateArtistService>();
-            //services.AddTransient<CreateRecordService>();
             services.AddTransient<ArtistService>();
             services.AddTransient<RecordService>();
 
             var serviceProvider = services.BuildServiceProvider();
-
-            //var artistRepository = serviceProvider.GetRequiredService<ArtistRepository>();
-            // var recordRepository = serviceProvider.GetRequiredService<RecordRepository>();
-
-            //// Create new records
-            //var createArtistService = serviceProvider.GetRequiredService<CreateArtistService>();
-            //var artistId = await createArtistService.RunAsync();
-
-            //var createRecordService = serviceProvider.GetRequiredService<CreateRecordService>();
-            //await createRecordService.RunAsync(artistId);
 
             // Call Services to run the tests
             var artistService = serviceProvider.GetRequiredService<ArtistService>();
@@ -73,6 +61,7 @@ namespace RecordDB.Test
         }
 
         // --------------------------------------------------------------------
+        // These are sample database calls to demonstrate the IDataAccess interface and its methods.
         // Test: retrieve a single artist by ID
         // --------------------------------------------------------------------
         private static async Task TestGetArtistById(IDataAccess dataAccess, int artistId)

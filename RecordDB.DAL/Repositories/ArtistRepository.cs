@@ -9,14 +9,9 @@ using System.Text;
 
 namespace RecordDB.DAL.Repositories
 {
-    public class ArtistRepository : IArtistRepository
+    public class ArtistRepository(IDataAccess db) : IArtistRepository
     {
-        private readonly IDataAccess _db;
-
-        public ArtistRepository(IDataAccess db)
-        {
-            _db = db;
-        }
+        private readonly IDataAccess _db = db;
 
         public async Task<IEnumerable<Artist>> GetArtistsAsync()
         {
