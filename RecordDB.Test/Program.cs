@@ -22,9 +22,11 @@ namespace RecordDB.Test
             services.AddSingleton<IDataAccess, DataAccess>();
             services.AddTransient<IArtistRepository, ArtistRepository>();
             services.AddTransient<IRecordRepository, RecordRepository>();
+            services.AddTransient<IStatisticRepository, StatisticRepository>();
             services.AddTransient<ITotalRepository, TotalRepository>();
             services.AddTransient<ArtistService>();
             services.AddTransient<RecordService>();
+            services.AddTransient<StatisticService>();
 
             var serviceProvider = services.BuildServiceProvider();
 
@@ -32,11 +34,15 @@ namespace RecordDB.Test
             // var artistService = serviceProvider.GetRequiredService<ArtistService>();
             // await artistService.RunAsync();
 
-            var recordService = serviceProvider.GetRequiredService<RecordService>();
-            await recordService.RunAsync();
+            // var recordService = serviceProvider.GetRequiredService<RecordService>();
+            // await recordService.RunAsync();
+
+            var statisticService = serviceProvider.GetRequiredService<StatisticService>();
+            await statisticService.GetStatisticsAsync();
         }
 
         // --------------------------------------------------------------------
+        // Sample calls to demonstrate the IDataAccess interface and its methods.
         // Test: retrieve all artists via a stored procedure
         // --------------------------------------------------------------------
         private static async Task TestGetAllArtists(IDataAccess dataAccess)
