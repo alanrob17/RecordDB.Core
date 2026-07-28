@@ -11,6 +11,18 @@ namespace RecordDB.DAL.Data
         Task<IEnumerable<T>> GetData<T, P>(string sql, P parameters, CommandType commandType = CommandType.StoredProcedure);
 
         /// <summary>
+        /// Executes a stored procedure (or raw SQL query) using Dapper multi-mapping to combine two
+        /// entity types (<typeparamref name="TFirst"/> and <typeparamref name="TSecond"/>) into a
+        /// single return type (<typeparamref name="TReturn"/>).
+        /// </summary>
+        Task<IEnumerable<TReturn>> GetData<TFirst, TSecond, TReturn>(
+            string sql,
+            Func<TFirst, TSecond, TReturn> map,
+            object parameters,
+            string splitOn = "Id",
+            CommandType commandType = CommandType.StoredProcedure);
+
+        /// <summary>
         /// Executes a stored procedure (or raw SQL query) and returns the first result, or default if none.
         /// </summary>
         Task<T?> GetFirstOrDefault<T, P>(string sql, P parameters, CommandType commandType = CommandType.StoredProcedure);

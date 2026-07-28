@@ -17,6 +17,7 @@ namespace RecordDB.DAL.Repositories
         Task<List<RecordReviewDto>> SelectRecordReviewsAsync();
         Task<string> GetRecordedYearNumberAsync(int year);
         Task<List<Total>> GetTotalCostsAsync();
+        Task<List<Record>> GetArtistRecordsAsync(int artistId);
         Task<int> InsertAsync(Record record);
         Task<List<MissingReviewDto>> NoRecordReviewsAsync();
 

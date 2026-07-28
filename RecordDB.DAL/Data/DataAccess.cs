@@ -32,6 +32,25 @@ namespace RecordDB.DAL.Data
             return await connection.QueryAsync<T>(sql, parameters, commandType: commandType);
         }
 
+        /// <summary>
+        /// Executes a stored procedure using Dapper multi-mapping to combine two entity types into one.
+        /// </summary>
+        public async Task<IEnumerable<TReturn>> GetData<TFirst, TSecond, TReturn>(
+            string sql,
+            Func<TFirst, TSecond, TReturn> map,
+            object parameters,
+            string splitOn = "Id",
+            CommandType commandType = CommandType.StoredProcedure)
+        {
+            using IDbConnection connection = new SqlConnection(GetConnectionString());
+            return await connection.QueryAsync<TFirst, TSecond, TReturn>(
+                sql,
+                map,
+                parameters,
+                splitOn: splitOn,
+                commandType: commandType);
+        }
+
         // -----------------------------------------------------------------------
         // Single-row methods — return T (or default)
         // -----------------------------------------------------------------------

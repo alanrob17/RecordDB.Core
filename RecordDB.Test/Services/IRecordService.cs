@@ -16,5 +16,6 @@ namespace RecordDB.Test.Services
         Task SelectRecordReviewsAsync();
         Task GetRecordedYearNumberAsync();
         Task NoRecordReviewsAsync();
+        Task GetArtistRecords();
     }
 }

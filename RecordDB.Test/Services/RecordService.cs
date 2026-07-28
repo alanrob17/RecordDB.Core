@@ -1,4 +1,4 @@
-﻿using RecordDB.DAL.DTOs;
+using RecordDB.DAL.DTOs;
 using RecordDB.DAL.Extensions;
 using RecordDB.DAL.Models;
 using RecordDB.DAL.Repositories;
@@ -36,6 +36,7 @@ namespace RecordDB.Test.Services
             // await SelectRecordReviewsAsync();
             // await GetRecordedYearNumberAsync();
             // await NoRecordReviewsAsync();
+            await GetArtistRecords();
 
             // TODO: This uses Heinemnann's ToShortDate method, will only work in Windows. Needs to be migrated.
             // ToShortDate();
@@ -46,7 +47,7 @@ namespace RecordDB.Test.Services
             // await UpdateRecord2Async();
             // await DeleteRecordAsync();  
 
-            GetTotalCosts();
+            // GetTotalCosts();
         }
 
         public void GetTotalCosts()
@@ -291,6 +292,27 @@ namespace RecordDB.Test.Services
             Console.WriteLine($"\n{artist.ArtistId}: - Artist {artist.Name}:\n");
 
             Console.WriteLine($"\nRecordId: {record.RecordId}\nName: {record.Name}\nField: {record.Field}\nRecorded: {record.Recorded}\nLabel: {record.Label}\nPressing: {record.Pressing}\nDiscs: {record.Discs}\nMedia: {record.Media}\nBought: {record.Bought.ToShortDate() ?? null}\nCost: ${record.Cost:0.00}\nReview:\n{record.Review}\n\nBiography:\n{artist.Biography}");
+        }
+
+        public async Task GetArtistRecords()
+        {
+            var artistId = 114;
+            var records = await _recordRepository.GetArtistRecordsAsync(artistId);
+
+            if (!records.Any())
+            {
+                Console.WriteLine($"No records found for ArtistId: {artistId}");
+                return;
+            }
+
+            var artist = records.First().Artist;
+
+            Console.WriteLine($"Id: {artist?.ArtistId} - Artist: {artist?.Name}\n");
+
+            foreach (var record in records)
+            {
+                Console.WriteLine($"{record.RecordId} -- {record.Name}");
+            }
         }
 
         public async Task<string> ToStringAsync(Record record)

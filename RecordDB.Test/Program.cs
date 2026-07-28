@@ -29,11 +29,11 @@ namespace RecordDB.Test
             var serviceProvider = services.BuildServiceProvider();
 
             // Call Services to run the tests
-            var artistService = serviceProvider.GetRequiredService<ArtistService>();
-            await artistService.RunAsync();
+            // var artistService = serviceProvider.GetRequiredService<ArtistService>();
+            // await artistService.RunAsync();
 
-            //var recordService = serviceProvider.GetRequiredService<RecordService>();
-            //await recordService.RunAsync();
+            var recordService = serviceProvider.GetRequiredService<RecordService>();
+            await recordService.RunAsync();
         }
 
         // --------------------------------------------------------------------

@@ -1,4 +1,4 @@
-﻿using Dapper;
+using Dapper;
 using Heinemann.Components;
 using RecordDB.DAL.Data;
 using RecordDB.DAL.DTOs;
@@ -327,6 +327,24 @@ namespace RecordDB.DAL.Repositories
             {
                 return;
             }
+        }
+
+        public async Task<List<Record>> GetArtistRecordsAsync(int artistId)
+        {
+            var sproc = "up_getArtistRecords";
+
+            var records = await _db.GetData<Record, Artist, Record>(
+                sproc,
+                (record, artist) =>
+                {
+                    record.Artist = artist;
+                    record.ArtistId = artist.ArtistId;
+                    return record;
+                },
+                new { ArtistId = artistId },
+                splitOn: "ArtistId");
+
+            return records.ToList();
         }
     }
 }
