@@ -8,6 +8,7 @@ namespace RecordDB.Test.Services
     public interface IArtistService
     {
         Task FindAllArtists();
+        Task GetArtistsByPartialName(string name);
         Task FindArtist(int artistId);
         Task<int> CreateArtist();
         Task GetArtistsAsync();

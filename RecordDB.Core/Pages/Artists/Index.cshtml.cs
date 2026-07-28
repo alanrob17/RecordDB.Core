@@ -22,19 +22,40 @@ namespace RecordDB.Core.Pages.Artists
         public int CurrentPage { get; set; }
         public int TotalPages { get; set; }
 
+        /// <summary>True when the list is filtered by a search term.</summary>
+        public bool IsSearching => !string.IsNullOrWhiteSpace(SearchTerm);
+
+        [BindProperty(SupportsGet = true)]
+        public string? SearchTerm { get; set; }
+
         public async Task OnGetAsync(int pageNumber = 1)
         {
-            var all = (await _artistRepository.GetArtistsAsync()).ToList();
+            List<Artist> all;
 
-            TotalCount = all.Count;
-            CurrentPage = Math.Max(1, pageNumber);
-            TotalPages = (int)Math.Ceiling(TotalCount / (double)PageSize);
-            CurrentPage = Math.Min(CurrentPage, Math.Max(1, TotalPages));
+            if (IsSearching)
+            {
+                // Search results — no pagination
+                all = (await _artistRepository.GetArtistsByPartialNameAsync(SearchTerm!)).ToList();
+                TotalCount  = all.Count;
+                CurrentPage = 1;
+                TotalPages  = 1;
+                Artists     = all;
+            }
+            else
+            {
+                // Full list with pagination
+                all = (await _artistRepository.GetArtistsAsync()).ToList();
 
-            Artists = all
-                .Skip((CurrentPage - 1) * PageSize)
-                .Take(PageSize)
-                .ToList();
+                TotalCount  = all.Count;
+                CurrentPage = Math.Max(1, pageNumber);
+                TotalPages  = (int)Math.Ceiling(TotalCount / (double)PageSize);
+                CurrentPage = Math.Min(CurrentPage, Math.Max(1, TotalPages));
+
+                Artists = all
+                    .Skip((CurrentPage - 1) * PageSize)
+                    .Take(PageSize)
+                    .ToList();
+            }
         }
     }
 }

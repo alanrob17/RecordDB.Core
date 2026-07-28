@@ -17,7 +17,8 @@ namespace RecordDB.Test.Services
 
         public async Task RunAsync()
         {
-            await FindAllArtists();
+            // await FindAllArtists();
+            await GetArtistsByPartialName("John");
             //await FindArtist(114);
             //await CreateArtist();
             //await GetArtistsAsync();
@@ -44,6 +45,22 @@ namespace RecordDB.Test.Services
         public async Task FindAllArtists()
         {
             IEnumerable<Artist> artists = await _artistRepository.GetArtistsAsync();
+
+            foreach (Artist artist in artists)
+            {
+                var biography = string.Empty;
+                if (artist.Biography != null && artist.Biography.Length > 60)
+                {
+                    biography = artist.Biography.Substring(0, 60);
+                }
+
+                Console.WriteLine($"ArtistId: {artist.ArtistId}, Name: {artist.Name}, Biography: {biography}");
+            }
+        }
+
+        public async Task GetArtistsByPartialName(string name)
+        {
+            IEnumerable<Artist> artists = await _artistRepository.GetArtistsByPartialNameAsync(name);
 
             foreach (Artist artist in artists)
             {

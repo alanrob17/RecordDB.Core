@@ -20,6 +20,43 @@
     </span>
 </div>
 
+<div class="list-toolbar">
+    <form method="get" class="search-form" role="search">
+        <div class="search-input-wrap">
+            <span class="search-icon">🔍</span>
+            <input type="text"
+                   name="SearchTerm"
+                   id="searchTerm"
+                   class="search-input"
+                   value="@Model.SearchTerm"
+                   placeholder="Search artists…"
+                   aria-label="Search artists" />
+            @if (Model.IsSearching)
+            {
+                <a asp-page="./Index" class="search-clear" title="Clear search" aria-label="Clear search">✕</a>
+            }
+        </div>
+        <button type="submit" class="btn-rdb btn-secondary-rdb">Search</button>
+    </form>
+
+    <a asp-page="./Create" class="btn-rdb btn-primary-rdb ms-auto">+ Add Artist</a>
+</div>
+
+@if (Model.IsSearching)
+{
+    <p class="search-results-info">
+        @if (Model.TotalCount == 0)
+        {
+            <span>No artists found for <strong>"@Model.SearchTerm"</strong>.</span>
+        }
+        else
+        {
+            <span>Found <strong>@Model.TotalCount</strong> artist@(Model.TotalCount != 1 ? "s" : "") matching <strong>"@Model.SearchTerm"</strong></span>
+        }
+        &nbsp;— <a asp-page="./Index">Show all artists</a>
+    </p>
+}
+
 <div class="rdb-card">
     <table class="rdb-table">
         <thead>
@@ -30,29 +67,38 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.Artists)
+            @if (Model.Artists.Count == 0)
             {
                 <tr>
-                    <td class="td-name">@item.Name</td>
-                    <td class="td-bio">
-                        @if (!string.IsNullOrEmpty(item.Biography))
-                        {
-                            @(item.Biography.Length > 80
-                                ? item.Biography[..80] + "…"
-                                : item.Biography)
-                        }
-                    </td>
-                    <td class="td-actions">
-                        <a asp-page="./Edit"    asp-route-id="@item.ArtistId" class="action-link action-edit">Edit</a>
-                        <a asp-page="./Details" asp-route-id="@item.ArtistId" class="action-link action-details">Details</a>
-                        <a asp-page="./Delete"  asp-route-id="@item.ArtistId" class="action-link action-delete">Delete</a>
-                    </td>
+                    <td colspan="3" class="td-empty">No artists found.</td>
                 </tr>
+            }
+            else
+            {
+                @foreach (var item in Model.Artists)
+                {
+                    <tr>
+                        <td class="td-name">@item.Name</td>
+                        <td class="td-bio">
+                            @if (!string.IsNullOrEmpty(item.Biography))
+                            {
+                                @(item.Biography.Length > 80
+                                    ? item.Biography[..80] + "…"
+                                    : item.Biography)
+                            }
+                        </td>
+                        <td class="td-actions">
+                            <a asp-page="./Edit"    asp-route-id="@item.ArtistId" class="action-link action-edit">Edit</a>
+                            <a asp-page="./Details" asp-route-id="@item.ArtistId" class="action-link action-details">Details</a>
+                            <a asp-page="./Delete"  asp-route-id="@item.ArtistId" class="action-link action-delete">Delete</a>
+                        </td>
+                    </tr>
+                }
             }
         </tbody>
     </table>
 
-    @if (Model.TotalPages > 1)
+    @if (!Model.IsSearching && Model.TotalPages > 1)
     {
         <div class="rdb-pagination">
             <span class="pagination-info">
