@@ -1,5 +1,5 @@
-using Microsoft.Data.SqlClient;
-using System.Data;
+using RecordDB.DAL.Data;
+using RecordDB.DAL.Repositories;
 
 namespace RecordDB.Core
 {
@@ -12,8 +12,9 @@ namespace RecordDB.Core
             // Add services to the container.
             builder.Services.AddRazorPages();
 
-            builder.Services.AddScoped<IDbConnection>(sp =>
-                new SqlConnection(builder.Configuration.GetConnectionString("RecordDb")));
+            // Register data access and repositories
+            builder.Services.AddScoped<IDataAccess, DataAccess>();
+            builder.Services.AddScoped<IArtistRepository, ArtistRepository>();
 
             var app = builder.Build();
 

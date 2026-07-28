@@ -1,10 +1,217 @@
-﻿@page
+@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="home-hero">
+    <h1><span>Record</span>DB Management System</h1>
+    <div class="clock-display" id="clock">--:--</div>
+    <div class="date-display" id="date-display"></div>
 </div>
+
+<div class="home-card">
+    <table class="home-table">
+        <thead>
+            <tr>
+                <th>Option</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a href="Artists/Index">List All Artists</a></td>
+                <td>View and manage all Artists in the RecordDB.</td>
+            </tr>
+            <tr class="spacer-row"><td colspan="2"></td></tr>
+
+            <tr>
+                <td><a href="GetArtist/cd">View All CD Titles</a></td>
+                <td>View all CD titles, organised by artist and date recorded.</td>
+            </tr>
+            <tr>
+                <td><a href="GetArtist/all">View All Titles</a></td>
+                <td>View all titles (Records and CDs), organised by artist and date recorded.</td>
+            </tr>
+            <tr>
+                <td><a href="GetArtist/records">View All Records</a></td>
+                <td>View all vinyl record titles, organised by artist and date recorded.</td>
+            </tr>
+            <tr>
+                <td><a href="GetArtist/dvds">View All DVD's</a></td>
+                <td>View all DVD titles, organised by date bought.</td>
+            </tr>
+            <tr>
+                <td><a href="GetArtist/blurays">View All Blurays</a></td>
+                <td>View all Bluray titles, organised by date bought.</td>
+            </tr>
+            <tr class="spacer-row"><td colspan="2"></td></tr>
+
+            <tr>
+                <td><a href="RecordList">Record List</a></td>
+                <td>View a combined list of all Artists and Records.</td>
+            </tr>
+            <tr>
+                <td><a href="RecordReviews">Record Reviews</a></td>
+                <td>View all record reviews.</td>
+            </tr>
+            <tr>
+                <td><a href="Search">Search for an Artist</a></td>
+                <td>Search and view all of an Artist's record titles.</td>
+            </tr>
+            <tr class="spacer-row"><td colspan="2"></td></tr>
+
+            <tr>
+                <td><a href="GetArtist/2022">View 2022 Titles</a></td>
+                <td>View all albums bought in 2022.</td>
+            </tr>
+            <tr>
+                <td><a href="GetArtist/2021">View 2021 Titles</a></td>
+                <td>View all albums bought in 2021.</td>
+            </tr>
+            <tr>
+                <td><a href="GetArtist/2020">View 2020 Titles</a></td>
+                <td>View all albums bought in 2020.</td>
+            </tr>
+            <tr>
+                <td><a href="GetArtist/2019">View 2019 Titles</a></td>
+                <td>View all albums bought in 2019.</td>
+            </tr>
+            <tr>
+                <td><a href="GetArtist/2018">View 2018 Titles</a></td>
+                <td>View all albums bought in 2018.</td>
+            </tr>
+            <tr>
+                <td><a href="GetArtist/2017">View 2017 Titles</a></td>
+                <td>View all albums bought in 2017.</td>
+            </tr>
+            <tr class="spacer-row"><td colspan="2"></td></tr>
+
+            <tr>
+                <td><a href="Recorded">Year Recorded</a></td>
+                <td>View all albums recorded in a particular year.</td>
+            </tr>
+            <tr>
+                <td><a href="GetArtist/1111">View Four Star</a></td>
+                <td>View all albums with an indispensable (★★★★) rating.</td>
+            </tr>
+            <tr class="spacer-row"><td colspan="2"></td></tr>
+
+            <tr>
+                <td><a href="GetArtist/Rock">Rock</a></td>
+                <td>View all Rock albums.</td>
+            </tr>
+            <tr>
+                <td><a href="GetArtist/Blues">Blues</a></td>
+                <td>View all Blues albums.</td>
+            </tr>
+            <tr>
+                <td><a href="GetArtist/Jazz">Jazz</a></td>
+                <td>View all Jazz albums.</td>
+            </tr>
+            <tr>
+                <td><a href="GetArtist/Classical">Classical</a></td>
+                <td>View all Classical albums.</td>
+            </tr>
+            <tr>
+                <td><a href="GetArtist/Soundtrack">Soundtrack</a></td>
+                <td>View all Soundtrack albums.</td>
+            </tr>
+            <tr>
+                <td><a href="GetArtist/Country">Country</a></td>
+                <td>View all Country albums.</td>
+            </tr>
+            <tr class="spacer-row"><td colspan="2"></td></tr>
+
+            <tr>
+                <td><a href="GetArtist/Rockdesc">Rock by Date</a></td>
+                <td>View all Rock albums ordered by date.</td>
+            </tr>
+            <tr>
+                <td><a href="GetArtist/Bluesdesc">Blues by Date</a></td>
+                <td>View all Blues albums ordered by date.</td>
+            </tr>
+            <tr>
+                <td><a href="GetArtist/Jazzdesc">Jazz by Date</a></td>
+                <td>View all Jazz albums ordered by date.</td>
+            </tr>
+            <tr>
+                <td><a href="GetArtist/Classicaldesc">Classical by Date</a></td>
+                <td>View all Classical albums ordered by date.</td>
+            </tr>
+            <tr>
+                <td><a href="GetArtist/Soundtrackdesc">Soundtrack by Date</a></td>
+                <td>View all Soundtrack albums ordered by date.</td>
+            </tr>
+            <tr>
+                <td><a href="GetArtist/Countrydesc">Country by Date</a></td>
+                <td>View all Country albums ordered by date.</td>
+            </tr>
+            <tr class="spacer-row"><td colspan="2"></td></tr>
+
+            <tr>
+                <td><a href="AddArtist">Add New Artist</a></td>
+                <td>Add a new artist to the RecordDB.</td>
+            </tr>
+            <tr>
+                <td><a href="EditArtist">Edit Artist</a></td>
+                <td>Edit an existing artist in the RecordDB.</td>
+            </tr>
+            <tr>
+                <td><a href="DeleteArtist">Delete Artist</a></td>
+                <td>Delete an artist from the RecordDB.</td>
+            </tr>
+            <tr class="spacer-row"><td colspan="2"></td></tr>
+
+            <tr>
+                <td><a href="AddRecord">Add New Record</a></td>
+                <td>Add a new record to the RecordDB.</td>
+            </tr>
+            <tr>
+                <td><a href="EditRecord">Edit Record</a></td>
+                <td>Edit an existing record in the RecordDB.</td>
+            </tr>
+            <tr>
+                <td><a href="DeleteRecord">Delete Record</a></td>
+                <td>Delete an artist's record from the RecordDB.</td>
+            </tr>
+            <tr class="spacer-row"><td colspan="2"></td></tr>
+
+            <tr>
+                <td><a href="TotalCosts">Artist Totals</a></td>
+                <td>Calculate total discs and costs for each artist.</td>
+            </tr>
+            <tr>
+                <td><a href="Statistics">Statistics</a></td>
+                <td>View collection statistics for the RecordDB.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+<script>
+    (function () {
+        const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+        const months = ['January','February','March','April','May','June',
+                        'July','August','September','October','November','December'];
+
+        function pad(n) { return n < 10 ? '0' + n : n; }
+
+        function tick() {
+            const now = new Date();
+            let h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
+            const ampm = h >= 12 ? 'pm' : 'am';
+            h = h % 12 || 12;
+            document.getElementById('clock').textContent =
+                pad(h) + ':' + pad(m) + ':' + pad(s) + ' ' + ampm;
+            document.getElementById('date-display').textContent =
+                days[now.getDay()] + ', ' + now.getDate() + ' ' +
+                months[now.getMonth()] + ' ' + now.getFullYear();
+        }
+
+        tick();
+        setInterval(tick, 1000);
+    })();
+</script>
+}

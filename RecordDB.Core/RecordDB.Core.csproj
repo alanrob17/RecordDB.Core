@@ -16,4 +16,8 @@
     <ProjectReference Include="..\RecordDB.DAL\RecordDB.DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\Records\" />
+  </ItemGroup>
+
 </Project>
