@@ -15,6 +15,7 @@ namespace RecordDB.Core
             // Register data access and repositories
             builder.Services.AddScoped<IDataAccess, DataAccess>();
             builder.Services.AddScoped<IArtistRepository, ArtistRepository>();
+            builder.Services.AddScoped<IRecordRepository, RecordRepository>();
 
             var app = builder.Build();
 

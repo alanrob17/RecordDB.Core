@@ -36,7 +36,8 @@ namespace RecordDB.Test.Services
             // await SelectRecordReviewsAsync();
             // await GetRecordedYearNumberAsync();
             // await NoRecordReviewsAsync();
-            await GetArtistRecords();
+            // await GetArtistRecords();
+            await GetRecordsByArtistNameAsync("Bob Dylan");
 
             // TODO: This uses Heinemnann's ToShortDate method, will only work in Windows. Needs to be migrated.
             // ToShortDate();
@@ -302,6 +303,26 @@ namespace RecordDB.Test.Services
             if (!records.Any())
             {
                 Console.WriteLine($"No records found for ArtistId: {artistId}");
+                return;
+            }
+
+            var artist = records.First().Artist;
+
+            Console.WriteLine($"Id: {artist?.ArtistId} - Artist: {artist?.Name}\n");
+
+            foreach (var record in records)
+            {
+                Console.WriteLine($"{record.RecordId} -- {record.Name}");
+            }
+        }
+
+        public async Task GetRecordsByArtistNameAsync(string name)
+        {
+            var records = await _recordRepository.GetRecordsByArtistNameAsync(name);
+
+            if (!records.Any())
+            {
+                Console.WriteLine($"No records found for Artist: {name}");
                 return;
             }
 

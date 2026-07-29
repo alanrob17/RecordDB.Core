@@ -346,5 +346,30 @@ namespace RecordDB.DAL.Repositories
 
             return records.ToList();
         }
+
+        public async Task<List<Record>> GetRecordsByArtistNameAsync(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return new List<Record>();
+            }
+
+            var sproc = "up_GetRecordsByArtistName";
+            var parameters = new DynamicParameters();
+            parameters.Add("@ArtistName", name);
+
+            var records = await _db.GetData<Record, Artist, Record>(
+                sproc,
+                (record, artist) =>
+                {
+                    record.Artist = artist;
+                    record.ArtistId = artist.ArtistId;
+                    return record;
+                },
+                parameters,
+                splitOn: "ArtistId");
+
+            return records.ToList();
+        }
     }
 }

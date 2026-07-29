@@ -21,7 +21,7 @@ namespace RecordDB.DAL.Repositories
 
         public async Task<IEnumerable<Artist>> GetArtistsByPartialNameAsync(string name)
         {
-            string sproc = "up_getArtistsByPartialName";
+            string sproc = "up_GetArtistsByPartialName";
             var parameter = new DynamicParameters();
             parameter.Add("@Name", name);
             IEnumerable<Artist> artists = await _db.GetData<Artist, dynamic>(sproc, parameter);
