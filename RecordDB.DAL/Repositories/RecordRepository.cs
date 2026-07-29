@@ -21,13 +21,13 @@ namespace RecordDB.DAL.Repositories
             _db = db;
         }
 
-        public async Task<Record> SelectAsync(int recordId)
+        public async Task<ArtistRecordDto> SelectAsync(int recordId)
         {
             var sproc = "up_RecordSelectById";
             var parameter = new DynamicParameters();
             parameter.Add("@RecordId", recordId);
 
-            Record record = await _db.GetFirstOrDefault<Record, dynamic>(sproc, parameter);
+            ArtistRecordDto record = await _db.GetFirstOrDefault<ArtistRecordDto, dynamic>(sproc, parameter);
 
             return record ?? null;
         }
@@ -66,10 +66,10 @@ namespace RecordDB.DAL.Repositories
             return discs.ToString(CultureInfo.InvariantCulture);
         }
 
-        public async Task<List<Record>> SelectAsync()
+        public async Task<List<ArtistRecordDto>> SelectAsync()
         {
             var sproc = "up_RecordSelectAll";
-            var records = await _db.GetData<Record, dynamic>(sproc, new { });
+            var records = await _db.GetData<ArtistRecordDto, dynamic>(sproc, new { });
 
             return records.ToList();
         }
@@ -277,7 +277,7 @@ namespace RecordDB.DAL.Repositories
             }
         }
 
-        public async Task<int> UpdateAsync(Record record)
+        public async Task<int> UpdateAsync(ArtistRecordDto record)
         {
             var recordId = 0;
 
@@ -347,27 +347,18 @@ namespace RecordDB.DAL.Repositories
             return records.ToList();
         }
 
-        public async Task<List<Record>> GetRecordsByArtistNameAsync(string name)
+        public async Task<List<ArtistRecordDto>> GetRecordsByArtistNameAsync(string artistName)
         {
-            if (string.IsNullOrWhiteSpace(name))
+            if (string.IsNullOrWhiteSpace(artistName))
             {
-                return new List<Record>();
+                return [];
             }
 
             var sproc = "up_GetRecordsByArtistName";
-            var parameters = new DynamicParameters();
-            parameters.Add("@ArtistName", name);
+            var parameter = new DynamicParameters();
+            parameter.Add("@ArtistName", artistName);
 
-            var records = await _db.GetData<Record, Artist, Record>(
-                sproc,
-                (record, artist) =>
-                {
-                    record.Artist = artist;
-                    record.ArtistId = artist.ArtistId;
-                    return record;
-                },
-                parameters,
-                splitOn: "ArtistId");
+            var records = await _db.GetData<ArtistRecordDto, dynamic>(sproc, parameter);
 
             return records.ToList();
         }

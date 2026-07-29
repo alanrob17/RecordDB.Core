@@ -8,11 +8,11 @@ namespace RecordDB.DAL.Repositories
 {
     public interface IRecordRepository
     {
-        Task<Record> SelectAsync(int recordId);
+        Task<ArtistRecordDto> SelectAsync(int recordId);
         Task<string> CountDiscsAsync(string show);
         Task<string> GetArtistNumberOfRecordsAsync(int artistId);
-        Task<List<Record>> SelectAsync();
-        Task<List<Record>> GetRecordsByArtistNameAsync(string name);
+        Task<List<ArtistRecordDto>> SelectAsync();
+        Task<List<ArtistRecordDto>> GetRecordsByArtistNameAsync(string name);
         Task<List<Record>> Select(string show);
         Task<List<Record>> SelectArtistRecordsAsync(int artistId);
         Task<List<RecordReviewDto>> SelectRecordReviewsAsync();
@@ -28,7 +28,7 @@ namespace RecordDB.DAL.Repositories
         Task<int> UpdateAsync(int recordId, int artistId, string name, string field, int recorded, string label,
             string pressing, string rating, int discs, string media, DateTime bought, decimal cost, string coverName,
             string review);
-        Task<int> UpdateAsync(Record record);
+        Task<int> UpdateAsync(ArtistRecordDto record);
         Task DeleteAsync(int recordId);
     }
 }

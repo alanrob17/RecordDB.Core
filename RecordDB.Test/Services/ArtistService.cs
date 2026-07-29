@@ -18,12 +18,12 @@ namespace RecordDB.Test.Services
         public async Task RunAsync()
         {
             // await FindAllArtists();
-            await GetArtistsByPartialName("John");
+            // await GetArtistsByPartialName("John");
             //await FindArtist(114);
             //await CreateArtist();
             //await GetArtistsAsync();
             //await GetArtists();
-            //await GetArtistListAsync();
+            await GetArtistListAsync();
             //await ShowArtistsAsync();
             //await SelectAsync();
             //await GetArtistNamesAsync();
@@ -138,13 +138,7 @@ namespace RecordDB.Test.Services
 
             foreach (Artist artist in artists)
             {
-                var biography = string.Empty;
-                if (artist.Biography != null && artist.Biography.Length > 60)
-                {
-                    biography = artist.Biography.Substring(0, 60);
-                }
-
-                Console.WriteLine($"ArtistId: {artist.ArtistId}, Name: {artist.Name}, Biography: {biography}");
+                Console.WriteLine($"ArtistId: {artist.ArtistId}, Name: {artist.Name}");
             }
         }
 

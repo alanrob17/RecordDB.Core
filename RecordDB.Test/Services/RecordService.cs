@@ -32,12 +32,12 @@ namespace RecordDB.Test.Services
             // await GetFormattedRecordAsync();
             // await SelectRecordsAsync();
             // await SelectRecordsShow();
-            // await SelectRecordsByArtistIdAsync();
+            await SelectRecordsByArtistIdAsync();
             // await SelectRecordReviewsAsync();
             // await GetRecordedYearNumberAsync();
             // await NoRecordReviewsAsync();
             // await GetArtistRecords();
-            await GetRecordsByArtistNameAsync("Bob Dylan");
+            // await GetRecordsByArtistNameAsync("Bob Dylan");
 
             // TODO: This uses Heinemnann's ToShortDate method, will only work in Windows. Needs to be migrated.
             // ToShortDate();
@@ -75,7 +75,7 @@ namespace RecordDB.Test.Services
 
             IFormatProvider culture = System.Threading.Thread.CurrentThread.CurrentCulture;
 
-            var record = new Record
+            var record = new ArtistRecordDto
             {
                 RecordId = 5301,
                 ArtistId = 915,
@@ -240,7 +240,8 @@ namespace RecordDB.Test.Services
 
             foreach (var record in records)
             {
-                Console.WriteLine($"{record.ArtistName} -- {record.Name} {record.Recorded} - {record.Media} : {record.Bought.ToShortDate()}\n");
+                Artist artist = await _artistRepository.SelectAsync(record.ArtistId);
+                Console.WriteLine($"{artist.Name} -- {record.Name} {record.Recorded} - {record.Media} : {record.Bought.ToShortDate()}\n");
             }
         }
 
@@ -250,14 +251,15 @@ namespace RecordDB.Test.Services
 
             foreach (var record in records)
             {
-                Console.WriteLine($"{record.ArtistName} -- {record.Name} {record.Recorded} - {record.Media}\n");
+                Artist artist = await _artistRepository.SelectAsync(record.ArtistId);
+                Console.WriteLine($"{artist.Name} -- {record.Name} {record.Recorded} - {record.Media}\n");
             }
         }
 
         public async Task GetFormattedRecordAsync()
         {
             var recordId = 212;
-            var record = await _recordRepository.SelectAsync(recordId);
+            ArtistRecordDto record = await _recordRepository.SelectAsync(recordId);
             var recordDetails = await ToStringAsync(record);
 
             Console.WriteLine(recordDetails);
@@ -286,13 +288,13 @@ namespace RecordDB.Test.Services
         {
             var recordId = 1135;
 
-            var artist = await _artistRepository.GetArtistByRecordIdAsync(recordId);
+            // var artist = await _artistRepository.GetArtistByRecordIdAsync(recordId);
             // var biography = await _ar.GetBiographyAsync(recordId); // not needed
-            var record = await _recordRepository.SelectAsync(recordId);
+            ArtistRecordDto record = await _recordRepository.SelectAsync(recordId);
 
-            Console.WriteLine($"\n{artist.ArtistId}: - Artist {artist.Name}:\n");
+            //Console.WriteLine($"\n{artist.ArtistId}: - Artist {artist.Name}:\n");
 
-            Console.WriteLine($"\nRecordId: {record.RecordId}\nName: {record.Name}\nField: {record.Field}\nRecorded: {record.Recorded}\nLabel: {record.Label}\nPressing: {record.Pressing}\nDiscs: {record.Discs}\nMedia: {record.Media}\nBought: {record.Bought.ToShortDate() ?? null}\nCost: ${record.Cost:0.00}\nReview:\n{record.Review}\n\nBiography:\n{artist.Biography}");
+            Console.WriteLine($"\nArtistId: {record.ArtistId} - Artist: {record.ArtistName} -- RecordId: {record.RecordId}\nName: {record.Name}\nField: {record.Field}\nRecorded: {record.Recorded}\nLabel: {record.Label}\nPressing: {record.Pressing}\nDiscs: {record.Discs}\nMedia: {record.Media}\nBought: {record.Bought.ToShortDate() ?? null}\nCost: ${record.Cost:0.00}\nReview:\n{record.Review}\n\nBiography:\n{record.Biography}");
         }
 
         public async Task GetArtistRecords()
@@ -326,9 +328,7 @@ namespace RecordDB.Test.Services
                 return;
             }
 
-            var artist = records.First().Artist;
-
-            Console.WriteLine($"Id: {artist?.ArtistId} - Artist: {artist?.Name}\n");
+            Console.WriteLine($"Id: {records.First().ArtistId} - Artist: {records.First().ArtistName}\n");
 
             foreach (var record in records)
             {
@@ -336,7 +336,7 @@ namespace RecordDB.Test.Services
             }
         }
 
-        public async Task<string> ToStringAsync(Record record)
+        public async Task<string> ToStringAsync(ArtistRecordDto record)
         {
             var str = new StringBuilder();
 

@@ -21,8 +21,8 @@
     <form method="post">
 
         <div class="form-group">
-            <label asp-for="Record.ArtistId">Artist ID</label>
-            <input type="text" asp-for="Record.ArtistId" placeholder="Enter the Artist ID" />
+            <label asp-for="Record.ArtistId">Artist</label>
+            <select asp-for="Record.ArtistId" asp-items="Model.ArtistList"></select>
             <span asp-validation-for="Record.ArtistId" class="field-validation-error"></span>
         </div>
 

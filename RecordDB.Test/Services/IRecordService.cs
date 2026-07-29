@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RecordDB.DAL.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -17,5 +18,14 @@ namespace RecordDB.Test.Services
         Task GetRecordedYearNumberAsync();
         Task NoRecordReviewsAsync();
         Task GetArtistRecords();
+        Task DeleteRecordAsync();
+        Task UpdateRecord2Async();
+        Task UpdateRecordAsync();
+        Task InsertRecord2Async();
+        Task InsertRecordAsync();
+        Task GetTotalsAsync();
+        Task SelectRecordsAsync();
+        Task GetRecordsByArtistNameAsync(string name);
+        Task<string> ToStringAsync(ArtistRecordDto record);
     }
 }

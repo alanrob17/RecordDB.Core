@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using RecordDB.DAL.DTOs;
 using RecordDB.DAL.Models;
 using RecordDB.DAL.Repositories;
 
@@ -14,11 +15,11 @@ namespace RecordDB.Core.Pages.Records
             _recordRepository = recordRepository;
         }
 
-        public Record Record { get; set; } = default!;
+        public ArtistRecordDto Record { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            var record = await _recordRepository.SelectAsync(id);
+            ArtistRecordDto record = await _recordRepository.SelectAsync(id);
 
             if (record is null)
                 return NotFound();

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using RecordDB.DAL.DTOs;
 using RecordDB.DAL.Models;
 using RecordDB.DAL.Repositories;
 
@@ -16,7 +17,7 @@ namespace RecordDB.Core.Pages.Records
             _recordRepository = recordRepository;
         }
 
-        public IList<Record> Records { get; set; } = [];
+        public IList<ArtistRecordDto> Records { get; set; } = [];
 
         public int TotalCount { get; set; }
         public int CurrentPage { get; set; }
@@ -30,7 +31,7 @@ namespace RecordDB.Core.Pages.Records
 
         public async Task OnGetAsync(int pageNumber = 1)
         {
-            List<Record> all;
+            List<ArtistRecordDto> all;
 
             if (IsSearching)
             {
