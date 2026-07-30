@@ -31,10 +31,11 @@ namespace RecordDB.Test.Services
             // await GetArtistRecordNumberAsync();
             // await GetFormattedRecordAsync();
             // await SelectRecordsAsync();
-            // await SelectRecordsShow();
-            await SelectRecordsByArtistIdAsync();
+            await SelectRecordsShow();
+            // await SelectRecordsByArtistIdAsync();
             // await SelectRecordReviewsAsync();
             // await GetRecordedYearNumberAsync();
+            // await GetRecordsByYearAsync(1974);
             // await NoRecordReviewsAsync();
             // await GetArtistRecords();
             // await GetRecordsByArtistNameAsync("Bob Dylan");
@@ -49,6 +50,15 @@ namespace RecordDB.Test.Services
             // await DeleteRecordAsync();  
 
             // GetTotalCosts();
+        }
+
+        public async Task GetRecordsByYearAsync(int year)
+        {
+            var records = await _recordRepository.GetRecordsByYearAsync(year);
+            foreach (var record in records)
+            {
+                Console.WriteLine($"{record.ArtistName}: {record.Name} - {record.Recorded}");
+            }
         }
 
         public void GetTotalCosts()

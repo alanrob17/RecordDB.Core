@@ -29,8 +29,8 @@
                    id="searchTerm"
                    class="search-input"
                    value="@Model.SearchTerm"
-                   placeholder="Search by artist name…"
-                   aria-label="Search by artist name" />
+                   placeholder="Search by artist name or year…"
+                   aria-label="Search by artist name or year" />
             @if (Model.IsSearching)
             {
                 <a asp-page="./Index" class="search-clear" title="Clear search" aria-label="Clear search">✕</a>
@@ -45,13 +45,27 @@
 @if (Model.IsSearching)
 {
     <p class="search-results-info">
-        @if (Model.TotalCount == 0)
+        @if (Model.IsYearSearch)
         {
-            <span>No records found for artist <strong>"@Model.SearchTerm"</strong>.</span>
+            @if (Model.TotalCount == 0)
+            {
+                <span>No records found recorded in year <strong>"@Model.SearchTerm"</strong>.</span>
+            }
+            else
+            {
+                <span>Found <strong>@Model.TotalCount</strong> record@(Model.TotalCount != 1 ? "s" : "") recorded in year <strong>"@Model.SearchTerm"</strong></span>
+            }
         }
         else
         {
-            <span>Found <strong>@Model.TotalCount</strong> record@(Model.TotalCount != 1 ? "s" : "") for artist <strong>"@Model.SearchTerm"</strong></span>
+            @if (Model.TotalCount == 0)
+            {
+                <span>No records found for artist <strong>"@Model.SearchTerm"</strong>.</span>
+            }
+            else
+            {
+                <span>Found <strong>@Model.TotalCount</strong> record@(Model.TotalCount != 1 ? "s" : "") for artist <strong>"@Model.SearchTerm"</strong></span>
+            }
         }
         &nbsp;— <a asp-page="./Index">Show all records</a>
     </p>

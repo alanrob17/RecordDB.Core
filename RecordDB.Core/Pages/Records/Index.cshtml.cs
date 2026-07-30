@@ -23,8 +23,11 @@ namespace RecordDB.Core.Pages.Records
         public int CurrentPage { get; set; }
         public int TotalPages { get; set; }
 
-        /// <summary>True when the list is filtered by an artist name search.</summary>
+        /// <summary>True when the list is filtered by artist name or year search.</summary>
         public bool IsSearching => !string.IsNullOrWhiteSpace(SearchTerm);
+
+        /// <summary>True when the search term is a 4-digit recorded year.</summary>
+        public bool IsYearSearch => IsSearching && SearchTerm!.Trim().Length == 4 && int.TryParse(SearchTerm.Trim(), out _);
 
         [BindProperty(SupportsGet = true)]
         public string? SearchTerm { get; set; }
@@ -35,7 +38,15 @@ namespace RecordDB.Core.Pages.Records
 
             if (IsSearching)
             {
-                all = await _recordRepository.GetRecordsByArtistNameAsync(SearchTerm!);
+                var trimmedSearch = SearchTerm!.Trim();
+                if (trimmedSearch.Length == 4 && int.TryParse(trimmedSearch, out int recordedYear))
+                {
+                    all = await _recordRepository.GetRecordsByYearAsync(recordedYear);
+                }
+                else
+                {
+                    all = await _recordRepository.GetRecordsByArtistNameAsync(SearchTerm!);
+                }
             }
             else
             {

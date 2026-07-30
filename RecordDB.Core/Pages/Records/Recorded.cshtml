@@ -1,0 +1,65 @@
+@page
+@model RecordDB.Core.Pages.Records.RecordedModel
+@{
+    ViewData["Title"] = "Search Year Recorded";
+}
+
+<div class="page-header justify-content-center text-center">
+    <h1 class="page-title">Search Year <span>Recorded</span></h1>
+</div>
+
+<div class="rdb-form-card" style="max-width: 480px; margin-top: 2rem;">
+    <p class="text-center text-muted mb-4" style="font-size: 0.95rem;">
+        Enter a 4-digit year between 1900 and 2030 to search for records recorded in that year.
+    </p>
+
+    <form method="post" id="searchForm">
+        @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ContainsKey(string.Empty))
+        {
+            <div class="form-error-banner mb-3">
+                @Html.ValidationSummary(false)
+            </div>
+        }
+
+        <div class="form-group mb-4">
+            <label asp-for="Year">Year (1900 - 2030)</label>
+            <div class="input-group" style="position: relative;">
+                <input type="text" 
+                       asp-for="Year" 
+                       id="yearInput"
+                       placeholder="e.g. 1974" 
+                       maxlength="4" 
+                       pattern="[0-9]{4}" 
+                       inputmode="numeric"
+                       class="form-control"
+                       style="text-align: center; font-size: 1.25rem; font-weight: 600; letter-spacing: 0.1em; height: 3.5rem; border-radius: var(--radius-md);" 
+                       required />
+            </div>
+            <span asp-validation-for="Year" class="field-validation-error mt-2"></span>
+        </div>
+
+        <button type="submit" class="btn-rdb btn-primary-rdb w-100" style="height: 3.5rem; font-size: 1.05rem; font-weight: 600; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; gap: 0.5rem; transition: transform 0.2s;">
+            <span>🔍</span> Search Records
+        </button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Add subtle focus zoom to the card and button hover micro-animation
+        const input = document.getElementById('yearInput');
+        const card = document.querySelector('.rdb-form-card');
+        
+        input.addEventListener('focus', () => {
+            card.style.transform = 'translateY(-2px)';
+            card.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
+            card.style.boxShadow = '0 10px 25px rgba(79, 70, 229, 0.15)';
+        });
+        
+        input.addEventListener('blur', () => {
+            card.style.transform = 'none';
+            card.style.boxShadow = 'var(--shadow-card)';
+        });
+    </script>
+}

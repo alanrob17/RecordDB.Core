@@ -81,12 +81,29 @@ namespace RecordDB.DAL.Repositories
                 throw new ArgumentNullException("show");
             }
 
-            var sproc = "up_RecordSelectShowNew";
+            var sproc = "up_RecordSelectShowCore";
 
             var parameter = new DynamicParameters();
             parameter.Add("@Show", show);
 
             IEnumerable<Record> records = await _db.GetData<Record, dynamic>(sproc, parameter);
+
+            return records.ToList();
+        }
+
+        public async Task<List<ArtistRecordDto>> SelectRecordsShowAsync(string show)
+        {
+            if (string.IsNullOrWhiteSpace(show))
+            {
+                throw new ArgumentNullException(nameof(show));
+            }
+
+            var sproc = "up_RecordSelectShowCore";
+
+            var parameter = new DynamicParameters();
+            parameter.Add("@Show", show);
+
+            var records = await _db.GetData<ArtistRecordDto, dynamic>(sproc, parameter);
 
             return records.ToList();
         }
@@ -357,6 +374,17 @@ namespace RecordDB.DAL.Repositories
             var sproc = "up_GetRecordsByArtistName";
             var parameter = new DynamicParameters();
             parameter.Add("@ArtistName", artistName);
+
+            var records = await _db.GetData<ArtistRecordDto, dynamic>(sproc, parameter);
+
+            return records.ToList();
+        }
+
+        public async Task<List<ArtistRecordDto>> GetRecordsByYearAsync(int recorded)
+        {
+            var sproc = "up_GetRecordsByYear";
+            var parameter = new DynamicParameters();
+            parameter.Add("@Recorded", recorded);
 
             var records = await _db.GetData<ArtistRecordDto, dynamic>(sproc, parameter);
 

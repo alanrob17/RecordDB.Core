@@ -27,13 +27,16 @@
                             <a class="nav-link" asp-area="" asp-page="/Index">Home</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-page="/Records/Recorded">Search Year</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-page="/Artists/Index">Artists</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-page="/Records/Index">Records</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/Privacy">Privacy</a>
+                            <a class="nav-link" asp-area="" asp-page="/Statistics">Statistics</a>
                         </li>
                     </ul>
                 </div>
@@ -49,8 +52,7 @@
 
     <footer>
         <div class="container">
-            &copy; @DateTime.Now.Year Alan Robson &mdash; RecordDB &mdash;
-            <a asp-area="" asp-page="/Privacy">Privacy</a>
+            &copy; @DateTime.Now.Year Alan Robson &mdash; RecordDB
         </div>
     </footer>
 
