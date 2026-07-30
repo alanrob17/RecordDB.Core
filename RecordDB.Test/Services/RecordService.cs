@@ -31,9 +31,9 @@ namespace RecordDB.Test.Services
             // await GetArtistRecordNumberAsync();
             // await GetFormattedRecordAsync();
             // await SelectRecordsAsync();
-            await SelectRecordsShow();
+            // await SelectRecordsShow();
             // await SelectRecordsByArtistIdAsync();
-            // await SelectRecordReviewsAsync();
+            await SelectRecordReviewsAsync();
             // await GetRecordedYearNumberAsync();
             // await GetRecordsByYearAsync(1974);
             // await NoRecordReviewsAsync();

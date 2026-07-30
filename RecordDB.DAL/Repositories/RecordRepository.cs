@@ -134,7 +134,7 @@ namespace RecordDB.DAL.Repositories
 
         public async Task<List<RecordReviewDto>> SelectRecordReviewsAsync()
         {
-            var sproc = "up_SelectRecordReviews";
+            var sproc = "up_SelectRecordReviewsCore";
 
             var records = await _db.GetData<RecordReviewDto, dynamic>(sproc, new { });
 

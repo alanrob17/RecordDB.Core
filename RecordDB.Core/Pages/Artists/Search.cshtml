@@ -1,0 +1,71 @@
+@page
+@model RecordDB.Core.Pages.Artists.SearchModel
+@{
+    ViewData["Title"] = "Search Artist";
+}
+
+<div class="page-header justify-content-center text-center">
+    <h1 class="page-title">Search <span>Artist</span></h1>
+</div>
+
+<div class="rdb-form-card" style="max-width: 480px; margin-top: 2rem;">
+    <p class="text-center text-muted mb-4" style="font-size: 0.95rem;">
+        Enter the first and last name of the artist to retrieve their records.
+    </p>
+
+    <form method="post" id="searchForm">
+        @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ContainsKey(string.Empty))
+        {
+            <div class="form-error-banner mb-3">
+                @Html.ValidationSummary(false)
+            </div>
+        }
+
+        <div class="form-group mb-3">
+            <label asp-for="FirstName">First Name</label>
+            <input type="text" 
+                   asp-for="FirstName" 
+                   placeholder="e.g. Jimi" 
+                   class="form-control"
+                   style="height: 3rem; border-radius: var(--radius-sm);" 
+                   required />
+            <span asp-validation-for="FirstName" class="field-validation-error mt-1"></span>
+        </div>
+
+        <div class="form-group mb-4">
+            <label asp-for="LastName">Last Name</label>
+            <input type="text" 
+                   asp-for="LastName" 
+                   placeholder="e.g. Hendrix" 
+                   class="form-control"
+                   style="height: 3rem; border-radius: var(--radius-sm);" 
+                   required />
+            <span asp-validation-for="LastName" class="field-validation-error mt-1"></span>
+        </div>
+
+        <button type="submit" class="btn-rdb btn-primary-rdb w-100" style="height: 3.5rem; font-size: 1.05rem; font-weight: 600; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; gap: 0.5rem; transition: transform 0.2s;">
+            <span>🔍</span> Search Records
+        </button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Zoom card and style elements slightly on focus
+        const inputs = document.querySelectorAll('input[type="text"]');
+        const card = document.querySelector('.rdb-form-card');
+        
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                card.style.transform = 'translateY(-2px)';
+                card.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
+                card.style.boxShadow = '0 10px 25px rgba(79, 70, 229, 0.15)';
+            });
+            input.addEventListener('blur', () => {
+                card.style.transform = 'none';
+                card.style.boxShadow = 'var(--shadow-card)';
+            });
+        });
+    </script>
+}

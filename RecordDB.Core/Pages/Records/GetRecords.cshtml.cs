@@ -9,6 +9,8 @@ namespace RecordDB.Core.Pages.Records
     {
         private readonly IRecordRepository _recordRepository;
 
+        private readonly IArtistRepository _artistRepository;
+
         private const int PageSize = 20;
 
         /// <summary>Maps the route segment (e.g. "cd", "rock", "2022") to a human-readable page heading.</summary>
@@ -40,9 +42,10 @@ namespace RecordDB.Core.Pages.Records
             { "Countrydesc",   "Country Albums by date" },
         };
 
-        public GetRecordsModel(IRecordRepository recordRepository)
+        public GetRecordsModel(IRecordRepository recordRepository, IArtistRepository artistRepository)
         {
             _recordRepository = recordRepository;
+            _artistRepository = artistRepository;
         }
 
         public IList<ArtistRecordDto> Records { get; set; } = [];
@@ -60,10 +63,26 @@ namespace RecordDB.Core.Pages.Records
 
         public async Task<IActionResult> OnGetAsync(int pageNumber = 1)
         {
-            // Resolve heading — check for rdddd format (Recorded Year search) first, otherwise fall back to HeaderMap
-            if (Show != null && Show.Length == 5 && (Show[0] == 'r' || Show[0] == 'R') && int.TryParse(Show.Substring(1), out int year))
+            // Resolve heading — check for aidDDDD (Artist ID search) first
+            if (Show != null && Show.StartsWith("aid", StringComparison.OrdinalIgnoreCase) && int.TryParse(Show.Substring(3), out int artistId))
             {
-                PageHeading = $"All Albums recorded in {year}";
+                var artist = await _artistRepository.SelectAsync(artistId);
+                if (artist != null)
+                {
+                    string artistName = !string.IsNullOrWhiteSpace(artist.Name) 
+                        ? artist.Name 
+                        : $"{artist.FirstName} {artist.LastName}".Trim();
+                    PageHeading = $"All Records by {artistName}";
+                }
+                else
+                {
+                    PageHeading = "All Records by Artist";
+                }
+            }
+            // Check for rdddd format (Recorded Year search)
+            else if (Show != null && Show.Length == 5 && (Show[0] == 'r' || Show[0] == 'R') && int.TryParse(Show.Substring(1), out int year))
+            {
+                PageHeading = $"All Records Recorded in {year}";
             }
             else
             {
