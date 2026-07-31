@@ -33,7 +33,8 @@ namespace RecordDB.Test.Services
             // await SelectRecordsAsync();
             // await SelectRecordsShow();
             // await SelectRecordsByArtistIdAsync();
-            await SelectRecordReviewsAsync();
+            // await SelectRecordReviewsAsync();
+            await PrintRecordListAsynch();
             // await GetRecordedYearNumberAsync();
             // await GetRecordsByYearAsync(1974);
             // await NoRecordReviewsAsync();
@@ -50,6 +51,48 @@ namespace RecordDB.Test.Services
             // await DeleteRecordAsync();  
 
             // GetTotalCosts();
+        }
+
+        public async Task PrintRecordListAsynch()
+        {
+            var artists = await _artistRepository.SelectAsync();
+            var records = await _recordRepository.SelectAsync();
+
+            foreach (var artist in artists)
+            {
+                // Map ArtistRecordDto to Record
+                var artistRecords = records
+                    .Where(r => r.ArtistId == artist.ArtistId)
+                    .Select(dto => new Record
+                    {
+                        RecordId = dto.RecordId,
+                        ArtistId = dto.ArtistId,
+                        Name = dto.Name,
+                        Field = dto.Field,
+                        Recorded = dto.Recorded,
+                        Label = dto.Label,
+                        Pressing = dto.Pressing,
+                        Rating = dto.Rating,
+                        Discs = dto.Discs,
+                        Media = dto.Media,
+                        Bought = dto.Bought,
+                        Cost = dto.Cost,
+                        CoverName = dto.CoverName,
+                        Review = dto.Review
+                    })
+                    .ToList();
+
+                artist.Records = artistRecords;
+            }
+
+            foreach (var artist in artists)
+            {
+                Console.WriteLine($"Artist: {artist.Name} - Records: {artist.Records.Count}");
+                foreach (var record in artist.Records)
+                {
+                    Console.WriteLine($"  RecordId: {record.RecordId}, Name: {record.Name}, Recorded: {record.Recorded}, Media: {record.Media}");
+                }
+            }
         }
 
         public async Task GetRecordsByYearAsync(int year)

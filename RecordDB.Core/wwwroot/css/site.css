@@ -856,3 +856,145 @@ footer a:hover { text-decoration: underline; }
     margin-bottom: 1.25rem;
     line-height: 1.5;
 }
+
+/* ── Artist List Page ────────────────────────────────────── */
+.artist-list-container {
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 0 0.5rem;
+}
+
+.artist-list-card {
+    padding: 2rem;
+    margin: 0 auto;
+    background: var(--color-surface);
+}
+
+.artist-records-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: stretch;
+}
+
+.artist-group-item {
+    width: 100%;
+    text-align: left;
+    padding-bottom: 1.75rem;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.artist-group-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.artist-heading {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    text-align: left;
+}
+
+.artist-link {
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: color var(--transition), transform var(--transition);
+    display: inline-block;
+}
+
+.artist-link:hover {
+    color: var(--color-accent-hover);
+    text-decoration: underline;
+    transform: translateY(-1px);
+}
+
+.record-items-list {
+    list-style: none;
+    padding-left: 1.5rem;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    text-align: left;
+    width: 100%;
+}
+
+.record-item {
+    width: 100%;
+    text-align: left;
+}
+
+.record-link {
+    display: inline-block;
+    color: var(--color-text);
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 0.35rem 0.6rem;
+    border-radius: var(--radius-sm);
+    transition: background var(--transition), color var(--transition), transform var(--transition);
+    word-break: break-word;
+    text-align: left;
+}
+
+.record-link:hover {
+    color: var(--color-accent);
+    background: var(--color-accent-soft);
+    transform: translateY(-1px);
+}
+
+.no-records-text {
+    color: var(--color-text-dim);
+    font-size: 0.88rem;
+    font-style: italic;
+    margin: 0;
+    padding-left: 1.5rem;
+    text-align: left;
+}
+
+@media (max-width: 768px) {
+    .artist-list-container {
+        padding: 0 0.25rem;
+    }
+    
+    .artist-list-card {
+        padding: 1.5rem 1rem;
+        border-radius: var(--radius-md);
+    }
+
+    .artist-heading {
+        font-size: 1.2rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .record-link {
+        font-size: 0.9rem;
+        padding: 0.5rem 0.6rem;
+    }
+
+    .artist-records-wrapper {
+        gap: 1.8rem;
+    }
+
+    .artist-group-item {
+        padding-bottom: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .artist-list-card {
+        padding: 1.25rem 0.75rem;
+    }
+
+    .artist-heading {
+        font-size: 1.1rem;
+    }
+
+    .record-link {
+        font-size: 0.85rem;
+        line-height: 1.4;
+    }
+}
