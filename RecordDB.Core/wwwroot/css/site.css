@@ -998,3 +998,10 @@ footer a:hover { text-decoration: underline; }
         line-height: 1.4;
     }
 }
+
+/* ── Total Costs Page ───────────────────────────────────── */
+.total-costs-container {
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+}

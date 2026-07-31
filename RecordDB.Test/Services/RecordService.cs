@@ -34,7 +34,7 @@ namespace RecordDB.Test.Services
             // await SelectRecordsShow();
             // await SelectRecordsByArtistIdAsync();
             // await SelectRecordReviewsAsync();
-            await PrintRecordListAsynch();
+            // await PrintRecordListAsynch();
             // await GetRecordedYearNumberAsync();
             // await GetRecordsByYearAsync(1974);
             // await NoRecordReviewsAsync();
@@ -43,14 +43,14 @@ namespace RecordDB.Test.Services
 
             // TODO: This uses Heinemnann's ToShortDate method, will only work in Windows. Needs to be migrated.
             // ToShortDate();
-            // await GetTotalsAsync();
+            await GetTotalsAsync();
             // await InsertRecordAsync();
             // await InsertRecord2Async();
             // await UpdateRecordAsync();  
             // await UpdateRecord2Async();
             // await DeleteRecordAsync();  
 
-            // GetTotalCosts();
+            // await GetTotalCosts();
         }
 
         public async Task PrintRecordListAsynch()
@@ -104,9 +104,9 @@ namespace RecordDB.Test.Services
             }
         }
 
-        public void GetTotalCosts()
+        public async Task GetTotalCosts()
         {
-            var totals = _totalRepository.GetTotalCosts().Result;
+            var totals = await _totalRepository.GetTotalCosts();
 
             foreach (var artist in totals)
             {
