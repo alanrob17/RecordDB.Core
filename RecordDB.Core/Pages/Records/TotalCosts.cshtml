@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Artist Total Costs";
 
-    const int GroupSize   = 15;
+    const int GroupSize   = 10;
     int currentGroup      = (Model.CurrentPage - 1) / GroupSize;
     int groupStart        = currentGroup * GroupSize + 1;
     int groupEnd          = Math.Min(groupStart + GroupSize - 1, Model.TotalPages);
@@ -72,15 +72,15 @@
                         <span class="page-btn disabled" aria-disabled="true">‹</span>
                     }
 
-                    @* « Jump to previous group of 15 *@
+                    @* « Jump to previous group of 10 *@
                     @if (currentGroup > 0)
                     {
                         <a class="page-btn page-btn-group" asp-page="./TotalCosts"
                            asp-route-pageNumber="@prevGroupLast"
-                           title="Previous 15 pages">«</a>
+                           title="Previous 10 pages">«</a>
                     }
 
-                    @* 15 numbered page buttons for the current group *@
+                    @* 10 numbered page buttons for the current group *@
                     @for (int p = groupStart; p <= groupEnd; p++)
                     {
                         if (p == Model.CurrentPage)
@@ -93,12 +93,12 @@
                         }
                     }
 
-                    @* » Jump to next group of 15 *@
+                    @* » Jump to next group of 10 *@
                     @if (nextGroupFirst <= Model.TotalPages)
                     {
                         <a class="page-btn page-btn-group" asp-page="./TotalCosts"
                            asp-route-pageNumber="@nextGroupFirst"
-                           title="Next 15 pages">»</a>
+                           title="Next 10 pages">»</a>
                     }
 
                     @* › Next individual page *@

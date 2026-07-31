@@ -34,11 +34,11 @@ namespace RecordDB.Test
             // var artistService = serviceProvider.GetRequiredService<ArtistService>();
             // await artistService.RunAsync();
 
-            var recordService = serviceProvider.GetRequiredService<RecordService>();
-            await recordService.RunAsync();
+            // var recordService = serviceProvider.GetRequiredService<RecordService>();
+            // await recordService.RunAsync();
 
-            // var statisticService = serviceProvider.GetRequiredService<StatisticService>();
-            // await statisticService.GetStatisticsAsync();
+            var statisticService = serviceProvider.GetRequiredService<StatisticService>();
+            await statisticService.GetStatisticsAsync();
         }
 
         // --------------------------------------------------------------------

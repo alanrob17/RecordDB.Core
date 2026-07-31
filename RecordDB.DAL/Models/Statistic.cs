@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace RecordDB.DAL.Models
@@ -34,48 +35,64 @@ namespace RecordDB.DAL.Models
 
         public int OneStarDisks { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal RecordCost { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal CDCost { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal AvCDCost { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal TotalCost { get; set; }
 
         public int Disks2017 { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal Cost2017 { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal Av2017 { get; set; }
 
         public int Disks2018 { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal Cost2018 { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal Av2018 { get; set; }
 
         public int Disks2019 { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal Cost2019 { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal Av2019 { get; set; }
 
         public int Disks2020 { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal Cost2020 { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal Av2020 { get; set; }
 
         public int Disks2021 { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal Cost2021 { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal Av2021 { get; set; }
 
         public int Disks2022 { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal Cost2022 { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal Av2022 { get; set; }
 
         public int TotalRecords { get; set; }

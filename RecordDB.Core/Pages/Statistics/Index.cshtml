@@ -1,0 +1,181 @@
+﻿@page
+@model RecordDB.Core.Pages.Statistics.IndexModel
+@{
+    ViewData["Title"] = "Statistics";
+}
+
+<div class="statistics-container">
+    <div class="page-header">
+        <h1 class="page-title"><span>Statistics</span></h1>
+    </div>
+
+    <div class="rdb-card">
+        <table class="rdb-table total-costs-table">
+        <thead>
+            <tr>
+                    <th class="th-artist">Statistics</th>
+                    <th class="th-cost">Total</th>
+            </tr>
+        </thead>
+        <tr>
+                <td class="td-name  text-left"><strong>Number of Discs bought in 2022</strong></td>
+            <td class="td-name text-end">@Model.Statistics.Disks2022</td>
+        </tr>
+        <tr>
+                <td class="td-name  text-left"><strong>Total Amount spent on Discs in 2022</strong></td>
+            <td class="td-name text-end">@Model.Statistics.Cost2022.ToString("c")</td>
+        </tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Average cost of a Disc in 2022</strong></td>
+            <td class="td-name text-end">@Model.Statistics.Av2022.ToString("c")</td>
+        </tr>
+        <tr class="spacer-row"><td colspan="2"></td></tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Number of Discs bought in 2021</strong></td>
+            <td class="td-name text-end">@Model.Statistics.Disks2021</td>
+        </tr>
+        </tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Total Amount spent on Discs in 2021</strong></td>
+            <td class="td-name text-end">@Model.Statistics.Cost2021.ToString("c")</td>
+        </tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Average cost of a Disc in 2021</strong></td>
+            <td class="td-name text-end">@Model.Statistics.Av2021.ToString("c")</td>
+        </tr>
+        <tr class="spacer-row"><td colspan="2"></td></tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Number of Discs bought in 2020</strong></td>
+            <td class="td-name text-end">@Model.Statistics.Disks2020</td>
+        </tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Total Amount spent on Discs in 2020</strong></td>
+            <td class="td-name text-end">@Model.Statistics.Cost2020.ToString("c")</td>
+        </tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Average cost of a Disc in 2020</strong></td>
+            <td class="td-name text-end">@Model.Statistics.Av2020.ToString("c")</td>
+        </tr>
+        <tr class="spacer-row"><td colspan="2"></td></tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Number of Discs bought in 2019</strong></td>
+            <td class="td-name text-end">@Model.Statistics.Disks2019</td>
+        </tr>
+        </tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Total Amount spent on Discs in 2019</strong></td>
+            <td class="td-name text-end">@Model.Statistics.Cost2019.ToString("c")</td>
+        </tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Average cost of a Disc in 2019</strong></td>
+            <td class="td-name text-end">@Model.Statistics.Av2019.ToString("c")</td>
+        </tr>
+        <tr class="spacer-row"><td colspan="2"></td></tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Number of Discs bought in 2018</strong></td>
+            <td class="td-name text-end">@Model.Statistics.Disks2018</td>
+        </tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Total Amount spent on Discs in 2018</strong></td>
+            <td class="td-name text-end">@Model.Statistics.Cost2018.ToString("c")</td>
+        </tr>
+        </tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Average cost of a Disc in 2018</strong></td>
+            <td class="td-name text-end">@Model.Statistics.Av2018.ToString("c")</td>
+        </tr>
+        <tr class="spacer-row"><td colspan="2"></td></tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Number of Discs bought in 2017</strong></td>
+            <td class="td-name text-end">@Model.Statistics.Disks2017</td>
+        </tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Total Amount spent on Discs in 2017</strong></td>
+            <td class="td-name text-end">@Model.Statistics.Cost2017.ToString("c")</td>
+        </tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Average cost of a Disc in 2017</strong></td>
+            <td class="td-name text-end">@Model.Statistics.Av2017.ToString("c")</td>
+        </tr>
+        <tr class="spacer-row"><td colspan="2"></td></tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Total Number of CD's</strong></td>
+    <td class="td-name text-end">@Model.Statistics.TotalCDs.ToString("N0")</td>
+        </tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Total Amount spent on CD's</strong></td>
+            <td class="td-name text-end">@Model.Statistics.CDCost.ToString("c")</td>
+        </tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Average spent on a CD</strong></td>
+            <td class="td-name text-end">@Model.Statistics.AvCDCost.ToString("c")</td>
+        </tr>
+        <tr class="spacer-row"><td colspan="2"></td></tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Total Number of Records</strong></td>
+            <td class="td-name text-end">@Model.Statistics.TotalRecords</td>
+        </tr>
+        </tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Amount spent on Records</strong></td>
+            <td class="td-name text-end">@Model.Statistics.RecordCost.ToString("c")</td>
+        </tr>
+        <tr class="spacer-row"><td colspan="2"></td></tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Total amount spent</strong></td>
+            <td class="td-name text-end">@Model.Statistics.TotalCost.ToString("c")</td>
+        </tr>
+        <tr class="spacer-row"><td colspan="2"></td></tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Number of Rock albums</strong></td>
+    <td class="td-name text-end">@Model.Statistics.RockDisks.ToString("N0")</td>
+        </tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Number of Folk albums</strong></td>
+            <td class="td-name text-end">@Model.Statistics.FolkDisks</td>
+        </tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Number of Acoustic albums</strong></td>
+            <td class="td-name text-end">@Model.Statistics.AcousticDisks</td>
+        </tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Number of Jazz/Fusion albums</strong></td>
+            <td class="td-name text-end">@Model.Statistics.JazzDisks</td>
+        </tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Number of Blues albums</strong></td>
+            <td class="td-name text-end">@Model.Statistics.BluesDisks</td>
+        </tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Number of Country albums</strong></td>
+            <td class="td-name text-end">@Model.Statistics.CountryDisks</td>
+        </tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Number of Classical albums</strong></td>
+            <td class="td-name text-end">@Model.Statistics.ClassicalDisks</td>
+        </tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Number of Soundtrack albums</strong></td>
+            <td class="td-name text-end">@Model.Statistics.SoundtrackDisks</td>
+        </tr>
+        <tr class="spacer-row"><td colspan="2"></td></tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Number of Indispensible albums</strong></td>
+            <td class="td-name text-end">@Model.Statistics.FourStarDisks</td>
+        </tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Number of Slightly flawed albums</strong></td>
+            <td class="td-name text-end">@Model.Statistics.ThreeStarDisks</td>
+        </tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Number of Average albums</strong></td>
+            <td class="td-name text-end">@Model.Statistics.TwoStarDisks</td>
+        </tr>
+        <tr>
+            <td class="td-name  text-left"><strong>Number of Mediocre albums</strong></td>
+            <td class="td-name text-end">@Model.Statistics.OneStarDisks</td>
+        </tr>
+        <tr style="background: var(--color-surface-alt);"><td colspan="2"></td></tr>
+    </table>
+</div>
+</div>
