@@ -23,7 +23,7 @@ namespace RecordDB.Test.Services
             //await CreateArtist();
             //await GetArtistsAsync();
             //await GetArtists();
-            await GetArtistListAsync();
+            // await GetArtistListAsync();
             //await ShowArtistsAsync();
             //await SelectAsync();
             //await GetArtistNamesAsync();
@@ -31,7 +31,7 @@ namespace RecordDB.Test.Services
             //await SelectArtistWithNoBioAsync();
             // await InsertAsync();
             // await Insert2Async();
-            //await UpdateArtistAsync();
+            await UpdateArtistAsync();
             //await UpdateArtist2Async();
             //await GetArtistIdAsync();
             //await GetArtistId2Async();
@@ -134,7 +134,7 @@ namespace RecordDB.Test.Services
 
         public async Task GetArtistListAsync()
         {
-            IEnumerable<Artist> artists = await _artistRepository.GetArtistsAsync();
+            IEnumerable<Artist> artists = await _artistRepository.GetArtistListAsync();
 
             foreach (Artist artist in artists)
             {
