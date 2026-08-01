@@ -1,0 +1,85 @@
+@page "{id:int?}"
+@model RecordDB.Core.Pages.Artists.DeleteArtistModel
+@{
+    ViewData["Title"] = "Delete Artist";
+}
+
+<div class="page-header">
+    <h1 class="page-title"><span>Delete</span> Artist</h1>
+    <a asp-page="./Index" class="btn-rdb btn-secondary-rdb">← Back to Artists</a>
+</div>
+
+<div class="rdb-danger-card">
+
+    <div class="danger-header">
+        <span>⚠️</span>
+        <h2>Confirm Deletion</h2>
+    </div>
+
+    <div class="danger-body">
+
+        <div class="form-group mb-4">
+            <label for="artistSelect" style="font-weight: 600;">Select Artist to Delete</label>
+            <select id="artistSelect"
+                    class="form-select"
+                    asp-for="SelectedArtistId"
+                    asp-items="Model.ArtistList"
+                    onchange="if(this.value && this.value > 0) { window.location.href = '/Artists/DeleteArtist/' + this.value; }">
+            </select>
+        </div>
+
+        @if (Model.Artist != null && Model.Artist.ArtistId > 0)
+        {
+            <p class="danger-warning">
+                You are about to permanently delete this artist and all associated data.
+                This action <strong>cannot be undone</strong>.
+            </p>
+
+            <div class="rdb-detail-card" style="margin-bottom: 1.5rem;">
+                <div class="detail-row">
+                    <span class="detail-label">ID</span>
+                    <span class="detail-value">@Model.Artist.ArtistId</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">First Name</span>
+                    <span class="detail-value @(string.IsNullOrEmpty(Model.Artist.FirstName) ? "empty" : "")">
+                        @(string.IsNullOrEmpty(Model.Artist.FirstName) ? "—" : Model.Artist.FirstName)
+                    </span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Last Name</span>
+                    <span class="detail-value @(string.IsNullOrEmpty(Model.Artist.LastName) ? "empty" : "")">
+                        @(string.IsNullOrEmpty(Model.Artist.LastName) ? "—" : Model.Artist.LastName)
+                    </span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Display Name</span>
+                    <span class="detail-value @(string.IsNullOrEmpty(Model.Artist.Name) ? "empty" : "")">
+                        @(string.IsNullOrEmpty(Model.Artist.Name) ? "—" : Model.Artist.Name)
+                    </span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Biography</span>
+                    <span class="detail-value @(string.IsNullOrEmpty(Model.Artist.Biography) ? "empty" : "")">
+                        @(string.IsNullOrEmpty(Model.Artist.Biography) ? "No biography on record." : Model.Artist.Biography)
+                    </span>
+                </div>
+            </div>
+
+            <form method="post">
+                <input type="hidden" asp-for="Artist.ArtistId" />
+                <div class="form-actions">
+                    <button type="submit" class="btn-rdb btn-danger-rdb">Yes, Delete Artist</button>
+                    <a asp-page="./Index"   class="btn-rdb btn-secondary-rdb">Cancel</a>
+                    <a asp-page="./Details" asp-route-id="@Model.Artist.ArtistId"
+                       class="btn-rdb btn-secondary-rdb">View Details</a>
+                </div>
+            </form>
+        }
+        else
+        {
+            <p class="text-muted text-center my-4">Please select an artist from the dropdown list above to view details and confirm deletion.</p>
+        }
+
+    </div>
+</div>
