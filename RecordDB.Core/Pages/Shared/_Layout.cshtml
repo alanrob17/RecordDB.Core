@@ -29,14 +29,39 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-page="/Artists/Search">Search</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/Artists/Index">Artists</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="maintenanceDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Maintenance
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="maintenanceDropdown">
+                                <li class="nav-item dropdown-submenu">
+                                    <a class="dropdown-item dropdown-toggle" href="#" id="artistsSubmenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Artists</a>
+                                    <ul class="dropdown-menu" aria-labelledby="artistsSubmenu">
+                                        <li><a class="dropdown-item" asp-area="" asp-page="/Artists/Index"><span class="d-inline-block bg-success rounded-circle p-1"></span>&nbsp;&nbsp;Artist List</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-page="/Artists/Create"><span class="d-inline-block bg-warning rounded-circle p-1"></span>&nbsp;&nbsp;Create an Artist</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-page="/Artists/EditArtist"><span class="d-inline-block bg-info rounded-circle p-1"></span>&nbsp;&nbsp;Edit an Artist</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-page="/Artists/DeleteArtist"><span class="d-inline-block bg-danger rounded-circle p-1"></span>&nbsp;&nbsp;Delete an Artist</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown-submenu">
+                                    <a class="dropdown-item dropdown-toggle" href="#" id="recordsSubmenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Records</a>
+                                    <ul class="dropdown-menu" aria-labelledby="recordsSubmenu">
+                                        <li><a class="dropdown-item" asp-area="" asp-page="/Records/Index"><span class="d-inline-block bg-success rounded-circle p-1"></span>&nbsp;&nbsp;Record List</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-page="/Records/Create"><span class="d-inline-block bg-warning rounded-circle p-1"></span>&nbsp;&nbsp;Create a Record</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-page="/Records/EditRecord"><span class="d-inline-block bg-info rounded-circle p-1"></span>&nbsp;&nbsp;Edit a Record</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-page="/Records/DeleteRecord"><span class="d-inline-block bg-danger rounded-circle p-1"></span>&nbsp;&nbsp;Delete a Record</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/Records/Index">Records</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/Statistics/Index">Statistics</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link site-nav-link dropdown-toggle" href="#" id="statisticsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Statistics
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="statisticsDropdown">
+                                <li><a class="dropdown-item" asp-area="" asp-page="/Records/TotalCosts"><span class="d-inline-block bg-warning rounded-circle p-1"></span>&nbsp;&nbsp;Artist Totals</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-page="/Statistics/Index"><span class="d-inline-block bg-success rounded-circle p-1"></span>&nbsp;&nbsp;Statistics</a></li>
+                            </ul>
                         </li>
                     </ul>
                 </div>

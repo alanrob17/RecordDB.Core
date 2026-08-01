@@ -1027,3 +1027,29 @@ tr.spacer-row td {
     background: var(--color-surface-alt);
     border-bottom: 1px solid var(--color-border);
 }
+
+/* ── Nested dropdown menus on  _Layout page ───────────────────────────────────── */
+.dropdown-submenu {
+    position: relative;
+}
+
+    .dropdown-submenu .dropdown-menu {
+        position: absolute;
+        top: 0;
+        left: 100%;
+        margin-top: -0.5rem;
+        display: none;
+    }
+
+    .dropdown-submenu:hover > .dropdown-toggle::after {
+        transform: rotate(-90deg);
+    }
+
+    .dropdown-submenu:hover > .dropdown-menu {
+        display: block;
+    }
+
+.dropdown-menu .dropdown-submenu .dropdown-toggle::after {
+    float: right;
+    margin-right: -0.75rem;
+}
