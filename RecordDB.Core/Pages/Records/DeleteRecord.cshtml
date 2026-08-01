@@ -1,0 +1,106 @@
+@page "{id:int?}"
+@model RecordDB.Core.Pages.Records.DeleteRecordModel
+@{
+    ViewData["Title"] = "Delete Record";
+    string Val(string? s) => string.IsNullOrEmpty(s) ? "—" : s;
+    string EmptyCls(string? s) => string.IsNullOrEmpty(s) ? "empty" : "";
+}
+
+<div class="page-header">
+    <h1 class="page-title"><span>Delete</span> Record</h1>
+    <a asp-page="./Index" class="btn-rdb btn-secondary-rdb">← Back to Records</a>
+</div>
+
+<div class="rdb-danger-card">
+
+    <div class="danger-header">
+        <span>⚠️</span>
+        <h2>Confirm Deletion</h2>
+    </div>
+
+    <div class="danger-body">
+
+        <div class="form-group mb-4">
+            <label for="artistSelect" style="font-weight: 600;">Select Artist</label>
+            <select id="artistSelect"
+                    class="form-select"
+                    asp-for="SelectedArtistId"
+                    asp-items="Model.ArtistList"
+                    onchange="if(this.value && this.value > 0) { window.location.href = '/Records/DeleteRecord?selectedArtistId=' + this.value; } else { window.location.href = '/Records/DeleteRecord'; }">
+            </select>
+        </div>
+
+        @if (Model.SelectedArtistId.HasValue && Model.SelectedArtistId.Value > 0)
+        {
+            <div class="form-group mb-4">
+                <label for="recordSelect" style="font-weight: 600;">Select Artist Record</label>
+                <select id="recordSelect"
+                        class="form-select"
+                        asp-for="SelectedRecordId"
+                        asp-items="Model.RecordList"
+                        onchange="if(this.value && this.value > 0) { window.location.href = '/Records/DeleteRecord/' + this.value + '?selectedArtistId=' + document.getElementById('artistSelect').value; }">
+                </select>
+            </div>
+        }
+
+        @if (Model.Record != null && Model.Record.RecordId > 0)
+        {
+            <p class="danger-warning">
+                You are about to permanently delete this record. This action <strong>cannot be undone</strong>.
+            </p>
+
+            <div class="rdb-detail-card" style="margin-bottom: 1.5rem;">
+                <div class="detail-row">
+                    <span class="detail-label">Record ID</span>
+                    <span class="detail-value">@Model.Record.RecordId</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Artist</span>
+                    <span class="detail-value @EmptyCls(Model.Record.ArtistName)">@Val(Model.Record.ArtistName)</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Title</span>
+                    <span class="detail-value @EmptyCls(Model.Record.Name)">@Val(Model.Record.Name)</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Year Recorded</span>
+                    <span class="detail-value">@(Model.Record.Recorded > 0 ? Model.Record.Recorded.ToString() : "—")</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Media</span>
+                    <span class="detail-value @EmptyCls(Model.Record.Media)">@Val(Model.Record.Media)</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Rating</span>
+                    <span class="detail-value @EmptyCls(Model.Record.Rating)">@Val(Model.Record.Rating)</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Date Bought</span>
+                    <span class="detail-value">@Model.Record.Bought.ToString("d MMM yyyy")</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Cost</span>
+                    <span class="detail-value">@(Model.Record.Cost.HasValue ? Model.Record.Cost.Value.ToString("C") : "—")</span>
+                </div>
+            </div>
+
+            <form method="post">
+                <input type="hidden" asp-for="Record.RecordId" />
+                <div class="form-actions">
+                    <button type="submit" class="btn-rdb btn-danger-rdb">Yes, Delete Record</button>
+                    <a asp-page="./Index"   class="btn-rdb btn-secondary-rdb">Cancel</a>
+                    <a asp-page="./Details" asp-route-id="@Model.Record.RecordId" class="btn-rdb btn-secondary-rdb">View Details</a>
+                </div>
+            </form>
+        }
+        else if (Model.SelectedArtistId.HasValue && Model.SelectedArtistId.Value > 0)
+        {
+            <p class="text-muted text-center my-4">Please select a record from the dropdown list above to view details and confirm deletion.</p>
+        }
+        else
+        {
+            <p class="text-muted text-center my-4">Please select an artist from the dropdown list above to load their records.</p>
+        }
+
+    </div>
+</div>
