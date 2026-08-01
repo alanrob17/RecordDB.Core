@@ -32,7 +32,7 @@ namespace RecordDB.Test.Services
             // await GetFormattedRecordAsync();
             // await SelectRecordsAsync();
             // await SelectRecordsShow();
-            // await SelectRecordsByArtistIdAsync();
+            await SelectRecordsByArtistIdAsync();
             // await SelectRecordReviewsAsync();
             // await PrintRecordListAsynch();
             // await GetRecordedYearNumberAsync();
@@ -43,7 +43,7 @@ namespace RecordDB.Test.Services
 
             // TODO: This uses Heinemnann's ToShortDate method, will only work in Windows. Needs to be migrated.
             // ToShortDate();
-            await GetTotalsAsync();
+            // await GetTotalsAsync();
             // await InsertRecordAsync();
             // await InsertRecord2Async();
             // await UpdateRecordAsync();  
