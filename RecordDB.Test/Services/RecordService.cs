@@ -29,10 +29,10 @@ namespace RecordDB.Test.Services
             // await GetRecordAsync();
             // await CountDiscsAsync();
             // await GetArtistRecordNumberAsync();
-            // await GetFormattedRecordAsync();
+            await GetFormattedRecordAsync();
             // await SelectRecordsAsync();
             // await SelectRecordsShow();
-            await SelectRecordsByArtistIdAsync();
+            // await SelectRecordsByArtistIdAsync();
             // await SelectRecordReviewsAsync();
             // await PrintRecordListAsynch();
             // await GetRecordedYearNumberAsync();

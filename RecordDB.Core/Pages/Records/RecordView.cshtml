@@ -1,0 +1,179 @@
+@page "{id:int}"
+@model RecordDB.Core.Pages.Records.RecordViewModel
+@{
+    ViewData["Title"] = $"{Model.Record.Name ?? "Record"} - View Details";
+
+    string Val(string? s) => string.IsNullOrWhiteSpace(s) ? "—" : s;
+    string EmptyCls(string? s) => string.IsNullOrWhiteSpace(s) ? "rv-empty" : "";
+}
+
+<div class="rv-container">
+    <!-- Top Action Navigation Bar -->
+    <div class="rv-top-bar">
+        <a asp-page="./Index" class="btn-rdb btn-secondary-rdb">
+            ← Back to Records
+        </a>
+        <div class="rv-top-actions">
+            <a asp-page="./Edit" asp-route-id="@Model.Record.RecordId" class="btn-rdb btn-primary-rdb">
+                ✏️ Edit
+            </a>
+            <a asp-page="./Delete" asp-route-id="@Model.Record.RecordId" class="btn-rdb btn-danger-rdb">
+                🗑️ Delete
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Showcase Card -->
+    <div class="rv-card">
+        <!-- Hero Header -->
+        <div class="rv-hero">
+            <div class="rv-hero-icon">🎵</div>
+            <div class="rv-hero-content">
+                <div class="rv-artist-subtitle">
+                    <span class="rv-subtitle-label">Artist:</span> 
+                    <a asp-page="./Index" asp-route-SearchTerm="@Model.Record.ArtistName" class="rv-artist-link"><strong>@Val(Model.Record.ArtistName)</strong></a>
+                </div>
+                <h1 class="rv-title">@Val(Model.Record.Name)</h1>
+                <div class="rv-hero-badges">
+                    @if (!string.IsNullOrWhiteSpace(Model.Record.Field))
+                    {
+                        <span class="rv-badge rv-badge-genre">🏷️ @Model.Record.Field</span>
+                    }
+                    @if (Model.Record.Recorded > 0)
+                    {
+                        <span class="rv-badge rv-badge-year">📅 @Model.Record.Recorded</span>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.Record.Media))
+                    {
+                        <span class="rv-badge rv-badge-media">💿 @Model.Record.Media</span>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.Record.Rating))
+                    {
+                        <span class="rv-badge rv-badge-rating">⭐ @Model.Record.Rating</span>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Links for Biography and Review -->
+        <div class="rv-quick-links">
+            <a href="#biography-section" class="rv-quick-btn" onclick="openDrawer('biography-section'); return true;">
+                📜 Show Artist Biography
+            </a>
+            <a href="#review-section" class="rv-quick-btn" onclick="openDrawer('review-section'); return true;">
+                ✍️ Show Record Review
+            </a>
+        </div>
+
+        <hr class="rv-divider" />
+
+        <!-- Fields Display Grid (Paired Layout) -->
+        <div class="rv-grid">
+            <!-- Pair 1: Field & Recorded -->
+            <div class="rv-field-item">
+                <div class="rv-field-label">Field</div>
+                <div class="rv-field-value @EmptyCls(Model.Record.Field)">@Val(Model.Record.Field)</div>
+            </div>
+            <div class="rv-field-item">
+                <div class="rv-field-label">Recorded</div>
+                <div class="rv-field-value">
+                    @(Model.Record.Recorded > 0 ? Model.Record.Recorded.ToString() : "—")
+                </div>
+            </div>
+
+            <!-- Pair 2: Label & Pressing -->
+            <div class="rv-field-item">
+                <div class="rv-field-label">Label</div>
+                <div class="rv-field-value @EmptyCls(Model.Record.Label)">@Val(Model.Record.Label)</div>
+            </div>
+            <div class="rv-field-item">
+                <div class="rv-field-label">Pressing</div>
+                <div class="rv-field-value @EmptyCls(Model.Record.Pressing)">@Val(Model.Record.Pressing)</div>
+            </div>
+
+            <!-- Pair 3: Rating & Discs -->
+            <div class="rv-field-item">
+                <div class="rv-field-label">Rating</div>
+                <div class="rv-field-value @EmptyCls(Model.Record.Rating)">@Val(Model.Record.Rating)</div>
+            </div>
+            <div class="rv-field-item">
+                <div class="rv-field-label">Discs</div>
+                <div class="rv-field-value">@Model.Record.Discs</div>
+            </div>
+
+            <!-- Pair 4: Media & Bought -->
+            <div class="rv-field-item">
+                <div class="rv-field-label">Media</div>
+                <div class="rv-field-value @EmptyCls(Model.Record.Media)">@Val(Model.Record.Media)</div>
+            </div>
+            <div class="rv-field-item">
+                <div class="rv-field-label">Bought</div>
+                <div class="rv-field-value">
+                    @(Model.Record.Bought != DateTime.MinValue ? Model.Record.Bought.ToString("dd-MMM-yyyy") : "—")
+                </div>
+            </div>
+
+            <!-- Pair 5: Cost & Cover Name -->
+            <div class="rv-field-item rv-field-full">
+                <div class="rv-field-label">Cost</div>
+                <div class="rv-field-value rv-cost-highlight">
+                    @(Model.Record.Cost.HasValue ? Model.Record.Cost.Value.ToString("C") : "—")
+                </div>
+            </div>
+        </div>
+
+        <!-- Collapsible / Targeted Section: Artist Biography -->
+        <div id="biography-section" class="rv-info-section">
+            <div class="rv-info-header">
+                <h3>📜 Artist Biography</h3>
+                <button type="button" class="rv-toggle-btn" onclick="toggleDrawer('biography-section')">Toggle</button>
+            </div>
+            <div class="rv-info-content">
+                @if (!string.IsNullOrWhiteSpace(Model.Record.Biography))
+                {
+                    <div class="rv-text-content">@Html.Raw(Model.Record.Biography)</div>
+                }
+                else
+                {
+                    <p class="rv-empty-text">No biography available for this artist.</p>
+                }
+            </div>
+        </div>
+
+        <!-- Collapsible / Targeted Section: Record Review -->
+        <div id="review-section" class="rv-info-section">
+            <div class="rv-info-header">
+                <h3>✍️ Record Review</h3>
+                <button type="button" class="rv-toggle-btn" onclick="toggleDrawer('review-section')">Toggle</button>
+            </div>
+            <div class="rv-info-content">
+                @if (!string.IsNullOrWhiteSpace(Model.Record.Review))
+                {
+                    <div class="rv-text-content">@Html.Raw(Model.Record.Review)</div>
+                }
+                else
+                {
+                    <p class="rv-empty-text">No review available for this record.</p>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function toggleDrawer(id) {
+        var el = document.getElementById(id);
+        if (el) {
+            el.classList.toggle('rv-expanded');
+        }
+    }
+
+    function openDrawer(id) {
+        var el = document.getElementById(id);
+        if (el) {
+            el.classList.add('rv-expanded');
+            el.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+</script>

@@ -23,7 +23,7 @@ namespace RecordDB.DAL.Repositories
 
         public async Task<ArtistRecordDto> SelectAsync(int recordId)
         {
-            var sproc = "up_RecordSelectById";
+            var sproc = "up_RecordSelectByIdCore";
             var parameter = new DynamicParameters();
             parameter.Add("@RecordId", recordId);
 

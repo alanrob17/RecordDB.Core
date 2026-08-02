@@ -95,14 +95,14 @@
                 @foreach (var item in Model.Records)
                 {
                     <tr>
-                        <td class="td-name">@item.ArtistName</td>
+                        <td class="td-name"><a asp-page="./Index" asp-route-SearchTerm="@item.ArtistName">@item.ArtistName</a></td>
                         <td class="td-name">@item.Name</td>
                         <td class="td-center">@item.Recorded</td>
                         <td class="td-center">@item.Media</td>
                         <td class="td-center">@item.Rating</td>
                         <td class="td-actions">
                             <a asp-page="./Edit"    asp-route-id="@item.RecordId" class="action-link action-edit">Edit</a>
-                            <a asp-page="./Details" asp-route-id="@item.RecordId" class="action-link action-details">Details</a>
+                            <a asp-page="./RecordView" asp-route-id="@item.RecordId" class="action-link action-recordview">Details</a>
                             <a asp-page="./Delete"  asp-route-id="@item.RecordId" class="action-link action-delete">Delete</a>
                         </td>
                     </tr>

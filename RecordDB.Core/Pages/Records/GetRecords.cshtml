@@ -47,8 +47,8 @@
                 @foreach (var item in Model.Records)
                 {
                     <tr>
-                        <td class="td-name">@item.ArtistName</td>
-                        <td class="td-name">@item.Name</td>
+                        <td class="td-name"><a asp-page="./Index" asp-route-SearchTerm="@item.ArtistName">@item.ArtistName</a></td>
+                        <td class="td-name"><a asp-page="./RecordView" asp-route-id="@item.RecordId">@item.Name</a></td>
                         <td class="td-center">@item.Field</td>
                         <td class="td-center">@item.Recorded</td>
                         <td class="td-center">@item.Rating</td>

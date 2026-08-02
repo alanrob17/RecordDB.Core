@@ -1,0 +1,118 @@
+@page "{id:int}"
+@model RecordDB.Core.Pages.Artists.ArtistViewModel
+@{
+    ViewData["Title"] = $"{Model.Artist.Name ?? "Artist"} - View Details";
+
+    string Val(string? s) => string.IsNullOrWhiteSpace(s) ? "—" : s;
+    string EmptyCls(string? s) => string.IsNullOrWhiteSpace(s) ? "rv-empty" : "";
+}
+
+<div class="rv-container">
+    <!-- Top Action Navigation Bar -->
+    <div class="rv-top-bar">
+        <a asp-page="./Index" class="btn-rdb btn-secondary-rdb">
+            ← Back to Artists
+        </a>
+        <div class="rv-top-actions">
+            <a asp-page="./Edit" asp-route-id="@Model.Artist.ArtistId" class="btn-rdb btn-primary-rdb">
+                ✏️ Edit
+            </a>
+            <a asp-page="./Delete" asp-route-id="@Model.Artist.ArtistId" class="btn-rdb btn-danger-rdb">
+                🗑️ Delete
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Showcase Card -->
+    <div class="rv-card">
+        <!-- Hero Header -->
+        <div class="rv-hero">
+            <div class="rv-hero-icon">🎤</div>
+            <div class="rv-hero-content">
+                <div class="rv-artist-subtitle">
+                    <span class="rv-subtitle-label">Artist:</span> 
+                    <strong>@Val(Model.Artist.Name)</strong>
+                </div>
+                <h1 class="rv-title">@Val(Model.Artist.Name)</h1>
+                <div class="rv-hero-badges">
+                    <span class="rv-badge rv-badge-genre">🆔 ID: @Model.Artist.ArtistId</span>
+                    @if (!string.IsNullOrWhiteSpace(Model.Artist.FirstName) || !string.IsNullOrWhiteSpace(Model.Artist.LastName))
+                    {
+                        <span class="rv-badge rv-badge-year">👤 @Val(Model.Artist.FirstName) @Val(Model.Artist.LastName)</span>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Links for Biography and Discography -->
+        <div class="rv-quick-links">
+            <a href="#biography-section" class="rv-quick-btn" onclick="openDrawer('biography-section'); return true;">
+                📜 Show Artist Biography
+            </a>
+            <a asp-page="/Records/Index" asp-route-SearchTerm="@Model.Artist.Name" class="rv-quick-btn">
+                🎵 View Discography / Records
+            </a>
+        </div>
+
+        <hr class="rv-divider" />
+
+        <!-- Fields Display Grid (Paired Layout) -->
+        <div class="rv-grid">
+            <!-- Pair 1: Artist ID & Display Name -->
+            <div class="rv-field-item">
+                <div class="rv-field-label">Artist ID</div>
+                <div class="rv-field-value">@Model.Artist.ArtistId</div>
+            </div>
+            <div class="rv-field-item">
+                <div class="rv-field-label">Display Name</div>
+                <div class="rv-field-value @EmptyCls(Model.Artist.Name)">@Val(Model.Artist.Name)</div>
+            </div>
+
+            <!-- Pair 2: First Name & Last Name -->
+            <div class="rv-field-item">
+                <div class="rv-field-label">First Name</div>
+                <div class="rv-field-value @EmptyCls(Model.Artist.FirstName)">@Val(Model.Artist.FirstName)</div>
+            </div>
+            <div class="rv-field-item">
+                <div class="rv-field-label">Last Name</div>
+                <div class="rv-field-value @EmptyCls(Model.Artist.LastName)">@Val(Model.Artist.LastName)</div>
+            </div>
+        </div>
+
+        <!-- Collapsible Section: Artist Biography -->
+        <div id="biography-section" class="rv-info-section rv-expanded">
+            <div class="rv-info-header">
+                <h3>📜 Artist Biography</h3>
+                <button type="button" class="rv-toggle-btn" onclick="toggleDrawer('biography-section')">Toggle</button>
+            </div>
+            <div class="rv-info-content">
+                @if (!string.IsNullOrWhiteSpace(Model.Artist.Biography))
+                {
+                    <div class="rv-text-content">@Html.Raw(Model.Artist.Biography)</div>
+                }
+                else
+                {
+                    <p class="rv-empty-text">No biography available for this artist.</p>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function toggleDrawer(id) {
+        var el = document.getElementById(id);
+        if (el) {
+            el.classList.toggle('rv-expanded');
+        }
+    }
+
+    function openDrawer(id) {
+        var el = document.getElementById(id);
+        if (el) {
+            el.classList.add('rv-expanded');
+            el.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+</script>
