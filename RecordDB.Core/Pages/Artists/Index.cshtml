@@ -78,7 +78,7 @@
                 @foreach (var item in Model.Artists)
                 {
                     <tr>
-                        <td class="td-name">@item.Name</td>
+                        <td class="td-name"><a asp-page="/Records/Index" asp-route-SearchTerm="@item.Name">@item.Name</a></td>
                         <td class="td-bio">
                             @if (!string.IsNullOrEmpty(item.Biography))
                             {
