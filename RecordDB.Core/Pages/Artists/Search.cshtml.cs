@@ -15,9 +15,8 @@ namespace RecordDB.Core.Pages.Artists
         }
 
         [BindProperty]
-        [Required(ErrorMessage = "First Name is required.")]
         [Display(Name = "First Name")]
-        public string FirstName { get; set; } = string.Empty;
+        public string? FirstName { get; set; }
 
         [BindProperty]
         [Required(ErrorMessage = "Last Name is required.")]
@@ -35,7 +34,10 @@ namespace RecordDB.Core.Pages.Artists
                 return Page();
             }
 
-            int artistId = await _artistRepository.GetArtistIdAsync(FirstName.Trim(), LastName.Trim());
+            string firstName = FirstName?.Trim() ?? string.Empty;
+            string lastName = LastName?.Trim() ?? string.Empty;
+
+            int artistId = await _artistRepository.GetArtistIdAsync(firstName, lastName);
 
             if (artistId <= 0)
             {
