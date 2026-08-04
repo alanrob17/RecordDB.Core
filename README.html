@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>README.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> or <div class="page"></div> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="recorddbcore">RecordDB.Core</h1>
+<p><a href="https://dotnet.microsoft.com/"><img src="https://img.shields.io/badge/.NET-10.0-512BD4?logo=dotnet" alt="Framework"></a>
+<a href="https://github.com/DapperLib/Dapper"><img src="https://img.shields.io/badge/Data Access-Dapper-0078D4" alt="ORM"></a>
+<a href="https://www.microsoft.com/sql-server"><img src="https://img.shields.io/badge/Database-SQL Server-CC292B?logo=microsoftsqlserver" alt="Database"></a>
+<a href="https://learn.microsoft.com/aspnet/core/razor-pages/"><img src="https://img.shields.io/badge/Architecture-Razor Pages-blue" alt="Architecture"></a></p>
+<p><strong>RecordDB.Core</strong> is a modern .NET 10 web application and data access library designed for organizing, searching, tracking, and analyzing a personal music record and CD collection. It features comprehensive management for artists, record releases, purchase expenditures, reviews, and detailed collection statistics.</p>
+<hr>
+<h2 id="-features">🌟 Features</h2>
+<ul>
+<li><strong>Artist Directory</strong>: Create, update, view, and search artist profiles, complete with biography tracking and artist discography views.</li>
+<li><strong>Record &amp; Album Management</strong>: Track release details including title, genre/field (Rock, Folk, Acoustic, Jazz, Blues, Country, Classical, Soundtrack), release year, media format (CD, Vinyl, etc.), disc count, pressing details, record label, purchase date, purchase price, rating (1–4 stars), cover imagery, and review text.</li>
+<li><strong>Collection Analytics &amp; Statistics</strong>: Visual breakdowns of collection totals, genre distributions, rating breakdowns, annual acquisition statistics (discs added, total spending, average cost per disc for 2017–2022+), and artist-level expenditure analysis.</li>
+<li><strong>Review &amp; Audit Tools</strong>: Identify records missing review notes, view album reviews, and filter records by release year or artist.</li>
+<li><strong>Structured Logging</strong>: Integrated <a href="https://serilog.net/">Serilog</a> logging writing structured events to the console and daily rolling log files (<code>Logs/recorddb-.log</code>).</li>
+</ul>
+<hr>
+<h2 id="-solution-architecture">🏗 Solution Architecture</h2>
+<p>The solution uses a clean 3-tier architecture built with .NET 10:</p>
+<pre class="hljs"><code><div>RecordDB.Core (Solution)
+├── RecordDB.Core/          ASP.NET Core Razor Pages Web Application (Presentation Layer)
+├── RecordDB.DAL/           Data Access Layer Library (Dapper, Models, Repositories, DTOs)
+└── RecordDB.Test/          Console App for Integration Testing &amp; Repository Diagnostics
+</div></code></pre>
+<h3 id="1-presentation-layer--recorddbcore">1. Presentation Layer — <a href="RecordDB.Core/"><code>RecordDB.Core</code></a></h3>
+<p>An <strong>ASP.NET Core Razor Pages</strong> application providing an intuitive web interface for collection management.</p>
+<ul>
+<li><strong><code>Pages/Artists/</code></strong>: Razor pages for listing, viewing, searching, creating, editing, and deleting artists.</li>
+<li><strong><code>Pages/Records/</code></strong>: Pages for managing album entries, viewing disc counts, missing reviews, annual acquisition reports, and total cost summaries.</li>
+<li><strong><code>Pages/Statistics/</code></strong>: Summary dashboard presenting collection metrics and spending history.</li>
+<li><strong><code>wwwroot/</code></strong>: Static CSS, JS, and media assets.</li>
+</ul>
+<h3 id="2-data-access-layer--recorddbdal">2. Data Access Layer — <a href="RecordDB.DAL/"><code>RecordDB.DAL</code></a></h3>
+<p>A C# class library encapsulating all database interactions with <strong>SQL Server</strong> via <strong>Dapper</strong> and stored procedures.</p>
+<ul>
+<li><strong><code>Data/</code></strong>: <code>IDataAccess</code> interface and <code>DataAccess</code> wrapper for executing parameterized stored procedures, multi-mapping queries, and scalar lookups.</li>
+<li><strong><code>Repositories/</code></strong>:
+<ul>
+<li><code>ArtistRepository</code> / <code>IArtistRepository</code> — Artist CRUD operations and biography queries.</li>
+<li><code>RecordRepository</code> / <code>IRecordRepository</code> — Album queries, disc counts, review filtering, and annual statistics.</li>
+<li><code>StatisticRepository</code> / <code>IStatisticRepository</code> — High-level collection analytics queries.</li>
+<li><code>TotalRepository</code> / <code>ITotalRepository</code> — Total cost and disc count aggregations per artist.</li>
+</ul>
+</li>
+<li><strong><code>Models/</code></strong>: <code>Artist</code>, <code>Record</code>, <code>Statistic</code>, <code>Total</code> data models with EF-style attribute annotations.</li>
+<li><strong><code>DTOs/</code></strong>: Strongly-typed data transfer objects (<code>ArtistRecordDto</code>, <code>RecordReviewDto</code>, <code>MissingReviewDto</code>).</li>
+<li><strong><code>Extensions/</code></strong>: Utility extension methods (<code>DateTimeExtensions</code>).</li>
+</ul>
+<h3 id="3-testing-harness--recorddbtest">3. Testing Harness — <a href="RecordDB.Test/"><code>RecordDB.Test</code></a></h3>
+<p>A .NET 10 console application for running diagnostics, repository integration tests, and database verification scripts (<code>ArtistService</code>, <code>RecordService</code>, <code>StatisticService</code>).</p>
+<hr>
+<h2 id="-data-model--entity-relationships">🗄 Data Model &amp; Entity Relationships</h2>
+<p>The core database model consists of a <strong>One-to-Many</strong> relationship between <code>Artist</code> and <code>Record</code>:</p>
+<pre><code class="language-mermaid"><div class="mermaid">erDiagram
+    ARTIST ||--o{ RECORD : "has many"
+    ARTIST {
+        int ArtistId PK
+        string FirstName
+        string LastName
+        string Name
+        string Biography
+    }
+    RECORD {
+        int RecordId PK
+        int ArtistId FK
+        string Name
+        string Field
+        int Recorded
+        string Label
+        string Pressing
+        string Rating
+        int Discs
+        string Media
+        DateTime Bought
+        decimal Cost
+        string CoverName
+        string Review
+    }
+</div></code></pre>
+<hr>
+<h2 id="-tech-stack">🛠 Tech Stack</h2>
+<ul>
+<li><strong>Target Framework</strong>: .NET 10.0 (<code>net10.0</code>)</li>
+<li><strong>Web Framework</strong>: ASP.NET Core Razor Pages</li>
+<li><strong>ORM / Data Access</strong>: <a href="https://github.com/DapperLib/Dapper">Dapper 2.1</a> &amp; <a href="https://github.com/DapperLib/Dapper/tree/main/Dapper.Contrib">Dapper.Contrib 2.0</a></li>
+<li><strong>Database Client</strong>: <code>Microsoft.Data.SqlClient</code> (SQL Server)</li>
+<li><strong>Logging</strong>: <a href="https://serilog.net/">Serilog</a> (Console &amp; File Sinks)</li>
+</ul>
+<hr>
+<h2 id="-getting-started">🚀 Getting Started</h2>
+<h3 id="prerequisites">Prerequisites</h3>
+<ul>
+<li><a href="https://dotnet.microsoft.com/download">.NET 10 SDK</a> (or higher)</li>
+<li><a href="https://www.microsoft.com/sql-server">Microsoft SQL Server</a> database populated with the <code>RecordDB</code> schema and stored procedures.</li>
+</ul>
+<h3 id="configuration">Configuration</h3>
+<p>Update the <code>RecordDb</code> connection string in <code>RecordDB.Core/appsettings.json</code>:</p>
+<pre class="hljs"><code><div><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;ConnectionStrings&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;RecordDb&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Server=YOUR_SERVER;Database=RecordDB;User Id=YOUR_USER;Password=YOUR_PASSWORD;Encrypt=False;TrustServerCertificate=True;&quot;</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</div></code></pre>
+<h3 id="running-the-web-application">Running the Web Application</h3>
+<pre class="hljs"><code><div>dotnet run --project RecordDB.Core
+</div></code></pre>
+<p>Once running, navigate to <code>https://localhost:7045</code> or <code>http://localhost:5245</code> in your browser.</p>
+<h3 id="running-integration-tests--diagnostic-console">Running Integration Tests / Diagnostic Console</h3>
+<pre class="hljs"><code><div>dotnet run --project RecordDB.Test
+</div></code></pre>
+<hr>
+<h2 id="-license">📝 License</h2>
+<p>Internal project / Personal music collection database.</p>
+
+</body>
+</html>
