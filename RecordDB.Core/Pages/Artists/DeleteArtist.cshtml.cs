@@ -9,10 +9,11 @@ namespace RecordDB.Core.Pages.Artists
     public class DeleteArtistModel : PageModel
     {
         private readonly IArtistRepository _artistRepository;
-
-        public DeleteArtistModel(IArtistRepository artistRepository)
+        private readonly ILogger<DeleteArtistModel> _logger;
+        public DeleteArtistModel(IArtistRepository artistRepository, ILogger<DeleteArtistModel> logger)
         {
             _artistRepository = artistRepository;
+            _logger = logger;
         }
 
         [BindProperty(SupportsGet = true)]
@@ -25,6 +26,8 @@ namespace RecordDB.Core.Pages.Artists
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            _logger.LogDebug("Loading Delete Artist Record confirmation page for artist {ArtistId}", id);
+
             int targetArtistId = id ?? SelectedArtistId ?? 0;
             if (targetArtistId > 0)
             {
@@ -45,6 +48,8 @@ namespace RecordDB.Core.Pages.Artists
             if (Artist != null && Artist.ArtistId > 0)
             {
                 await _artistRepository.DeleteAsync(Artist.ArtistId);
+
+                _logger.LogInformation("Artist '{ArtistName}' (ID {ArtistId}) deleted successfully", Artist.Name, Artist.ArtistId);
             }
 
             return RedirectToPage("./Index");

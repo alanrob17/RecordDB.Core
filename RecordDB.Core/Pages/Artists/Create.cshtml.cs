@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using RecordDB.Core.Pages.Records;
 using RecordDB.DAL.Models;
 using RecordDB.DAL.Repositories;
 
@@ -8,10 +9,12 @@ namespace RecordDB.Core.Pages.Artists
     public class CreateModel : PageModel
     {
         private readonly IArtistRepository _artistRepository;
+        private readonly ILogger<CreateModel> _logger;
 
-        public CreateModel(IArtistRepository artistRepository)
+        public CreateModel(IArtistRepository artistRepository, ILogger<CreateModel> logger)
         {
             _artistRepository = artistRepository;
+            _logger = logger;
         }
 
         [BindProperty]
@@ -23,6 +26,8 @@ namespace RecordDB.Core.Pages.Artists
         {
             if (!ModelState.IsValid)
                 return Page();
+
+            _logger.LogInformation("Inserting new artist '{ArtistName}'", Artist.Name);
 
             var newId = await _artistRepository.InsertAsync(Artist);
 

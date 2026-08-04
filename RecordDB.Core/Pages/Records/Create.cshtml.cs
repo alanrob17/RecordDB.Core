@@ -10,11 +10,13 @@ namespace RecordDB.Core.Pages.Records
     {
         private readonly IRecordRepository _recordRepository;
         private readonly IArtistRepository _artistRepository;
+        private readonly ILogger<CreateModel> _logger;
 
-        public CreateModel(IRecordRepository recordRepository, IArtistRepository artistRepository)
+        public CreateModel(IRecordRepository recordRepository, IArtistRepository artistRepository, ILogger<CreateModel> logger)
         {
             _recordRepository = recordRepository;
             _artistRepository = artistRepository;
+            _logger = logger;
         }
 
         [BindProperty]
@@ -24,14 +26,17 @@ namespace RecordDB.Core.Pages.Records
 
         public async Task<IActionResult> OnGetAsync()
         {
+            _logger.LogDebug("Loading Add Record page");
             await PopulateArtistListAsync();
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            ModelState.Remove("Record.Bought");
-            ModelState.Remove("Record.CoverName");
+            if (Record.Bought == default(DateTime))
+            {
+                Record.Bought = DateTime.Parse("1900-01-01");
+            }
 
             if (!ModelState.IsValid)
             {
@@ -39,14 +44,21 @@ namespace RecordDB.Core.Pages.Records
                 return Page();
             }
 
+            _logger.LogInformation("Inserting new record '{RecordName}' for artist {ArtistId}", Record.Name, Record.ArtistId);
+
             var newId = await _recordRepository.InsertAsync(Record);
 
             if (newId <= 0)
             {
-                ModelState.AddModelError(string.Empty,
-                    newId == 0
-                        ? "This record already exists in the database."
-                        : "An error occurred while saving. Please try again.");
+                if (newId == 0)
+                {
+                    ModelState.AddModelError(string.Empty, "This record already exists in the database.");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "An error occurred while saving. Please try again.");
+                }
+
                 await PopulateArtistListAsync();
                 return Page();
             }

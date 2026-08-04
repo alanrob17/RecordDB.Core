@@ -36,7 +36,7 @@ namespace RecordDB.DAL.Models
         public string? Media { get; set; }
 
         [Column(TypeName = "text")]
-        public DateTime Bought { get; set; }
+        public DateTime? Bought { get; set; }
 
         [Column(TypeName = "money")]
         public decimal? Cost { get; set; }

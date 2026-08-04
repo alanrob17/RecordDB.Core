@@ -9,10 +9,12 @@ namespace RecordDB.Core.Pages.Records
     public class DeleteModel : PageModel
     {
         private readonly IRecordRepository _recordRepository;
+        private readonly ILogger<DeleteModel> _logger;
 
-        public DeleteModel(IRecordRepository recordRepository)
+        public DeleteModel(IRecordRepository recordRepository, ILogger<DeleteModel> logger)
         {
             _recordRepository = recordRepository;
+            _logger = logger;
         }
 
         [BindProperty]
@@ -20,6 +22,8 @@ namespace RecordDB.Core.Pages.Records
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
+            _logger.LogDebug("Loading Delete Record confirmation page for record {RecordId}", id);
+
             ArtistRecordDto record = await _recordRepository.SelectAsync(id);
 
             if (record is null)
@@ -34,6 +38,8 @@ namespace RecordDB.Core.Pages.Records
         public async Task<IActionResult> OnPostAsync()
         {
             await _recordRepository.DeleteAsync(Record.RecordId);
+            _logger.LogInformation("Record '{RecordName}' (ID {RecordId}) deleted successfully", Record.Name, Record.RecordId);
+
             return RedirectToPage("./Index");
         }
     }

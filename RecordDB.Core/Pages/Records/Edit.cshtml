@@ -28,7 +28,23 @@
         <div class="form-row-2">
             <div class="form-group">
                 <label asp-for="Record.Field">Field / Genre</label>
-                <input type="text" asp-for="Record.Field" placeholder="e.g. Rock" />
+                <select asp-for="Record.Field">
+                    <option value="">-- Select Field --</option>
+                    <option>Acoustic</option>
+                    <option>Audio</option>
+                    <option>Blues</option>
+                    <option>Classical</option>
+                    <option>Comedy</option>
+                    <option>Country</option>
+                    <option>Folk</option>
+                    <option>Fusion</option>
+                    <option>Jazz</option>
+                    <option>Pop</option>
+                    <option>Rock</option>
+                    <option>Soul</option>
+                    <option>Soundtrack</option>
+                    <option>World</option>
+                </select>
                 <span asp-validation-for="Record.Field" class="field-validation-error"></span>
             </div>
             <div class="form-group">
@@ -46,7 +62,22 @@
             </div>
             <div class="form-group">
                 <label asp-for="Record.Pressing">Pressing</label>
-                <input type="text" asp-for="Record.Pressing" placeholder="e.g. Australian" />
+                <select asp-for="Record.Pressing">
+                    <option value="">-- Select Pressing --</option>
+                    <option>Am</option>
+                    <option>Aus</option>
+                    <option>Can</option>
+                    <option>Eng</option>
+                    <option>Fra</option>
+                    <option>Ger</option>
+                    <option>Hk</option>
+                    <option>Hol</option>
+                    <option>Ita</option>
+                    <option>Jap</option>
+                    <option>Kor</option>
+                    <option>Swe</option>
+                    <option>Swi</option>
+                </select>
                 <span asp-validation-for="Record.Pressing" class="field-validation-error"></span>
             </div>
         </div>
@@ -54,17 +85,39 @@
         <div class="form-row-3">
             <div class="form-group">
                 <label asp-for="Record.Rating">Rating</label>
-                <input type="text" asp-for="Record.Rating" placeholder="e.g. ****" />
+                <select asp-for="Record.Rating">
+                    <option value="">-- Select Rating --</option>
+                    <option>*</option>
+                    <option>**</option>
+                    <option>***</option>
+                    <option>****</option>
+                </select>
                 <span asp-validation-for="Record.Rating" class="field-validation-error"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Record.Discs">Discs</label>
-                <input type="text" asp-for="Record.Discs" placeholder="1" />
+                <select asp-for="Record.Discs">
+                    <option value="">-- Select Discs --</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                </select>
                 <span asp-validation-for="Record.Discs" class="field-validation-error"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Record.Media">Media</label>
-                <input type="text" asp-for="Record.Media" placeholder="e.g. CD" />
+                <select asp-for="Record.Media">
+                    <option value="">-- Select Media --</option>
+                    <option>CD</option>
+                    <option>R</option>
+                    <option>DVD</option>
+                    <option>CD/DVD</option>
+                    <option>Blu-ray</option>
+                    <option>CD/Blu-ray</option>
+                </select>
                 <span asp-validation-for="Record.Media" class="field-validation-error"></span>
             </div>
         </div>
@@ -72,7 +125,7 @@
         <div class="form-row-2">
             <div class="form-group">
                 <label asp-for="Record.Bought">Date Bought</label>
-                <input type="text" asp-for="Record.Bought" placeholder="yyyy-MM-dd" />
+                <input type="date" asp-for="Record.Bought" />
                 <span asp-validation-for="Record.Bought" class="field-validation-error"></span>
             </div>
             <div class="form-group">

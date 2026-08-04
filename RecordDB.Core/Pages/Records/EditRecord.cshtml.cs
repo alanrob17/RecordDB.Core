@@ -11,11 +11,13 @@ namespace RecordDB.Core.Pages.Records
     {
         private readonly IRecordRepository _recordRepository;
         private readonly IArtistRepository _artistRepository;
+        private readonly ILogger<EditRecordModel> _logger;
 
-        public EditRecordModel(IRecordRepository recordRepository, IArtistRepository artistRepository)
+        public EditRecordModel(IRecordRepository recordRepository, IArtistRepository artistRepository, ILogger<EditRecordModel> logger)
         {
             _recordRepository = recordRepository;
             _artistRepository = artistRepository;
+            _logger = logger;
         }
 
         [BindProperty(SupportsGet = true)]
@@ -33,8 +35,10 @@ namespace RecordDB.Core.Pages.Records
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             int targetRecordId = id ?? SelectedRecordId ?? 0;
+
             if (targetRecordId > 0)
             {
+                _logger.LogDebug("EditRecord: loading record {RecordId}", targetRecordId);
                 var record = await _recordRepository.SelectAsync(targetRecordId);
                 if (record != null)
                 {
@@ -42,6 +46,14 @@ namespace RecordDB.Core.Pages.Records
                     SelectedRecordId = record.RecordId;
                     SelectedArtistId = record.ArtistId;
                 }
+                else
+                {
+                    _logger.LogWarning("EditRecord: record {RecordId} not found", targetRecordId);
+                }
+            }
+            else if (SelectedArtistId.HasValue)
+            {
+                _logger.LogDebug("EditRecord: artist {ArtistId} selected, awaiting record selection", SelectedArtistId);
             }
 
             await PopulateDropdownsAsync();
@@ -50,15 +62,20 @@ namespace RecordDB.Core.Pages.Records
 
         public async Task<IActionResult> OnPostAsync()
         {
-            ModelState.Remove("Record.CoverName");
+            if (Record.Bought == default(DateTime))
+            {
+                Record.Bought = DateTime.Parse("1900-01-01");
+            }
 
             if (!ModelState.IsValid)
             {
+                _logger.LogWarning("EditRecord validation failed for record {RecordId}", Record.RecordId);
                 await PopulateDropdownsAsync();
                 return Page();
             }
 
             await _recordRepository.UpdateAsync(Record);
+            _logger.LogInformation("Record '{RecordName}' (ID {RecordId}) updated successfully", Record.Name, Record.RecordId);
 
             return RedirectToPage("./Index");
         }

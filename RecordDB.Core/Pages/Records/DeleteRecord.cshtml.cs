@@ -11,11 +11,13 @@ namespace RecordDB.Core.Pages.Records
     {
         private readonly IRecordRepository _recordRepository;
         private readonly IArtistRepository _artistRepository;
+        private readonly ILogger<DeleteRecordModel> _logger;
 
-        public DeleteRecordModel(IRecordRepository recordRepository, IArtistRepository artistRepository)
+        public DeleteRecordModel(IRecordRepository recordRepository, IArtistRepository artistRepository, ILogger<DeleteRecordModel> logger)
         {
             _recordRepository = recordRepository;
             _artistRepository = artistRepository;
+            _logger = logger;
         }
 
         [BindProperty(SupportsGet = true)]
@@ -33,14 +35,20 @@ namespace RecordDB.Core.Pages.Records
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             int targetRecordId = id ?? SelectedRecordId ?? 0;
+
             if (targetRecordId > 0)
             {
+                _logger.LogDebug("DeleteRecord: loading record {RecordId}", targetRecordId);
                 var record = await _recordRepository.SelectAsync(targetRecordId);
                 if (record != null)
                 {
                     Record = record;
                     SelectedRecordId = record.RecordId;
                     SelectedArtistId = record.ArtistId;
+                }
+                else
+                {
+                    _logger.LogWarning("DeleteRecord: record {RecordId} not found", targetRecordId);
                 }
             }
 
@@ -52,7 +60,13 @@ namespace RecordDB.Core.Pages.Records
         {
             if (Record != null && Record.RecordId > 0)
             {
+                _logger.LogInformation("Deleting record '{RecordName}' (ID {RecordId}) via DeleteRecord", Record.Name, Record.RecordId);
                 await _recordRepository.DeleteAsync(Record.RecordId);
+                _logger.LogInformation("Record '{RecordName}' (ID {RecordId}) deleted successfully", Record.Name, Record.RecordId);
+            }
+            else
+            {
+                _logger.LogWarning("DeleteRecord POST called with no valid record selected");
             }
 
             return RedirectToPage("./Index");

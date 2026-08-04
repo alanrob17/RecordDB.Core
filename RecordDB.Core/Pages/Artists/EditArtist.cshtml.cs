@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using RecordDB.Core.Pages.Records;
 using RecordDB.DAL.Models;
 using RecordDB.DAL.Repositories;
 
@@ -9,10 +10,12 @@ namespace RecordDB.Core.Pages.Artists
     public class EditArtistModel : PageModel
     {
         private readonly IArtistRepository _artistRepository;
+        private readonly ILogger<EditArtistModel> _logger;
 
-        public EditArtistModel(IArtistRepository artistRepository)
+        public EditArtistModel(IArtistRepository artistRepository, ILogger<EditArtistModel> logger)
         {
             _artistRepository = artistRepository;
+            _logger = logger;
         }
 
         [BindProperty(SupportsGet = true)]
@@ -29,6 +32,8 @@ namespace RecordDB.Core.Pages.Artists
             if (targetArtistId > 0)
             {
                 SelectedArtistId = targetArtistId;
+
+                _logger.LogDebug("EditArtist: loading artist {ArtistId}", targetArtistId);
                 var artist = await _artistRepository.SelectAsync(targetArtistId);
                 if (artist != null)
                 {
@@ -44,11 +49,13 @@ namespace RecordDB.Core.Pages.Artists
         {
             if (!ModelState.IsValid)
             {
+                _logger.LogWarning("EditArtist validation failed for artist {ArtistId}", Artist.ArtistId);
                 await PopulateArtistListAsync();
                 return Page();
             }
 
             await _artistRepository.UpdateArtistAsync(Artist);
+            _logger.LogInformation("Artist '{ArtistName}' (ID {ArtistId}) updated successfully", Artist.Name,Artist.ArtistId);
 
             return RedirectToPage("./Index");
         }

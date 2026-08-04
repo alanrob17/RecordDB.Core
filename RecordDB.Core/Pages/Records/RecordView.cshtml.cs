@@ -19,7 +19,7 @@ namespace RecordDB.Core.Pages.Records
         public async Task<IActionResult> OnGetAsync(int id)
         {
             ArtistRecordDto record = await _recordRepository.SelectAsync(id);
-
+            
             if (record is null)
             {
                 return NotFound();
