@@ -31,3 +31,5 @@ Thumbs.db
 # User Requested: Ignore appsettings.json
 appsettings.json
 appsettings.Development.json
+logs/
+*.bak

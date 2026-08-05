@@ -45,11 +45,11 @@
                     }
                     @if (!string.IsNullOrWhiteSpace(Model.Record.Media))
                     {
-                        <span class="rv-badge rv-badge-media">💿 @Model.Record.Media</span>
+                        <span class="rv-badge rv-badge-media" data-media="@Model.Record.Media">💿 @Model.Record.Media</span>
                     }
                     @if (!string.IsNullOrWhiteSpace(Model.Record.Rating))
                     {
-                        <span class="rv-badge rv-badge-rating">⭐ @Model.Record.Rating</span>
+                        <span class="rv-badge rv-badge-rating" data-rating="@Model.Record.Rating">⭐ @Model.Record.Rating</span>
                     }
                 </div>
             </div>
@@ -176,4 +176,32 @@
             el.scrollIntoView({ behavior: 'smooth' });
         }
     }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Format Media badge
+        var mediaBadge = document.querySelector('.rv-badge-media');
+        if (mediaBadge) {
+            var mediaVal = (mediaBadge.getAttribute('data-media') || mediaBadge.textContent).replace('💿', '').trim();
+            if (mediaVal.toUpperCase() === 'CD') {
+                mediaBadge.textContent = '💿 CD-Audio';
+            } else if (mediaVal.toUpperCase() === 'R') {
+                mediaBadge.textContent = '💿 Record';
+            }
+        }
+
+        // Format Rating badge
+        var ratingBadge = document.querySelector('.rv-badge-rating');
+        if (ratingBadge) {
+            var ratingVal = (ratingBadge.getAttribute('data-rating') || ratingBadge.textContent).replace('⭐', '').trim();
+            if (ratingVal === '****' || ratingVal === '4') {
+                ratingBadge.textContent = '⭐ Indispensible';
+            } else if (ratingVal === '***' || ratingVal === '3') {
+                ratingBadge.textContent = '⭐ Slightly Flawed';
+            } else if (ratingVal === '**' || ratingVal === '2') {
+                ratingBadge.textContent = '⭐ Average';
+            } else if (ratingVal === '*' || ratingVal === '1') {
+                ratingBadge.textContent = '⭐ Mediocre';
+            }
+        }
+    });
 </script>
