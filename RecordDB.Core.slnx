@@ -2,4 +2,5 @@
   <Project Path="RecordDB.Core/RecordDB.Core.csproj" />
   <Project Path="RecordDB.DAL/RecordDB.DAL.csproj" Id="7369c2a9-6c72-4739-b516-17284eae9411" />
   <Project Path="RecordDB.Test/RecordDB.Test.csproj" Id="9767ed42-bfc6-4df5-925c-734d0e88ace9" />
+  <Project Path="RecordDB.Tests/RecordDB.Tests.csproj" Id="e5a2b104-3c8d-4f7e-a1b2-9c3d4e5f6a7b" />
 </Solution>

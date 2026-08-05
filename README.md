@@ -27,7 +27,8 @@ The solution uses a clean 3-tier architecture built with .NET 10:
 RecordDB.Core (Solution)
 ├── RecordDB.Core/          ASP.NET Core Razor Pages Web Application (Presentation Layer)
 ├── RecordDB.DAL/           Data Access Layer Library (Dapper, Models, Repositories, DTOs)
-└── RecordDB.Test/          Console App for Integration Testing & Repository Diagnostics
+├── RecordDB.Test/          Console App for Integration Testing & Repository Diagnostics
+└── RecordDB.Tests/         Automated xUnit Unit & Integration Test Suite
 ```
 
 ### 1. Presentation Layer — [`RecordDB.Core`](RecordDB.Core/)
@@ -121,7 +122,12 @@ dotnet run --project RecordDB.Core
 ```
 Once running, navigate to `https://localhost:7045` or `http://localhost:5245` in your browser.
 
-### Running Integration Tests / Diagnostic Console
+### Running Automated xUnit Test Suite
+```bash
+dotnet test RecordDB.Tests/RecordDB.Tests.csproj
+```
+
+### Running Legacy Diagnostic Console
 ```bash
 dotnet run --project RecordDB.Test
 ```
