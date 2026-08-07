@@ -1,7 +1,7 @@
 using Dapper;
-using Heinemann.Components;
 using RecordDB.DAL.Data;
 using RecordDB.DAL.DTOs;
+using RecordDB.DAL.Extensions;
 using RecordDB.DAL.Models;
 using System;
 using System.Collections.Generic;
@@ -180,7 +180,7 @@ namespace RecordDB.DAL.Repositories
             {
                 DateTime dt = Convert.ToDateTime(bought);
 
-                shortDate = Dates.ShortDateString(dt);
+                shortDate = DateTimeExtensions.ToShortDate(dt);
             }
 
             return shortDate;

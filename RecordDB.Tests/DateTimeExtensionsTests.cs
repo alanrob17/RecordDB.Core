@@ -13,7 +13,7 @@ namespace RecordDB.Tests
             var date = new DateTime(2023, 5, 15);
 
             // Act
-            var result = date.ToShortDate();
+            var result = DateTimeExtensions.ToShortDate(date);
 
             // Assert
             result.Should().NotBeNullOrEmpty();
@@ -27,7 +27,7 @@ namespace RecordDB.Tests
             DateTime? date = null;
 
             // Act
-            var result = date.ToShortDate();
+            var result = DateTimeExtensions.ToShortDate(date);
 
             // Assert
             result.Should().Be("unk");
@@ -40,7 +40,7 @@ namespace RecordDB.Tests
             object? obj = null;
 
             // Act
-            var result = obj.ToShortDate();
+            var result = DateTimeExtensions.ToShortDate(obj);
 
             // Assert
             result.Should().Be("unk");
@@ -53,7 +53,7 @@ namespace RecordDB.Tests
             object obj = DBNull.Value;
 
             // Act
-            var result = obj.ToShortDate();
+            var result = DateTimeExtensions.ToShortDate(obj);
 
             // Assert
             result.Should().Be("unk");
@@ -63,10 +63,10 @@ namespace RecordDB.Tests
         public void ToShortDate_WithValidDateString_ReturnsFormattedDateString()
         {
             // Arrange
-            string dateStr = "2022-10-01";
+            DateTime date = new DateTime(2022, 10, 1);
 
             // Act
-            var result = dateStr.ToShortDate();
+            var result = DateTimeExtensions.ToShortDate(date);
 
             // Assert
             result.Should().NotBeNullOrEmpty();
@@ -80,7 +80,7 @@ namespace RecordDB.Tests
             string dateStr = "invalid-date-string";
 
             // Act
-            var result = dateStr.ToShortDate();
+            var result = DateTimeExtensions.ToShortDate(dateStr);
 
             // Assert
             result.Should().Be("unk");

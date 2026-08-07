@@ -13,11 +13,4 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.10" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="Heinemann.Components">
-      <HintPath>..\..\Heinemann2005\HeinemannTest2005\bin\Heinemann.Components.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-  </ItemGroup>
-
 </Project>

@@ -294,7 +294,7 @@ namespace RecordDB.Test.Services
             foreach (var record in records)
             {
                 Artist artist = await _artistRepository.SelectAsync(record.ArtistId);
-                Console.WriteLine($"{artist.Name} -- {record.Name} {record.Recorded} - {record.Media} : {record.Bought.ToShortDate()}\n");
+                Console.WriteLine($"{artist.Name} -- {record.Name} {record.Recorded} - {record.Media} : {DateTimeExtensions.ToShortDate(record.Bought)}\n");
             }
         }
 
@@ -347,7 +347,7 @@ namespace RecordDB.Test.Services
 
             //Console.WriteLine($"\n{artist.ArtistId}: - Artist {artist.Name}:\n");
 
-            Console.WriteLine($"\nArtistId: {record.ArtistId} - Artist: {record.ArtistName} -- RecordId: {record.RecordId}\nName: {record.Name}\nField: {record.Field}\nRecorded: {record.Recorded}\nLabel: {record.Label}\nPressing: {record.Pressing}\nDiscs: {record.Discs}\nMedia: {record.Media}\nBought: {record.Bought.ToShortDate() ?? null}\nCost: ${record.Cost:0.00}\nReview:\n{record.Review}\n\nBiography:\n{record.Biography}");
+            Console.WriteLine($"\nArtistId: {record.ArtistId} - Artist: {record.ArtistName} -- RecordId: {record.RecordId}\nName: {record.Name}\nField: {record.Field}\nRecorded: {record.Recorded}\nLabel: {record.Label}\nPressing: {record.Pressing}\nDiscs: {record.Discs}\nMedia: {record.Media}\nBought: {DateTimeExtensions.ToShortDate(record.Bought) ?? null}\nCost: ${record.Cost:0.00}\nReview:\n{record.Review}\n\nBiography:\n{record.Biography}");
         }
 
         public async Task GetArtistRecords()
@@ -407,7 +407,7 @@ namespace RecordDB.Test.Services
 
             if (record.Bought != null)
             {
-                str.Append("<strong>Bought: </strong>" + record.Bought.ToShortDate() + "<br/>");
+                str.Append("<strong>Bought: </strong>" + DateTimeExtensions.ToShortDate(record.Bought) + "<br/>");
             }
 
             if (!string.IsNullOrEmpty(record.Cost.ToString()))
