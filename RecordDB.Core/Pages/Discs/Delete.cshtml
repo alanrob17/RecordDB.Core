@@ -1,0 +1,74 @@
+@page "{id:int}"
+@model RecordDB.Core.Pages.Discs.DeleteModel
+@{
+    ViewData["Title"] = "Delete Disc";
+}
+
+<div class="page-header">
+    <h1 class="page-title"><span>Delete</span> Disc</h1>
+    <a asp-page="./Index" class="btn-rdb btn-secondary-rdb">← Back to Discs</a>
+</div>
+
+<div class="rdb-danger-card">
+
+    <div class="danger-header">
+        <span>⚠️</span>
+        <h2>Confirm Deletion</h2>
+    </div>
+
+    <div class="danger-body">
+
+        <p class="danger-warning">
+            You are about to permanently delete this disc.
+            This action <strong>cannot be undone</strong>.
+        </p>
+
+        <div class="rdb-detail-card" style="margin-bottom: 1.5rem;">
+            <div class="detail-row">
+                <span class="detail-label">Disc ID</span>
+                <span class="detail-value">@Model.Disc.DiscId</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Artist</span>
+                <span class="detail-value">@Model.Disc.ArtistName</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Record</span>
+                <span class="detail-value">@Model.Disc.Name</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Disc Number</span>
+                <span class="detail-value">@Model.Disc.DiscNo</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">FreeDb Disc ID</span>
+                <span class="detail-value @(!Model.Disc.FreeDbDiscId.HasValue ? "empty" : "")">
+                    @(Model.Disc.FreeDbDiscId.HasValue ? Model.Disc.FreeDbDiscId.Value.ToString() : "—")
+                </span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">FreeDb String ID</span>
+                <span class="detail-value @(string.IsNullOrEmpty(Model.Disc.FreeDbId) ? "empty" : "")">
+                    @(string.IsNullOrEmpty(Model.Disc.FreeDbId) ? "—" : Model.Disc.FreeDbId)
+                </span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Length (seconds)</span>
+                <span class="detail-value @(!Model.Disc.Length.HasValue ? "empty" : "")">
+                    @(Model.Disc.Length.HasValue ? Model.Disc.Length.Value.ToString() : "—")
+                </span>
+            </div>
+        </div>
+
+        <form method="post">
+            <input type="hidden" asp-for="Disc.DiscId" />
+            <div class="form-actions">
+                <button type="submit" class="btn-rdb btn-danger-rdb">Yes, Delete Disc</button>
+                <a asp-page="./Index"   class="btn-rdb btn-secondary-rdb">Cancel</a>
+                <a asp-page="./Details" asp-route-id="@Model.Disc.DiscId"
+                   class="btn-rdb btn-secondary-rdb">View Details</a>
+            </div>
+        </form>
+
+    </div>
+</div>

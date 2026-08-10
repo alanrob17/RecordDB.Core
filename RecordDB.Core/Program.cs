@@ -30,6 +30,7 @@ namespace RecordDB.Core
                 builder.Services.AddScoped<IDataAccess, DataAccess>();
                 builder.Services.AddScoped<IArtistRepository, ArtistRepository>();
                 builder.Services.AddScoped<IRecordRepository, RecordRepository>();
+                builder.Services.AddScoped<IDiscRepository, DiscRepository>();
                 builder.Services.AddScoped<IStatisticRepository, StatisticRepository>();
 
                 var app = builder.Build();

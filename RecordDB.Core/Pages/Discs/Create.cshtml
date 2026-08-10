@@ -1,0 +1,64 @@
+@page
+@model RecordDB.Core.Pages.Discs.CreateModel
+@{
+    ViewData["Title"] = "Add Disc";
+}
+
+<div class="page-header">
+    <h1 class="page-title"><span>Add</span> Disc</h1>
+    <a asp-page="./Index" class="btn-rdb btn-secondary-rdb">← Back to Discs</a>
+</div>
+
+<div class="rdb-form-card">
+
+    @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ContainsKey(string.Empty))
+    {
+        <div class="form-error-banner">
+            @Html.ValidationSummary(false)
+        </div>
+    }
+
+    <form method="post">
+
+        <div class="form-group">
+            <label asp-for="Disc.RecordId">Record ID</label>
+            <input type="number" asp-for="Disc.RecordId" placeholder="e.g. 101" required />
+            <span asp-validation-for="Disc.RecordId" class="field-validation-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Disc.DiscNo">Disc Number</label>
+            <input type="number" asp-for="Disc.DiscNo" placeholder="e.g. 1" required />
+            <span asp-validation-for="Disc.DiscNo" class="field-validation-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Disc.FreeDbDiscId">FreeDb Disc ID</label>
+            <input type="number" asp-for="Disc.FreeDbDiscId" placeholder="e.g. 123456" />
+            <span asp-validation-for="Disc.FreeDbDiscId" class="field-validation-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Disc.FreeDbId">FreeDb String ID</label>
+            <input type="text" asp-for="Disc.FreeDbId" placeholder="e.g. rock/9b0a123" />
+            <span asp-validation-for="Disc.FreeDbId" class="field-validation-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Disc.Length">Length (seconds)</label>
+            <input type="number" asp-for="Disc.Length" placeholder="e.g. 2745" />
+            <span asp-validation-for="Disc.Length" class="field-validation-error"></span>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-rdb btn-primary-rdb">Save Disc</button>
+            <a asp-page="./Index" class="btn-rdb btn-secondary-rdb">Cancel</a>
+        </div>
+
+    </form>
+
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

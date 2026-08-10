@@ -1,0 +1,173 @@
+@page
+@model RecordDB.Core.Pages.Discs.IndexModel
+@{
+    ViewData["Title"] = "Discs";
+
+    const int GroupSize   = 15;
+    int currentGroup      = (Model.CurrentPage - 1) / GroupSize;
+    int groupStart        = currentGroup * GroupSize + 1;
+    int groupEnd          = Math.Min(groupStart + GroupSize - 1, Model.TotalPages);
+    int prevGroupLast     = groupStart - 1;
+    int nextGroupFirst    = groupEnd + 1;
+    int pageFrom          = Model.TotalCount > 0 ? (Model.CurrentPage - 1) * 20 + 1 : 0;
+    int pageTo            = Math.Min(Model.CurrentPage * 20, Model.TotalCount);
+}
+
+<div class="page-header">
+    <h1 class="page-title"><span>Discs</span></h1>
+    <span class="count-badge">
+        💿 @Model.TotalCount disc@(Model.TotalCount != 1 ? "s" : "")
+    </span>
+</div>
+
+<div class="list-toolbar">
+    <form method="get" class="search-form" role="search">
+        <div class="search-input-wrap">
+            <span class="search-icon">🔍</span>
+            <input type="text"
+                   name="SearchTerm"
+                   id="searchTerm"
+                   class="search-input"
+                   value="@Model.SearchTerm"
+                   placeholder="Search record name…"
+                   aria-label="Search record name" />
+            @if (Model.IsSearching)
+            {
+                <a asp-page="./Index" class="search-clear" title="Clear search" aria-label="Clear search">✕</a>
+            }
+        </div>
+        <button type="submit" class="btn-rdb btn-secondary-rdb">Search</button>
+    </form>
+
+    <a asp-page="./Create" class="btn-rdb btn-primary-rdb ms-auto">+ Add Disc</a>
+</div>
+
+@if (Model.IsSearching)
+{
+    <p class="search-results-info">
+        @if (Model.TotalCount == 0)
+        {
+            <span>No discs found matching record <strong>"@Model.SearchTerm"</strong>.</span>
+        }
+        else
+        {
+            <span>Found <strong>@Model.TotalCount</strong> disc@(Model.TotalCount != 1 ? "s" : "") matching record <strong>"@Model.SearchTerm"</strong></span>
+        }
+        &nbsp;— <a asp-page="./Index">Show all discs</a>
+    </p>
+}
+
+<div class="rdb-card">
+    <table class="rdb-table">
+        <thead>
+            <tr>
+                <th>Artist</th>
+                <th>Record Name</th>
+                <th>Disc No</th>
+                <th>FreeDb Disc ID</th>
+                <th>Length (sec)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Discs.Count == 0)
+            {
+                <tr>
+                    <td colspan="7" class="td-empty">No discs found.</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var item in Model.Discs)
+                {
+                    <tr>
+                        <td class="td-name">@item.ArtistName</td>
+                        <td>
+                            <a asp-page="/Records/Details" asp-route-id="@item.RecordId">@item.Name</a>
+                        </td>
+                        <td>@item.DiscNo</td>
+                        <td>@(string.IsNullOrEmpty(item.FreeDbId) ? "—" : item.FreeDbId)</td>
+                        <td>@(item.Length.HasValue ? item.Length.Value.ToString() : "—")</td>
+                        <td class="td-actions">
+                            <a asp-page="./Edit"    asp-route-id="@item.DiscId" class="action-link action-edit">Edit</a>
+                            <a asp-page="./Details" asp-route-id="@item.DiscId" class="action-link action-details">Details</a>
+                            <a asp-page="./Delete"  asp-route-id="@item.DiscId" class="action-link action-delete">Delete</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    @if (Model.TotalPages > 1)
+    {
+        <div class="rdb-pagination">
+            <span class="pagination-info">
+                Showing @pageFrom–@pageTo of @Model.TotalCount discs
+                &nbsp;·&nbsp; Page @Model.CurrentPage of @Model.TotalPages
+            </span>
+            <nav class="pagination-links" aria-label="Disc pagination">
+
+                @* ‹ Previous individual page *@
+                @if (Model.CurrentPage > 1)
+                {
+                    <a class="page-btn" asp-page="./Index"
+                       asp-route-SearchTerm="@Model.SearchTerm"
+                       asp-route-pageNumber="@(Model.CurrentPage - 1)"
+                       aria-label="Previous page" title="Previous page">‹</a>
+                }
+                else
+                {
+                    <span class="page-btn disabled" aria-disabled="true">‹</span>
+                }
+
+                @* « Jump to previous group of 15 *@
+                @if (currentGroup > 0)
+                {
+                    <a class="page-btn page-btn-group" asp-page="./Index"
+                       asp-route-SearchTerm="@Model.SearchTerm"
+                       asp-route-pageNumber="@prevGroupLast"
+                       aria-label="Previous 15 pages" title="Previous 15 pages">«</a>
+                }
+
+                @* The 15 numbered page buttons for the current group *@
+                @for (int p = groupStart; p <= groupEnd; p++)
+                {
+                    if (p == Model.CurrentPage)
+                    {
+                        <span class="page-btn active" aria-current="page">@p</span>
+                    }
+                    else
+                    {
+                        <a class="page-btn" asp-page="./Index"
+                           asp-route-SearchTerm="@Model.SearchTerm"
+                           asp-route-pageNumber="@p">@p</a>
+                    }
+                }
+
+                @* » Jump to next group of 15 *@
+                @if (nextGroupFirst <= Model.TotalPages)
+                {
+                    <a class="page-btn page-btn-group" asp-page="./Index"
+                       asp-route-SearchTerm="@Model.SearchTerm"
+                       asp-route-pageNumber="@nextGroupFirst"
+                       aria-label="Next 15 pages" title="Next 15 pages">»</a>
+                }
+
+                @* › Next individual page *@
+                @if (Model.CurrentPage < Model.TotalPages)
+                {
+                    <a class="page-btn" asp-page="./Index"
+                       asp-route-SearchTerm="@Model.SearchTerm"
+                       asp-route-pageNumber="@(Model.CurrentPage + 1)"
+                       aria-label="Next page" title="Next page">›</a>
+                }
+                else
+                {
+                    <span class="page-btn disabled" aria-disabled="true">›</span>
+                }
+
+            </nav>
+        </div>
+    }
+</div>
