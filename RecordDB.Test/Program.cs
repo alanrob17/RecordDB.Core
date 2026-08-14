@@ -24,8 +24,12 @@ namespace RecordDB.Test
             services.AddTransient<IRecordRepository, RecordRepository>();
             services.AddTransient<IStatisticRepository, StatisticRepository>();
             services.AddTransient<ITotalRepository, TotalRepository>();
+            services.AddTransient<IDiscRepository, DiscRepository>();
+            services.AddTransient<ITrackRepository, TrackRepository>(); 
             services.AddTransient<ArtistService>();
             services.AddTransient<RecordService>();
+            services.AddTransient<DiscService>();
+            services.AddTransient<TrackService>();
             services.AddTransient<StatisticService>();
 
             var serviceProvider = services.BuildServiceProvider();
@@ -34,8 +38,11 @@ namespace RecordDB.Test
             // var artistService = serviceProvider.GetRequiredService<ArtistService>();
             // await artistService.RunAsync();
 
-            var recordService = serviceProvider.GetRequiredService<RecordService>();
-            await recordService.RunAsync();
+            //var recordService = serviceProvider.GetRequiredService<RecordService>();
+            //await recordService.RunAsync();
+
+            var discService = serviceProvider.GetRequiredService<DiscService>();
+            await discService.RunAsync();
 
             // var statisticService = serviceProvider.GetRequiredService<StatisticService>();
             // await statisticService.GetStatisticsAsync();
