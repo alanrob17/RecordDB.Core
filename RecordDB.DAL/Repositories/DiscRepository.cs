@@ -34,7 +34,7 @@ namespace RecordDB.DAL.Repositories
 
             string sproc = "up_GetDiscRecordsByRecordName";
             var parameters = new DynamicParameters();
-            parameters.Add("@RecordName", recordName);
+            parameters.Add("@Name", recordName);
 
             return await _db.GetData<ArtistRecordDiscDto, dynamic>(sproc, parameters);
         }
@@ -81,7 +81,6 @@ namespace RecordDB.DAL.Repositories
             {
                 var parameters = new DynamicParameters();
                 parameters.Add("@DiscId", disc.DiscId);
-                parameters.Add("@RecordId", disc.RecordId);
                 parameters.Add("@DiscNo", disc.DiscNo);
                 parameters.Add("@FreeDbDiscId", disc.FreeDbDiscId);
                 parameters.Add("@FreeDbId", disc.FreeDbId);
