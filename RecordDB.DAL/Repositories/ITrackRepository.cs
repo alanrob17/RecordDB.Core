@@ -11,6 +11,7 @@ namespace RecordDB.DAL.Repositories
         Task<IEnumerable<ArtistRecordDiscTrackDto>> SelectAllTrackEntitiesAsync();
         Task<IEnumerable<ArtistRecordDiscTrackDto>> SelectArtistRecordTracksAsync(int recordId);
         Task<IEnumerable<ArtistRecordDiscTrackDto>> SelectTracksByRecordAsync(string name);
+        Task<ArtistRecordDiscTrackDto> SelectTrackByIdAsync(int trackId);
         Task<int> GetTrackNumberAsync(int recordId);
         Task<int> InsertTrackAsync(Track track);
         Task<int> UpdateTrackAsync(Track track);

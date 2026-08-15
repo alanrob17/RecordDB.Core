@@ -18,15 +18,31 @@ namespace RecordDB.Test.Services
 
         public async Task RunAsync()
         {
-            //await SelectTracksAsync();
-            //await SelectArtistRecordTracksAsync();
-            //await SelectTracksByRecordAsync();
-            //await SelectArtistRecordTracksAsync();
-            //await GetNumberOfTracksAsync();
-            //await InsertTrackAsync();
-            //await UpdateTrackAsync();
-            await DeleteTrackAsync();
+            await SelectTrack();
+            // await SelectTracksAsync();
+            // await SelectArtistRecordTracksAsync();
+            // await SelectTracksByRecordAsync();
+            // await SelectArtistRecordTracksAsync();
+            // await GetNumberOfTracksAsync();
+            // await InsertTrackAsync();
+            // await UpdateTrackAsync();
+            // await DeleteTrackAsync();
 
+        }
+
+
+        public async Task SelectTrack()
+        {
+            var track = await _trackRepository.SelectTrackByIdAsync(5000);
+            if (track != null)
+            {
+                string length = track.TrackLength.HasValue ? TimeSpan.FromSeconds(track.TrackLength.Value).ToString(@"hh\:mm\:ss") : "unk";
+                Console.WriteLine($"{track.ArtistName}: {track.Name} - {track.DiscNo} - {track.TrackNo} - {track.TrackName} - {length}");
+            }
+            else
+            {
+                Console.WriteLine("Track not found.");
+            }
         }
 
         public async Task SelectTracksAsync()

@@ -6,6 +6,7 @@ namespace RecordDB.Test.Services
 {
     public interface ITrackService
     {
+        Task SelectTrack();
         Task SelectTracksAsync();
         Task SelectArtistRecordTracksAsync();
         Task SelectTracksByRecordAsync();

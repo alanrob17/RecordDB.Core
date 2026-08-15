@@ -98,5 +98,12 @@ namespace RecordDB.DAL.Repositories
             string sproc = "up_DeleteTrack";
             await _db.SaveData(sproc, new { TrackId = trackId });
         }
+
+        public async Task<ArtistRecordDiscTrackDto> SelectTrackByIdAsync(int trackId)
+        {
+            string sproc = "up_SelectSingleTrack";
+            var result = await _db.GetData<ArtistRecordDiscTrackDto, dynamic>(sproc, new { TrackId = trackId });
+            return result.FirstOrDefault();
+        }
     }
 }
