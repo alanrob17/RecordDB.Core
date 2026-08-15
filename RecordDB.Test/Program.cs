@@ -41,8 +41,11 @@ namespace RecordDB.Test
             //var recordService = serviceProvider.GetRequiredService<RecordService>();
             //await recordService.RunAsync();
 
-            var discService = serviceProvider.GetRequiredService<DiscService>();
-            await discService.RunAsync();
+            //var discService = serviceProvider.GetRequiredService<DiscService>();
+            //await discService.RunAsync();
+
+            var trackService = serviceProvider.GetRequiredService<TrackService>();
+            await trackService.RunAsync();
 
             // var statisticService = serviceProvider.GetRequiredService<StatisticService>();
             // await statisticService.GetStatisticsAsync();
