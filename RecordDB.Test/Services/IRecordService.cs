@@ -28,5 +28,6 @@ namespace RecordDB.Test.Services
         Task GetRecordsByArtistNameAsync(string name);
         Task<string> ToStringAsync(ArtistRecordDto record);
         Task GetTotalCosts();
+        Task ListRecordsWithNoTracksAsync();
     }
 }

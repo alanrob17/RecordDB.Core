@@ -390,5 +390,14 @@ namespace RecordDB.DAL.Repositories
 
             return records.ToList();
         }
+
+        public async Task<IEnumerable<ArtistRecordDiscDto>> ListRecordsWithNoTracksAsync()
+        {
+            var sproc = "up_GetRecordsWithNoTracks";
+
+            var records = await _db.GetData<ArtistRecordDiscDto, dynamic>(sproc, new { });
+
+            return records;
+        }
     }
 }

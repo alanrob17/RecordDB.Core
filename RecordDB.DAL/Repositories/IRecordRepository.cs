@@ -24,6 +24,8 @@ namespace RecordDB.DAL.Repositories
         Task<int> InsertAsync(Record record);
         Task<List<MissingReviewDto>> NoRecordReviewsAsync();
 
+        Task<IEnumerable<ArtistRecordDiscDto>> ListRecordsWithNoTracksAsync();
+
         Task<int> InsertAsync(int artistId, string name, string field, int recorded, string label, string pressing,
             string rating, int discs, string media, DateTime bought, decimal cost, string coverName, string review);
 
