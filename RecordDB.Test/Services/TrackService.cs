@@ -18,11 +18,10 @@ namespace RecordDB.Test.Services
 
         public async Task RunAsync()
         {
-            await SelectTrack();
+            // await SelectTrack();
             // await SelectTracksAsync();
-            // await SelectArtistRecordTracksAsync();
+            await SelectArtistRecordTracksAsync();
             // await SelectTracksByRecordAsync();
-            // await SelectArtistRecordTracksAsync();
             // await GetNumberOfTracksAsync();
             // await InsertTrackAsync();
             // await UpdateTrackAsync();
@@ -68,9 +67,9 @@ namespace RecordDB.Test.Services
 
         public async Task SelectArtistRecordTracksAsync()
         {
-            var recordId = 290;
+            var name = "Blonde On Blonde";
 
-            var tracks = await _trackRepository.SelectArtistRecordTracksAsync(recordId.ToString());
+            var tracks = await _trackRepository.SelectArtistRecordTracksAsync(name.ToString());
             foreach (var track in tracks)
             {
                 string length = track.TrackLength.HasValue ? TimeSpan.FromSeconds(track.TrackLength.Value).ToString(@"hh\:mm\:ss") : "unk";

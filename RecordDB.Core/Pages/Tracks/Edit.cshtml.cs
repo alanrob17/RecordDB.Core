@@ -50,12 +50,6 @@ namespace RecordDB.Core.Pages.Tracks
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
-            {
-                _logger.LogWarning("Edit Track validation failed for track {TrackId}", Track.TrackId);
-                return Page();
-            }
-
             await _trackRepository.UpdateTrackAsync(Track);
             _logger.LogInformation("Track ID {TrackId} updated successfully", Track.TrackId);
 

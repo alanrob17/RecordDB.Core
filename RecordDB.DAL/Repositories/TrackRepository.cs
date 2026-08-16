@@ -28,7 +28,7 @@ namespace RecordDB.DAL.Repositories
         
         public async Task<IEnumerable<ArtistRecordDiscTrackDto>> SelectArtistRecordTracksAsync(string name)
         {
-            string sproc = "up_GetTrackListing";
+            string sproc = "up_SelectRecordTracks";
             return await _db.GetData<ArtistRecordDiscTrackDto, dynamic>(sproc, new { Name = name });
         }
 

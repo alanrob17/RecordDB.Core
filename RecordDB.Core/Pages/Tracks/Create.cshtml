@@ -20,12 +20,37 @@
 
     <form method="post">
 
+        <!-- ── Record / Disc selector ─────────────────────────────────── -->
         <div class="form-group">
-            <label asp-for="Track.DiscId">Disc ID</label>
-            <input type="text" asp-for="Track.DiscId" placeholder="e.g. 42" />
-            <span asp-validation-for="Track.DiscId" class="field-validation-error"></span>
+            <label for="recordSearch">Search Record</label>
+            <input type="search"
+                   id="recordSearch"
+                   placeholder="Type part of a record name…"
+                   autocomplete="off" />
         </div>
 
+        <div class="form-group" id="recordSelectGroup" style="display:none">
+            <label for="recordSelect">Record</label>
+            <select id="recordSelect">
+                <option value="">— select a record —</option>
+            </select>
+        </div>
+
+        <div class="form-group" id="discSelectGroup" style="display:none">
+            <label for="discSelect">Disc</label>
+            <select id="discSelect">
+                <option value="">— select a disc —</option>
+            </select>
+        </div>
+
+        <!-- confirmation strip -->
+        <div id="discSummary" class="disc-summary" style="display:none"></div>
+
+        <!-- hidden field that carries DiscId to OnPostAsync -->
+        <input type="hidden" asp-for="Track.DiscId" id="hiddenDiscId" />
+        <span asp-validation-for="Track.DiscId" class="field-validation-error"></span>
+
+        <!-- ── Track fields ──────────────────────────────────────────────── -->
         <div class="form-group">
             <label asp-for="Track.TrackNo">Track Number</label>
             <input type="number" asp-for="Track.TrackNo" placeholder="e.g. 1" />
@@ -61,4 +86,148 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <style>
+        .disc-summary {
+            margin-bottom: 1rem;
+            padding: 0.55rem 0.85rem;
+            border-radius: 6px;
+            background: color-mix(in srgb, var(--color-primary, #4f46e5) 10%, transparent);
+            border: 1px solid color-mix(in srgb, var(--color-primary, #4f46e5) 25%, transparent);
+            font-size: 0.875rem;
+            color: var(--color-text, #374151);
+        }
+    </style>
+
+    <script>
+    (function () {
+        const searchInput   = document.getElementById('recordSearch');
+        const recordGroup   = document.getElementById('recordSelectGroup');
+        const recordSelect  = document.getElementById('recordSelect');
+        const discGroup     = document.getElementById('discSelectGroup');
+        const discSelect    = document.getElementById('discSelect');
+        const hiddenDiscId  = document.getElementById('hiddenDiscId');
+        const discSummary   = document.getElementById('discSummary');
+
+        // All disc rows returned from the last search, keyed by recordId
+        let discData = [];
+
+        // ── 1. Debounced search ───────────────────────────────────────────
+        let debounceTimer;
+        searchInput.addEventListener('input', function () {
+            clearTimeout(debounceTimer);
+            const term = this.value.trim();
+
+            if (term.length < 2) {
+                recordGroup.style.display = 'none';
+                discGroup.style.display   = 'none';
+                discSummary.style.display = 'none';
+                hiddenDiscId.value = '';
+                discData = [];
+                return;
+            }
+
+            debounceTimer = setTimeout(() => fetchRecords(term), 300);
+        });
+
+        async function fetchRecords(term) {
+            try {
+                const url  = `?handler=Search&name=${encodeURIComponent(term)}`;
+                const resp = await fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+                discData   = await resp.json();
+                populateRecordDropdown();
+            } catch (e) {
+                console.error('Record search failed:', e);
+            }
+        }
+
+        // ── 2. Populate Record dropdown (unique records) ──────────────────
+        function populateRecordDropdown() {
+            // De-duplicate by RecordId
+            const seen    = new Set();
+            const records = discData.filter(d => {
+                if (seen.has(d.recordId)) return false;
+                seen.add(d.recordId);
+                return true;
+            });
+
+            recordSelect.innerHTML = '<option value="">— select a record —</option>';
+            records.forEach(r => {
+                const opt   = document.createElement('option');
+                opt.value   = r.recordId;
+                opt.text    = `${r.artistName} — ${r.name}`;
+                recordSelect.appendChild(opt);
+            });
+
+            // If only one result, auto-select it
+            if (records.length === 1) {
+                recordSelect.value = records[0].recordId;
+                populateDiscDropdown(records[0].recordId);
+            } else {
+                discGroup.style.display   = 'none';
+                discSummary.style.display = 'none';
+                hiddenDiscId.value = '';
+            }
+
+            recordGroup.style.display = records.length > 0 ? '' : 'none';
+        }
+
+        // ── 3. Record change → populate Disc dropdown ─────────────────────
+        recordSelect.addEventListener('change', function () {
+            const recordId = parseInt(this.value, 10);
+            if (!recordId) {
+                discGroup.style.display   = 'none';
+                discSummary.style.display = 'none';
+                hiddenDiscId.value = '';
+                return;
+            }
+            populateDiscDropdown(recordId);
+        });
+
+        function populateDiscDropdown(recordId) {
+            const discs = discData
+                .filter(d => d.recordId === recordId)
+                .sort((a, b) => a.discNo - b.discNo);
+
+            discSelect.innerHTML = '<option value="">— select a disc —</option>';
+            discs.forEach(d => {
+                const opt  = document.createElement('option');
+                opt.value  = d.discId;
+                opt.text   = `Disc ${d.discNo}`;
+                discSelect.appendChild(opt);
+            });
+
+            // Auto-select if only one disc
+            if (discs.length === 1) {
+                discSelect.value   = discs[0].discId;
+                hiddenDiscId.value = discs[0].discId;
+                showSummary(discs[0]);
+            } else {
+                hiddenDiscId.value        = '';
+                discSummary.style.display = 'none';
+            }
+
+            discGroup.style.display = '';
+        }
+
+        // ── 4. Disc change → update hidden field + summary ────────────────
+        discSelect.addEventListener('change', function () {
+            const discId = parseInt(this.value, 10);
+            hiddenDiscId.value = discId || '';
+
+            if (!discId) {
+                discSummary.style.display = 'none';
+                return;
+            }
+            const disc = discData.find(d => d.discId === discId);
+            if (disc) showSummary(disc);
+        });
+
+        function showSummary(disc) {
+            discSummary.textContent = `✓ ${disc.artistName} — ${disc.name}  ·  Disc ${disc.discNo}  (DiscId: ${disc.discId})`;
+            discSummary.style.display = '';
+        }
+    })();
+    </script>
 }
+

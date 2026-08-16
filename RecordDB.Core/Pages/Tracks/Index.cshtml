@@ -66,6 +66,7 @@
                 <th>Disc #</th>
                 <th>Track #</th>
                 <th>Track Name</th>
+                <th>Length</th>
                 <th></th>
             </tr>
         </thead>
@@ -86,6 +87,16 @@
                         <td>@item.DiscNo</td>
                         <td>@item.TrackNo</td>
                         <td>@(string.IsNullOrEmpty(item.TrackName) ? "—" : item.TrackName)</td>
+                        <td class="td-length">
+                            @if (item.TrackLength.HasValue)
+                            {
+                                @TimeSpan.FromSeconds(item.TrackLength.Value).ToString(@"hh\:mm\:ss")
+                            }
+                            else
+                            {
+                                <span>Unknown</span>
+                            }
+                        </td>
                         <td class="td-actions">
                             <a asp-page="./Edit"    asp-route-id="@item.TrackId" class="action-link action-edit">Edit</a>
                             <a asp-page="./Details" asp-route-id="@item.TrackId" class="action-link action-details">Details</a>

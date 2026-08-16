@@ -13,6 +13,6 @@ namespace RecordDB.DAL.Models
         public int? TrackLength { get; set; }
         public string? Extended { get; set; }
 
-        public virtual Disc Disc { get; set; } = null!;
+        public virtual Disc? Disc { get; set; }
     }
 }
