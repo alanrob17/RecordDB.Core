@@ -1,0 +1,64 @@
+@page
+@model RecordDB.Core.Pages.Tracks.CreateModel
+@{
+    ViewData["Title"] = "Add Track";
+}
+
+<div class="page-header">
+    <h1 class="page-title"><span>Add</span> Track</h1>
+    <a asp-page="./Index" class="btn-rdb btn-secondary-rdb">← Back to Tracks</a>
+</div>
+
+<div class="rdb-form-card">
+
+    @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ContainsKey(string.Empty))
+    {
+        <div class="form-error-banner">
+            @Html.ValidationSummary(false)
+        </div>
+    }
+
+    <form method="post">
+
+        <div class="form-group">
+            <label asp-for="Track.DiscId">Disc ID</label>
+            <input type="text" asp-for="Track.DiscId" placeholder="e.g. 42" />
+            <span asp-validation-for="Track.DiscId" class="field-validation-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Track.TrackNo">Track Number</label>
+            <input type="number" asp-for="Track.TrackNo" placeholder="e.g. 1" />
+            <span asp-validation-for="Track.TrackNo" class="field-validation-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Track.Name">Track Name</label>
+            <input type="text" asp-for="Track.Name" placeholder="e.g. Starman" />
+            <span asp-validation-for="Track.Name" class="field-validation-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Track.TrackLength">Length (seconds)</label>
+            <input type="number" asp-for="Track.TrackLength" placeholder="e.g. 243" />
+            <span asp-validation-for="Track.TrackLength" class="field-validation-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Track.Extended">Extended Info</label>
+            <input type="text" asp-for="Track.Extended" placeholder="Extended info (optional)" />
+            <span asp-validation-for="Track.Extended" class="field-validation-error"></span>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-rdb btn-primary-rdb">Save Track</button>
+            <a asp-page="./Index" class="btn-rdb btn-secondary-rdb">Cancel</a>
+        </div>
+
+    </form>
+
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

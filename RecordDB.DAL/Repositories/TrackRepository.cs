@@ -1,4 +1,4 @@
-﻿using Dapper;
+using Dapper;
 using RecordDB.DAL.Data;
 using RecordDB.DAL.DTOs;
 using RecordDB.DAL.Models;
@@ -26,10 +26,10 @@ namespace RecordDB.DAL.Repositories
             return await _db.GetData<ArtistRecordDiscTrackDto, dynamic>(sproc, new { });
         }
         
-        public async Task<IEnumerable<ArtistRecordDiscTrackDto>> SelectArtistRecordTracksAsync(int recordId)
+        public async Task<IEnumerable<ArtistRecordDiscTrackDto>> SelectArtistRecordTracksAsync(string name)
         {
             string sproc = "up_GetTrackListing";
-            return await _db.GetData<ArtistRecordDiscTrackDto, dynamic>(sproc, new { RecordId = recordId });
+            return await _db.GetData<ArtistRecordDiscTrackDto, dynamic>(sproc, new { Name = name });
         }
 
         public async Task<IEnumerable<ArtistRecordDiscTrackDto>> SelectTracksByRecordAsync(string name)

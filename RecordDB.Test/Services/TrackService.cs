@@ -1,4 +1,4 @@
-﻿using RecordDB.DAL.Models;
+using RecordDB.DAL.Models;
 using RecordDB.DAL.Repositories;
 using System;
 using System.Collections.Generic;
@@ -70,7 +70,7 @@ namespace RecordDB.Test.Services
         {
             var recordId = 290;
 
-            var tracks = await _trackRepository.SelectArtistRecordTracksAsync(recordId);
+            var tracks = await _trackRepository.SelectArtistRecordTracksAsync(recordId.ToString());
             foreach (var track in tracks)
             {
                 string length = track.TrackLength.HasValue ? TimeSpan.FromSeconds(track.TrackLength.Value).ToString(@"hh\:mm\:ss") : "unk";

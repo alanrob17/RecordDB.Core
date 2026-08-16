@@ -1,4 +1,4 @@
-﻿using RecordDB.DAL.DTOs;
+using RecordDB.DAL.DTOs;
 using RecordDB.DAL.Models;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ namespace RecordDB.DAL.Repositories
     public interface ITrackRepository
     {
         Task<IEnumerable<ArtistRecordDiscTrackDto>> SelectAllTrackEntitiesAsync();
-        Task<IEnumerable<ArtistRecordDiscTrackDto>> SelectArtistRecordTracksAsync(int recordId);
+        Task<IEnumerable<ArtistRecordDiscTrackDto>> SelectArtistRecordTracksAsync(string name);
         Task<IEnumerable<ArtistRecordDiscTrackDto>> SelectTracksByRecordAsync(string name);
         Task<ArtistRecordDiscTrackDto> SelectTrackByIdAsync(int trackId);
         Task<int> GetTrackNumberAsync(int recordId);
