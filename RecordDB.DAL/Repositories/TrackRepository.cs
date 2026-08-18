@@ -105,5 +105,37 @@ namespace RecordDB.DAL.Repositories
             var result = await _db.GetData<ArtistRecordDiscTrackDto, dynamic>(sproc, new { TrackId = trackId });
             return result.FirstOrDefault();
         }
+
+        public async Task BulkTrackInsertAsync(List<Track> tracks)
+        {
+            string sproc = "up_InsertTracks";
+            //return _db.SaveData(sproc, tracks);
+
+            var trackTable = new DataTable();
+            trackTable.Columns.Add("DiscId", typeof(int));
+            trackTable.Columns.Add("TrackNo", typeof(int));
+            trackTable.Columns.Add("Name", typeof(string));
+            trackTable.Columns.Add("TrackLength", typeof(int));
+            trackTable.Columns.Add("Extended", typeof(string));
+
+            foreach (var track in tracks)
+            {
+                trackTable.Rows.Add(
+                    track.DiscId,
+                    track.TrackNo,
+                    track.Name,
+                    track.TrackLength,
+                    track.Extended
+                );
+            }
+
+            // Pass as Table-Valued Parameter
+            var parameters = new
+            {
+                Tracks = trackTable.AsTableValuedParameter("dbo.TrackTableType")
+            };
+
+            await _db.SaveData(sproc, parameters);
+        }
     }
 }

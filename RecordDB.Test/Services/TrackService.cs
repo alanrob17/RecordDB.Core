@@ -20,15 +20,14 @@ namespace RecordDB.Test.Services
         {
             // await SelectTrack();
             // await SelectTracksAsync();
-            await SelectArtistRecordTracksAsync();
+            // await SelectArtistRecordTracksAsync();
             // await SelectTracksByRecordAsync();
             // await GetNumberOfTracksAsync();
             // await InsertTrackAsync();
             // await UpdateTrackAsync();
             // await DeleteTrackAsync();
-
+            await BulkInsertAsync();
         }
-
 
         public async Task SelectTrack()
         {
@@ -129,6 +128,31 @@ namespace RecordDB.Test.Services
             var trackId = 9817;
 
             await _trackRepository.DeleteTrackAsync(trackId);
+        }
+
+        public async Task BulkInsertAsync()
+        {
+            List<Track> tracks = new List<Track>
+            {
+                new Track
+                {
+                    DiscId = 5606,
+                    TrackNo = 1,
+                    Name = "Wobble With The Wibble Dogs",
+                    TrackLength = 180,
+                    Extended = "Test Extended"
+                },
+                new Track
+                {
+                    DiscId = 5606,
+                    TrackNo = 2,
+                    Name = "Another Track",
+                    TrackLength = 200,
+                    Extended = "Test Extended 2"
+                }
+            };
+
+            await _trackRepository.BulkTrackInsertAsync(tracks);
         }
     }
 }

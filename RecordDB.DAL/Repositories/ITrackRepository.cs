@@ -16,5 +16,6 @@ namespace RecordDB.DAL.Repositories
         Task<int> InsertTrackAsync(Track track);
         Task<int> UpdateTrackAsync(Track track);
         Task DeleteTrackAsync(int trackId);
+        Task BulkTrackInsertAsync(List<Track> tracks);
     }
 }
