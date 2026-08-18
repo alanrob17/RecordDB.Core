@@ -55,8 +55,14 @@
             </div>
         </div>
 
-        <!-- Quick Links for Biography and Review -->
+        <!-- Quick Links for Track Listing, Biography and Review -->
         <div class="rv-quick-links">
+            @if (Model.HasTracks)
+            {
+                <a href="#tracklist-section" class="rv-quick-btn" onclick="openDrawer('tracklist-section'); return true;">
+                    🎶 Show Track Listing
+                </a>
+            }
             <a href="#biography-section" class="rv-quick-btn" onclick="openDrawer('biography-section'); return true;">
                 📜 Show Artist Biography
             </a>
@@ -121,6 +127,68 @@
                 </div>
             </div>
         </div>
+
+        @* Collapsible Section: Track Listing *@
+        @if (Model.HasTracks)
+        {
+            <div id="tracklist-section" class="rv-info-section">
+                <div class="rv-info-header">
+                    <h3>🎶 Track Listing</h3>
+                    <button type="button" class="rv-toggle-btn" onclick="toggleDrawer('tracklist-section')">Toggle</button>
+                </div>
+                <div class="rv-info-content rv-tracklist">
+                    @foreach (var disc in Model.TracksByDisc)
+                    {
+                        int discNumber = disc.Key;
+                        var tracks = disc.Value;
+
+                        @* Look up the disc-level metadata row (carries the disc total Length) *@
+                        var discMeta = Model.Discs.FirstOrDefault(d => d.DiscNo == discNumber);
+                        string discDuration = RecordDB.Core.Pages.Records.RecordViewModel.FormatLength(discMeta?.Length);
+
+                        @* Only show a disc header when the record has multiple discs *@
+                        @if (Model.TracksByDisc.Count > 1)
+                        {
+                            <div class="rv-disc-header">
+                                <span class="rv-disc-icon">💿</span>
+                                <span class="rv-disc-label">Disc @discNumber</span>
+                                <span class="rv-disc-track-count">
+                                    @tracks.Count track@(tracks.Count == 1 ? "" : "s")
+                                    @if (!string.IsNullOrEmpty(discDuration))
+                                    {
+                                        <span class="rv-disc-duration">· @discDuration</span>
+                                    }
+                                </span>
+                            </div>
+                        }
+
+                        <ol class="rv-track-list">
+                            @foreach (var track in tracks)
+                            {
+                                <li class="rv-track-item">
+                                    <span class="rv-track-number">@track.TrackNo</span>
+                                    <span class="rv-track-name">
+                                        @track.TrackName
+                                        @if (!string.IsNullOrWhiteSpace(track.Extended))
+                                        {
+                                            <span class="rv-track-extended">@track.Extended</span>
+                                        }
+                                    </span>
+                                    @{
+                                        string duration = RecordDB.Core.Pages.Records.RecordViewModel.FormatLength(track.TrackLength);
+                                    }
+                                    @if (!string.IsNullOrEmpty(duration))
+                                    {
+                                        <span class="rv-track-duration">@duration</span>
+                                    }
+                                </li>
+                            }
+                        </ol>
+                    }
+                </div>
+            </div>
+        }
+
 
         <!-- Collapsible / Targeted Section: Artist Biography -->
         <div id="biography-section" class="rv-info-section">
