@@ -1,0 +1,384 @@
+@page
+@model RecordDB.Core.Pages.Tracks.BulkInsertModel
+@{
+    ViewData["Title"] = "Bulk Insert Tracks";
+}
+
+<div class="page-header">
+    <h1 class="page-title"><span>Bulk Insert</span> Tracks</h1>
+    <a asp-page="./Index" class="btn-rdb btn-secondary-rdb">← Back to Tracks</a>
+</div>
+
+<div class="rdb-form-card" style="max-width: 860px;">
+
+    @* ── Error banner ──────────────────────────────────────────────────────── *@
+    @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ContainsKey(string.Empty))
+    {
+        <div class="form-error-banner">
+            @Html.ValidationSummary(false)
+        </div>
+    }
+
+    @* ── Per-row parse errors ─────────────────────────────────────────────── *@
+    @if (Model.ParseErrors.Count > 0)
+    {
+        <div class="bi-parse-errors">
+            <strong>⚠️ Parse errors — correct these rows and resubmit:</strong>
+            <ul>
+                @foreach (var err in Model.ParseErrors)
+                {
+                    <li>@err</li>
+                }
+            </ul>
+        </div>
+    }
+
+    <form method="post">
+
+        @* ── Step 1 : Record / Disc selector (same AJAX pattern as Create) ── *@
+        <div class="bi-step">
+            <div class="bi-step-label">Step 1 — Select a Record &amp; Disc</div>
+
+            <div class="form-group">
+                <label for="recordSearch">Search Record</label>
+                <div class="search-input-wrap" style="max-width:480px;">
+                    <span class="search-icon">🔍</span>
+                    <input type="search"
+                           id="recordSearch"
+                           class="search-input"
+                           placeholder="Type part of a record name…"
+                           autocomplete="off" />
+                </div>
+            </div>
+
+            <div class="form-group" id="recordSelectGroup" style="display:none">
+                <label for="recordSelect">Record</label>
+                <select id="recordSelect" class="form-select" style="max-width:480px;">
+                    <option value="">— select a record —</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="discSelectGroup" style="display:none">
+                <label for="discSelect">Disc</label>
+                <select id="discSelect" class="form-select" style="max-width:480px;">
+                    <option value="">— select a disc —</option>
+                </select>
+            </div>
+
+            <div id="discSummary" class="disc-summary" style="display:none"></div>
+
+            @* Hidden field carries the chosen DiscId to OnPostAsync *@
+            <input type="hidden" asp-for="DiscId" id="hiddenDiscId" />
+            <span asp-validation-for="DiscId" class="field-validation-error"></span>
+        </div>
+
+        @* ── Step 2 : CSV track data ───────────────────────────────────────── *@
+        <div class="bi-step">
+            <div class="bi-step-label">Step 2 — Paste Track Data</div>
+
+            <div class="form-group">
+                <label asp-for="TrackData">
+                    Track Data
+                    <span class="bi-format-hint">
+                        (semicolon-delimited: <code>DiscNo;TrackNo;Name;TrackLength;Extended</code>)
+                    </span>
+                </label>
+                <textarea asp-for="TrackData"
+                          id="trackDataArea"
+                          class="bi-textarea"
+                          rows="18"
+                          placeholder="1;1;Rainy Day Women #12 &amp; 35;00:04:36;
+1;2;Pledging My Time;00:03:45;
+1;3;Visions Of Johanna;00:07:30;extended 2
+..."></textarea>
+                <span asp-validation-for="TrackData" class="field-validation-error"></span>
+            </div>
+
+            @* Live preview counter *@
+            <div class="bi-counter">
+                Rows detected: <strong id="rowCount">0</strong>
+            </div>
+        </div>
+
+        @* ── Step 3 : Format reference ─────────────────────────────────────── *@
+        <div class="bi-step bi-step-reference">
+            <div class="bi-step-label">Format Reference</div>
+            <table class="bi-ref-table">
+                <thead>
+                    <tr>
+                        <th>Field</th>
+                        <th>Description</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>DiscNo</code></td>   <td>Disc number (informational)</td>                             <td><code>1</code></td></tr>
+                    <tr><td><code>TrackNo</code></td>  <td>Track number on the disc</td>                               <td><code>3</code></td></tr>
+                    <tr><td><code>Name</code></td>     <td>Track title</td>                                             <td><code>Visions Of Johanna</code></td></tr>
+                    <tr><td><code>TrackLength</code></td><td>Duration — <code>hh:mm:ss</code>, <code>mm:ss</code>, or empty</td><td><code>00:07:30</code></td></tr>
+                    <tr><td><code>Extended</code></td> <td>Extra note — may be empty</td>                              <td><code>extended 2</code></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-rdb btn-primary-rdb" id="submitBtn">
+                💾 Insert Tracks
+            </button>
+            <a asp-page="./Index" class="btn-rdb btn-secondary-rdb">Cancel</a>
+        </div>
+
+    </form>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+    <style>
+        /* ── BulkInsert page styles ───────────────────────────────── */
+        .bi-step {
+            margin-bottom: 1.75rem;
+            padding: 1.25rem 1.5rem;
+            background: var(--color-surface-alt, #f8f9fb);
+            border: 1px solid var(--color-border, #dde1ea);
+            border-radius: var(--radius-md, 10px);
+        }
+
+        .bi-step-label {
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--color-accent, #4f46e5);
+            margin-bottom: 1rem;
+        }
+
+        .bi-format-hint {
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: var(--color-text-muted, #6b7280);
+            margin-left: 0.4rem;
+        }
+
+        .bi-textarea {
+            width: 100%;
+            font-family: ui-monospace, "Cascadia Code", "Fira Code", Consolas, monospace;
+            font-size: 0.82rem;
+            line-height: 1.55;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--color-border, #dde1ea);
+            border-radius: var(--radius-sm, 6px);
+            background: var(--color-surface, #fff);
+            color: var(--color-text, #111827);
+            resize: vertical;
+            transition: border-color 0.2s;
+        }
+
+        .bi-textarea:focus {
+            outline: none;
+            border-color: var(--color-accent, #4f46e5);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent, #4f46e5) 12%, transparent);
+        }
+
+        .bi-counter {
+            margin-top: 0.5rem;
+            font-size: 0.82rem;
+            color: var(--color-text-muted, #6b7280);
+        }
+
+        .bi-parse-errors {
+            margin-bottom: 1.25rem;
+            padding: 0.85rem 1.1rem;
+            background: color-mix(in srgb, var(--color-danger, #dc2626) 8%, transparent);
+            border: 1px solid color-mix(in srgb, var(--color-danger, #dc2626) 30%, transparent);
+            border-radius: var(--radius-sm, 6px);
+            font-size: 0.875rem;
+            color: var(--color-danger, #dc2626);
+        }
+
+        .bi-parse-errors ul {
+            margin: 0.5rem 0 0 1.25rem;
+            padding: 0;
+        }
+
+        .bi-step-reference { background: var(--color-surface, #fff); }
+
+        .bi-ref-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .bi-ref-table th {
+            padding: 0.4rem 0.75rem;
+            text-align: left;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--color-text-muted, #6b7280);
+            border-bottom: 2px solid var(--color-border, #dde1ea);
+        }
+
+        .bi-ref-table td {
+            padding: 0.4rem 0.75rem;
+            border-bottom: 1px solid var(--color-border, #dde1ea);
+            color: var(--color-text, #111827);
+            vertical-align: middle;
+        }
+
+        .bi-ref-table tr:last-child td { border-bottom: none; }
+
+        .disc-summary {
+            margin-top: 0.75rem;
+            padding: 0.55rem 0.85rem;
+            border-radius: 6px;
+            background: color-mix(in srgb, var(--color-accent, #4f46e5) 10%, transparent);
+            border: 1px solid color-mix(in srgb, var(--color-accent, #4f46e5) 25%, transparent);
+            font-size: 0.875rem;
+            color: var(--color-text, #374151);
+        }
+    </style>
+
+    <script>
+    (function () {
+        // ── Element refs ─────────────────────────────────────────────────────
+        const searchInput  = document.getElementById('recordSearch');
+        const recordGroup  = document.getElementById('recordSelectGroup');
+        const recordSelect = document.getElementById('recordSelect');
+        const discGroup    = document.getElementById('discSelectGroup');
+        const discSelect   = document.getElementById('discSelect');
+        const hiddenDiscId = document.getElementById('hiddenDiscId');
+        const discSummary  = document.getElementById('discSummary');
+        const textarea     = document.getElementById('trackDataArea');
+        const rowCount     = document.getElementById('rowCount');
+        const submitBtn    = document.getElementById('submitBtn');
+
+        let discData = [];
+
+        // ── 1. Debounced record search ────────────────────────────────────────
+        let debounceTimer;
+        searchInput.addEventListener('input', function () {
+            clearTimeout(debounceTimer);
+            const term = this.value.trim();
+
+            if (term.length < 2) {
+                recordGroup.style.display = 'none';
+                discGroup.style.display   = 'none';
+                discSummary.style.display = 'none';
+                hiddenDiscId.value = '';
+                discData = [];
+                return;
+            }
+
+            debounceTimer = setTimeout(() => fetchRecords(term), 300);
+        });
+
+        async function fetchRecords(term) {
+            try {
+                const url  = `?handler=Search&name=${encodeURIComponent(term)}`;
+                const resp = await fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+                discData   = await resp.json();
+                populateRecordDropdown();
+            } catch (e) {
+                console.error('Record search failed:', e);
+            }
+        }
+
+        // ── 2. Record dropdown ────────────────────────────────────────────────
+        function populateRecordDropdown() {
+            const seen    = new Set();
+            const records = discData.filter(d => {
+                if (seen.has(d.recordId)) return false;
+                seen.add(d.recordId);
+                return true;
+            });
+
+            recordSelect.innerHTML = '<option value="">— select a record —</option>';
+            records.forEach(r => {
+                const opt = document.createElement('option');
+                opt.value = r.recordId;
+                opt.text  = `${r.artistName} — ${r.name}`;
+                recordSelect.appendChild(opt);
+            });
+
+            if (records.length === 1) {
+                recordSelect.value = records[0].recordId;
+                populateDiscDropdown(records[0].recordId);
+            } else {
+                discGroup.style.display   = 'none';
+                discSummary.style.display = 'none';
+                hiddenDiscId.value = '';
+            }
+
+            recordGroup.style.display = records.length > 0 ? '' : 'none';
+        }
+
+        // ── 3. Record change → disc dropdown ──────────────────────────────────
+        recordSelect.addEventListener('change', function () {
+            const recordId = parseInt(this.value, 10);
+            if (!recordId) {
+                discGroup.style.display   = 'none';
+                discSummary.style.display = 'none';
+                hiddenDiscId.value = '';
+                return;
+            }
+            populateDiscDropdown(recordId);
+        });
+
+        function populateDiscDropdown(recordId) {
+            const discs = discData
+                .filter(d => d.recordId === recordId)
+                .sort((a, b) => a.discNo - b.discNo);
+
+            discSelect.innerHTML = '<option value="">— select a disc —</option>';
+            discs.forEach(d => {
+                const opt = document.createElement('option');
+                opt.value = d.discId;
+                opt.text  = `Disc ${d.discNo}  (DiscId: ${d.discId})`;
+                discSelect.appendChild(opt);
+            });
+
+            if (discs.length === 1) {
+                discSelect.value   = discs[0].discId;
+                hiddenDiscId.value = discs[0].discId;
+                showSummary(discs[0]);
+            } else {
+                hiddenDiscId.value        = '';
+                discSummary.style.display = 'none';
+            }
+
+            discGroup.style.display = '';
+        }
+
+        // ── 4. Disc change ───────────────────────────────────────────────────
+        discSelect.addEventListener('change', function () {
+            const discId = parseInt(this.value, 10);
+            hiddenDiscId.value = discId || '';
+
+            if (!discId) { discSummary.style.display = 'none'; return; }
+            const disc = discData.find(d => d.discId === discId);
+            if (disc) showSummary(disc);
+        });
+
+        function showSummary(disc) {
+            discSummary.textContent =
+                `✓  ${disc.artistName} — ${disc.name}  ·  Disc ${disc.discNo}  (DiscId: ${disc.discId})`;
+            discSummary.style.display = '';
+        }
+
+        // ── 5. Live row counter ──────────────────────────────────────────────
+        function countRows() {
+            if (!textarea) return;
+            const lines = textarea.value
+                .split(/[\r\n]+/)
+                .map(l => l.trim())
+                .filter(l => l.length > 0 && /^\d/.test(l));   // starts with digit → data row
+            rowCount.textContent = lines.length;
+        }
+
+        textarea.addEventListener('input', countRows);
+        countRows();
+    })();
+    </script>
+}

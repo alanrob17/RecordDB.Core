@@ -1,4 +1,6 @@
 using Dapper;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using RecordDB.DAL.Data;
 using RecordDB.DAL.DTOs;
 using RecordDB.DAL.Models;
@@ -6,19 +8,23 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
-using System.Xml.Linq;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace RecordDB.DAL.Repositories
 {
     public class TrackRepository : ITrackRepository
     {
         private readonly IDataAccess _db;
+        private readonly IConfiguration _configuration;
 
-        public TrackRepository(IDataAccess db)
+        public TrackRepository(IDataAccess db, IConfiguration configuration)
         {
             _db = db;
+            _configuration = configuration;
         }
+
+        private string GetConnectionString() =>
+            _configuration.GetConnectionString("RecordDb")
+                ?? throw new InvalidOperationException("Connection string 'RecordDb' is not configured.");
 
         public async Task<IEnumerable<ArtistRecordDiscTrackDto>> SelectAllTrackEntitiesAsync()
         {
@@ -130,6 +136,55 @@ namespace RecordDB.DAL.Repositories
             }
 
             // Pass as Table-Valued Parameter
+            var parameters = new
+            {
+                Tracks = trackTable.AsTableValuedParameter("dbo.TrackTableType")
+            };
+
+            await _db.SaveData(sproc, parameters);
+        }
+
+        /// <summary>
+        /// Calls up_CheckForTracks and returns the @TrackCount OUTPUT value.
+        /// A value > 0 means the disc already has tracks.
+        /// </summary>
+        public async Task<int> CheckForTracksAsync(int discId)
+        {
+            string sproc = "up_CheckForTracks";
+            var parameters = new DynamicParameters();
+            parameters.Add("@DiscId", discId);
+            parameters.Add("@TrackCount", dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+            using SqlConnection connection = new(GetConnectionString());
+            await connection.ExecuteAsync(sproc, parameters, commandType: CommandType.StoredProcedure);
+            return parameters.Get<int>("@TrackCount");
+        }
+
+        /// <summary>
+        /// Bulk-inserts a full disc of tracks via up_InsertTracks using the TrackTableType TVP.
+        /// </summary>
+        public async Task BulkInsertTracksAsync(IEnumerable<Track> tracks)
+        {
+            string sproc = "up_InsertTracks";
+
+            var trackTable = new DataTable();
+            trackTable.Columns.Add("DiscId",      typeof(int));
+            trackTable.Columns.Add("TrackNo",     typeof(int));
+            trackTable.Columns.Add("Name",        typeof(string));
+            trackTable.Columns.Add("TrackLength", typeof(int));
+            trackTable.Columns.Add("Extended",    typeof(string));
+            
+            foreach (var track in tracks)
+            {
+                trackTable.Rows.Add(
+                    track.DiscId,
+                    track.TrackNo,
+                    track.Name ?? string.Empty,
+                    (object?)track.TrackLength ?? DBNull.Value,
+                    (object?)track.Extended    ?? DBNull.Value
+                );
+            }
+
             var parameters = new
             {
                 Tracks = trackTable.AsTableValuedParameter("dbo.TrackTableType")
