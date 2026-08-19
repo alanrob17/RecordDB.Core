@@ -142,16 +142,28 @@
                         int discNumber = disc.Key;
                         var tracks = disc.Value;
 
-                        @* Look up the disc-level metadata row (carries the disc total Length) *@
-                        var discMeta = Model.Discs.FirstOrDefault(d => d.DiscNo == discNumber);
-                        string discDuration = RecordDB.Core.Pages.Records.RecordViewModel.FormatLength(discMeta?.Length);
+                        @* Look up the disc total length — summed from track lengths, with fallback to stored Disc.Length *@
+                        Model.DiscLengthByDisc.TryGetValue(discNumber, out int? discLengthSeconds);
+                        string discDuration = RecordDB.Core.Pages.Records.RecordViewModel.FormatLength(discLengthSeconds);
 
-                        @* Only show a disc header when the record has multiple discs *@
+                        @* Show disc header with track count and duration for all discs *@
                         @if (Model.TracksByDisc.Count > 1)
                         {
                             <div class="rv-disc-header">
                                 <span class="rv-disc-icon">💿</span>
                                 <span class="rv-disc-label">Disc @discNumber</span>
+                                <span class="rv-disc-track-count">
+                                    @tracks.Count track@(tracks.Count == 1 ? "" : "s")
+                                    @if (!string.IsNullOrEmpty(discDuration))
+                                    {
+                                        <span class="rv-disc-duration">· @discDuration</span>
+                                    }
+                                </span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="rv-disc-summary">
                                 <span class="rv-disc-track-count">
                                     @tracks.Count track@(tracks.Count == 1 ? "" : "s")
                                     @if (!string.IsNullOrEmpty(discDuration))

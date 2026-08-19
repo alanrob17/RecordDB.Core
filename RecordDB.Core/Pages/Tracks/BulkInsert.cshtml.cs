@@ -106,6 +106,13 @@ namespace RecordDB.Core.Pages.Tracks
 
                 await _trackRepository.BulkInsertTracksAsync(tracks);
                 InsertedCount = tracks.Count;
+
+                // if InsertedCount > 0 then calculate the total length of the disc and update the Disc.Length column
+                if (InsertedCount > 0)
+                { 
+                    var totalLength = tracks.Sum(t => t.TrackLength);
+                    await _discRepository.UpdateDiscLengthAsync(DiscId, totalLength);
+                }
             }
             catch (Exception ex)
             {

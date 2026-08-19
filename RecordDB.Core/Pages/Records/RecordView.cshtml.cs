@@ -38,6 +38,13 @@ namespace RecordDB.Core.Pages.Records
         public IReadOnlyList<ArtistRecordDiscTrackDto> Discs { get; set; }
             = Array.Empty<ArtistRecordDiscTrackDto>();
 
+        /// <summary>
+        /// Total length in seconds per disc number, calculated by summing TrackLength values.
+        /// Falls back to the stored Disc.Length column if no individual track lengths are available.
+        /// </summary>
+        public IReadOnlyDictionary<int, int?> DiscLengthByDisc { get; set; }
+            = new Dictionary<int, int?>();
+
         public bool HasTracks => TracksByDisc.Count > 0;
 
         public async Task<IActionResult> OnGetAsync(int id)
@@ -75,6 +82,19 @@ namespace RecordDB.Core.Pages.Records
                     .Select(g => g.First())
                     .OrderBy(d => d.DiscNo)
                     .ToList();
+
+                // Calculate disc total length by summing individual track lengths.
+                // Falls back to the stored Disc.Length column when track lengths are absent.
+                DiscLengthByDisc = TracksByDisc.ToDictionary(
+                    kvp => kvp.Key,
+                    kvp =>
+                    {
+                        int sum = kvp.Value.Sum(t => t.TrackLength ?? 0);
+                        if (sum > 0) return (int?)sum;
+                        // fall back to the disc-level stored length
+                        var meta = Discs.FirstOrDefault(d => d.DiscNo == kvp.Key);
+                        return meta?.Length;
+                    });
             }
 
             return Page();

@@ -1329,6 +1329,13 @@ tr.spacer-row td {
     margin-bottom: 0;
 }
 
+.rv-disc-summary {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.4rem 1.25rem 0.2rem;
+    color: var(--color-text-muted);
+}
+
 .rv-disc-icon {
     font-size: 1.1rem;
 }

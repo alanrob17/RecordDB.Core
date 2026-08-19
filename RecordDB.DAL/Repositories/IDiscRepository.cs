@@ -13,5 +13,6 @@ namespace RecordDB.DAL.Repositories
         Task<int> InsertDiscAsync(Disc disc);
         Task<int> UpdateDiscAsync(Disc disc);
         Task DeleteDiscAsync(int discId);
+        Task UpdateDiscLengthAsync(int discId, int? totalLength);
     }
 }

@@ -111,5 +111,15 @@ namespace RecordDB.DAL.Repositories
                 return;
             }
         }
+
+        public async Task UpdateDiscLengthAsync(int discId, int? totalLength)
+        {
+            string sproc = "up_UpdateDiscLength";
+            var parameters = new DynamicParameters();
+            parameters.Add("@DiscId", discId);
+            parameters.Add("@Length", totalLength);
+
+            await _db.SaveData(sproc, parameters);
+        }
     }
 }
