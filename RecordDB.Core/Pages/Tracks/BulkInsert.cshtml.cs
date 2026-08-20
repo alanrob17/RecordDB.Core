@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using RecordDB.DAL.DTOs;
 using RecordDB.DAL.Models;
 using RecordDB.DAL.Repositories;
 using System.Globalization;
@@ -42,7 +43,22 @@ namespace RecordDB.Core.Pages.Tracks
 
         // ── GET ──────────────────────────────────────────────────────────────
 
-        public IActionResult OnGet() => Page();
+        /// <summary>
+        /// When navigating from the NoTracks page the DiscId is passed as a query-string
+        /// parameter so Step 1 (record/disc search) can be skipped.
+        /// </summary>
+        public ArtistRecordDiscDto? PreselectedDisc { get; private set; }
+
+        public async Task<IActionResult> OnGetAsync(int? discId = null)
+        {
+            if (discId.HasValue && discId.Value > 0)
+            {
+                PreselectedDisc = await _discRepository.SelectSingleDiscAsync(discId.Value);
+                if (PreselectedDisc is not null)
+                    DiscId = PreselectedDisc.DiscId;
+            }
+            return Page();
+        }
 
         // ── AJAX: disc/record search handler (same pattern as Create.cshtml) ─
 
@@ -58,6 +74,22 @@ namespace RecordDB.Core.Pages.Tracks
                 d.DiscNo
             });
             return new JsonResult(result);
+        }
+
+        // ── AJAX: single-disc lookup (used when arriving from NoTracks) ──────
+
+        public async Task<IActionResult> OnGetDiscAsync(int id)
+        {
+            var disc = await _discRepository.SelectSingleDiscAsync(id);
+            if (disc is null) return new JsonResult(null);
+            return new JsonResult(new
+            {
+                disc.RecordId,
+                disc.DiscId,
+                disc.ArtistName,
+                disc.Name,
+                disc.DiscNo
+            });
         }
 
         // ── POST ─────────────────────────────────────────────────────────────

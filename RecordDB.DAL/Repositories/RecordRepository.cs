@@ -391,13 +391,22 @@ namespace RecordDB.DAL.Repositories
             return records.ToList();
         }
 
-        public async Task<IEnumerable<ArtistRecordDiscDto>> ListRecordsWithNoTracksAsync()
+        public async Task<List<ArtistRecordDiscDto>> ListRecordsWithNoTracksAsync()
         {
             var sproc = "up_GetRecordsWithNoTracks";
 
             var records = await _db.GetData<ArtistRecordDiscDto, dynamic>(sproc, new { });
 
-            return records;
+            return records.ToList();
+        }
+
+        public async Task<List<ArtistRecordDiscDto>> ArtistRecordsWithNoTracksAsync(string name)
+        {
+            var sproc = "up_GetArtistRecordsWithNoTracks";
+            var parameter = new DynamicParameters();
+            parameter.Add("@Name", name);
+            var records = await _db.GetData<ArtistRecordDiscDto, dynamic>(sproc, parameter);
+            return records.ToList();
         }
     }
 }

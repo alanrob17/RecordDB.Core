@@ -39,33 +39,50 @@
         <div class="bi-step">
             <div class="bi-step-label">Step 1 — Select a Record &amp; Disc</div>
 
-            <div class="form-group">
-                <label for="recordSearch">Search Record</label>
-                <div class="search-input-wrap" style="max-width:480px;">
-                    <span class="search-icon">🔍</span>
-                    <input type="search"
-                           id="recordSearch"
-                           class="search-input"
-                           placeholder="Type part of a record name…"
-                           autocomplete="off" />
+            @if (Model.PreselectedDisc is not null)
+            {
+                @* ── Arrived from NoTracks: disc already known ── *@
+                <div class="disc-summary" style="display:block">
+                    ✓&nbsp; <strong>@Model.PreselectedDisc.ArtistName</strong>
+                    — @Model.PreselectedDisc.Name
+                    &nbsp;·&nbsp; Disc @Model.PreselectedDisc.DiscNo
+                    &nbsp;<span style="color:var(--color-text-muted,#6b7280)">(DiscId: @Model.PreselectedDisc.DiscId)</span>
                 </div>
-            </div>
+                <div style="margin-top:0.6rem;font-size:0.85rem">
+                    <a asp-page="/Records/NoTracks" class="action-link">← Back to Records With No Tracks</a>
+                </div>
+            }
+            else
+            {
+                @* ── Normal flow: user searches for a record ── *@
+                <div class="form-group">
+                    <label for="recordSearch">Search Record</label>
+                    <div class="search-input-wrap" style="max-width:480px;">
+                        <span class="search-icon">🔍</span>
+                        <input type="search"
+                               id="recordSearch"
+                               class="search-input"
+                               placeholder="Type part of a record name…"
+                               autocomplete="off" />
+                    </div>
+                </div>
 
-            <div class="form-group" id="recordSelectGroup" style="display:none">
-                <label for="recordSelect">Record</label>
-                <select id="recordSelect" class="form-select" style="max-width:480px;">
-                    <option value="">— select a record —</option>
-                </select>
-            </div>
+                <div class="form-group" id="recordSelectGroup" style="display:none">
+                    <label for="recordSelect">Record</label>
+                    <select id="recordSelect" class="form-select" style="max-width:480px;">
+                        <option value="">— select a record —</option>
+                    </select>
+                </div>
 
-            <div class="form-group" id="discSelectGroup" style="display:none">
-                <label for="discSelect">Disc</label>
-                <select id="discSelect" class="form-select" style="max-width:480px;">
-                    <option value="">— select a disc —</option>
-                </select>
-            </div>
+                <div class="form-group" id="discSelectGroup" style="display:none">
+                    <label for="discSelect">Disc</label>
+                    <select id="discSelect" class="form-select" style="max-width:480px;">
+                        <option value="">— select a disc —</option>
+                    </select>
+                </div>
 
-            <div id="discSummary" class="disc-summary" style="display:none"></div>
+                <div id="discSummary" class="disc-summary" style="display:none"></div>
+            }
 
             @* Hidden field carries the chosen DiscId to OnPostAsync *@
             <input type="hidden" asp-for="DiscId" id="hiddenDiscId" />
@@ -252,122 +269,126 @@
         const discSummary  = document.getElementById('discSummary');
         const textarea     = document.getElementById('trackDataArea');
         const rowCount     = document.getElementById('rowCount');
-        const submitBtn    = document.getElementById('submitBtn');
 
         let discData = [];
 
-        // ── 1. Debounced record search ────────────────────────────────────────
-        let debounceTimer;
-        searchInput.addEventListener('input', function () {
-            clearTimeout(debounceTimer);
-            const term = this.value.trim();
+        // ── Record/disc search wiring (only present in normal-flow mode) ─────
+        if (searchInput) {
 
-            if (term.length < 2) {
-                recordGroup.style.display = 'none';
-                discGroup.style.display   = 'none';
-                discSummary.style.display = 'none';
-                hiddenDiscId.value = '';
-                discData = [];
-                return;
-            }
+            // 1. Debounced record search
+            let debounceTimer;
+            searchInput.addEventListener('input', function () {
+                clearTimeout(debounceTimer);
+                const term = this.value.trim();
 
-            debounceTimer = setTimeout(() => fetchRecords(term), 300);
-        });
+                if (term.length < 2) {
+                    recordGroup.style.display = 'none';
+                    discGroup.style.display   = 'none';
+                    discSummary.style.display = 'none';
+                    hiddenDiscId.value = '';
+                    discData = [];
+                    return;
+                }
 
-        async function fetchRecords(term) {
-            try {
-                const url  = `?handler=Search&name=${encodeURIComponent(term)}`;
-                const resp = await fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
-                discData   = await resp.json();
-                populateRecordDropdown();
-            } catch (e) {
-                console.error('Record search failed:', e);
-            }
-        }
-
-        // ── 2. Record dropdown ────────────────────────────────────────────────
-        function populateRecordDropdown() {
-            const seen    = new Set();
-            const records = discData.filter(d => {
-                if (seen.has(d.recordId)) return false;
-                seen.add(d.recordId);
-                return true;
+                debounceTimer = setTimeout(() => fetchRecords(term), 300);
             });
 
-            recordSelect.innerHTML = '<option value="">— select a record —</option>';
-            records.forEach(r => {
-                const opt = document.createElement('option');
-                opt.value = r.recordId;
-                opt.text  = `${r.artistName} — ${r.name}`;
-                recordSelect.appendChild(opt);
+            async function fetchRecords(term) {
+                try {
+                    const url  = `?handler=Search&name=${encodeURIComponent(term)}`;
+                    const resp = await fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+                    discData   = await resp.json();
+                    populateRecordDropdown();
+                } catch (e) {
+                    console.error('Record search failed:', e);
+                }
+            }
+
+            // 2. Record dropdown
+            function populateRecordDropdown() {
+                const seen    = new Set();
+                const records = discData.filter(d => {
+                    if (seen.has(d.recordId)) return false;
+                    seen.add(d.recordId);
+                    return true;
+                });
+
+                recordSelect.innerHTML = '<option value="">— select a record —</option>';
+                records.forEach(r => {
+                    const opt = document.createElement('option');
+                    opt.value = r.recordId;
+                    opt.text  = `${r.artistName} — ${r.name}`;
+                    recordSelect.appendChild(opt);
+                });
+
+                if (records.length === 1) {
+                    recordSelect.value = records[0].recordId;
+                    populateDiscDropdown(records[0].recordId);
+                } else {
+                    discGroup.style.display   = 'none';
+                    discSummary.style.display = 'none';
+                    hiddenDiscId.value = '';
+                }
+
+                recordGroup.style.display = records.length > 0 ? '' : 'none';
+            }
+
+            // 3. Record change → disc dropdown
+            recordSelect.addEventListener('change', function () {
+                const recordId = parseInt(this.value, 10);
+                if (!recordId) {
+                    discGroup.style.display   = 'none';
+                    discSummary.style.display = 'none';
+                    hiddenDiscId.value = '';
+                    return;
+                }
+                populateDiscDropdown(recordId);
             });
 
-            if (records.length === 1) {
-                recordSelect.value = records[0].recordId;
-                populateDiscDropdown(records[0].recordId);
-            } else {
-                discGroup.style.display   = 'none';
-                discSummary.style.display = 'none';
-                hiddenDiscId.value = '';
+            function populateDiscDropdown(recordId) {
+                const discs = discData
+                    .filter(d => d.recordId === recordId)
+                    .sort((a, b) => a.discNo - b.discNo);
+
+                discSelect.innerHTML = '<option value="">— select a disc —</option>';
+                discs.forEach(d => {
+                    const opt = document.createElement('option');
+                    opt.value = d.discId;
+                    opt.text  = `Disc ${d.discNo}  (DiscId: ${d.discId})`;
+                    discSelect.appendChild(opt);
+                });
+
+                if (discs.length === 1) {
+                    discSelect.value   = discs[0].discId;
+                    hiddenDiscId.value = discs[0].discId;
+                    showSummary(discs[0]);
+                } else {
+                    hiddenDiscId.value        = '';
+                    discSummary.style.display = 'none';
+                }
+
+                discGroup.style.display = '';
             }
 
-            recordGroup.style.display = records.length > 0 ? '' : 'none';
-        }
+            // 4. Disc change
+            discSelect.addEventListener('change', function () {
+                const discId = parseInt(this.value, 10);
+                hiddenDiscId.value = discId || '';
 
-        // ── 3. Record change → disc dropdown ──────────────────────────────────
-        recordSelect.addEventListener('change', function () {
-            const recordId = parseInt(this.value, 10);
-            if (!recordId) {
-                discGroup.style.display   = 'none';
-                discSummary.style.display = 'none';
-                hiddenDiscId.value = '';
-                return;
-            }
-            populateDiscDropdown(recordId);
-        });
-
-        function populateDiscDropdown(recordId) {
-            const discs = discData
-                .filter(d => d.recordId === recordId)
-                .sort((a, b) => a.discNo - b.discNo);
-
-            discSelect.innerHTML = '<option value="">— select a disc —</option>';
-            discs.forEach(d => {
-                const opt = document.createElement('option');
-                opt.value = d.discId;
-                opt.text  = `Disc ${d.discNo}  (DiscId: ${d.discId})`;
-                discSelect.appendChild(opt);
+                if (!discId) { discSummary.style.display = 'none'; return; }
+                const disc = discData.find(d => d.discId === discId);
+                if (disc) showSummary(disc);
             });
 
-            if (discs.length === 1) {
-                discSelect.value   = discs[0].discId;
-                hiddenDiscId.value = discs[0].discId;
-                showSummary(discs[0]);
-            } else {
-                hiddenDiscId.value        = '';
-                discSummary.style.display = 'none';
+            function showSummary(disc) {
+                discSummary.textContent =
+                    `✓  ${disc.artistName} — ${disc.name}  ·  Disc ${disc.discNo}  (DiscId: ${disc.discId})`;
+                discSummary.style.display = '';
             }
 
-            discGroup.style.display = '';
-        }
+        } // end if (searchInput)
 
-        // ── 4. Disc change ───────────────────────────────────────────────────
-        discSelect.addEventListener('change', function () {
-            const discId = parseInt(this.value, 10);
-            hiddenDiscId.value = discId || '';
-
-            if (!discId) { discSummary.style.display = 'none'; return; }
-            const disc = discData.find(d => d.discId === discId);
-            if (disc) showSummary(disc);
-        });
-
-        function showSummary(disc) {
-            discSummary.textContent =
-                `✓  ${disc.artistName} — ${disc.name}  ·  Disc ${disc.discNo}  (DiscId: ${disc.discId})`;
-            discSummary.style.display = '';
-        }
-
-        // ── 5. Live row counter ──────────────────────────────────────────────
+        // ── Live row counter (runs in both modes) ────────────────────────────
         function countRows() {
             if (!textarea) return;
             const lines = textarea.value
@@ -377,8 +398,10 @@
             rowCount.textContent = lines.length;
         }
 
-        textarea.addEventListener('input', countRows);
-        countRows();
+        if (textarea) {
+            textarea.addEventListener('input', countRows);
+            countRows();
+        }
     })();
     </script>
 }

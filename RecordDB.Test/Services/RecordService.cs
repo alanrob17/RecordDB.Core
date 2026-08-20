@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace RecordDB.Test.Services
@@ -40,7 +41,8 @@ namespace RecordDB.Test.Services
             // await NoRecordReviewsAsync();
             // await GetArtistRecords();
             // await GetRecordsByArtistNameAsync("Bob Dylan");
-            await ListRecordsWithNoTracksAsync();
+            // await ListRecordsWithNoTracksAsync();
+            await ArtistRecordsWithNoTracksAsync("Bob Dylan");
 
             // TODO: This uses Heinemnann's ToShortDate method, will only work in Windows. Needs to be migrated.
             // ToShortDate();
@@ -437,6 +439,17 @@ namespace RecordDB.Test.Services
             {
                 Console.WriteLine($"Artist: {record.ArtistName}, Name: {record.Name}, Disc No: {record.DiscNo}");
             }
+        }
+
+        public async Task ArtistRecordsWithNoTracksAsync(string name)
+        {
+            var records = await _recordRepository.ArtistRecordsWithNoTracksAsync(name);
+
+            foreach (var record in records)
+            {
+                Console.WriteLine($"Artist: {record.ArtistName}, Name: {record.Name}, Disc No: {record.DiscNo}");
+            }
+
         }
     }
 }
