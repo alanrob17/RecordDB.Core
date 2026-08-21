@@ -42,7 +42,8 @@ namespace RecordDB.Test.Services
             // await GetArtistRecords();
             // await GetRecordsByArtistNameAsync("Bob Dylan");
             // await ListRecordsWithNoTracksAsync();
-            await ArtistRecordsWithNoTracksAsync("Bob Dylan");
+            // await ArtistRecordsWithNoTracksAsync("Bob Dylan");
+            await SelectTracksByPartialNameAsync("Like A Rolling Stone");
 
             // TODO: This uses Heinemnann's ToShortDate method, will only work in Windows. Needs to be migrated.
             // ToShortDate();
@@ -450,6 +451,16 @@ namespace RecordDB.Test.Services
                 Console.WriteLine($"Artist: {record.ArtistName}, Name: {record.Name}, Disc No: {record.DiscNo}");
             }
 
+        }
+
+        public async Task SelectTracksByPartialNameAsync(string name)
+        {
+            var tracks = await _recordRepository.SelectTracksByPartialNameAsync(name);
+
+            foreach (var track in tracks)
+            {
+                Console.WriteLine($"Artist: {track.ArtistName}, Record: {track.Name}, Track: {track.TrackName}");
+            }
         }
     }
 }

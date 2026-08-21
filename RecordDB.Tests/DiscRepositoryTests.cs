@@ -2,6 +2,7 @@ using Dapper;
 using FluentAssertions;
 using Moq;
 using RecordDB.DAL.Data;
+using RecordDB.DAL.DTOs;
 using RecordDB.DAL.Models;
 using RecordDB.DAL.Repositories;
 using System.Collections.Generic;
@@ -27,14 +28,14 @@ namespace RecordDB.Tests
         public async Task SelectAllDiscEntitiesAsync_ShouldReturnDiscs_WhenDataExists()
         {
             // Arrange
-            var expectedDiscs = new List<Disc>
+            var expectedDiscs = new List<ArtistRecordDiscDto>
             {
-                new Disc { DiscId = 1, RecordId = 10, DiscNo = 1, Length = 2400 },
-                new Disc { DiscId = 2, RecordId = 10, DiscNo = 2, Length = 2500 }
+                new ArtistRecordDiscDto { DiscId = 1, RecordId = 10, DiscNo = 1, Length = 2400 },
+                new ArtistRecordDiscDto { DiscId = 2, RecordId = 10, DiscNo = 2, Length = 2500 }
             };
 
             _dbMock
-                .Setup(x => x.GetData<Disc, dynamic>(
+                .Setup(x => x.GetData<ArtistRecordDiscDto, dynamic>(
                     "up_SelectAllDiscEntities",
                     It.IsAny<object>(),
                     CommandType.StoredProcedure))
@@ -53,13 +54,13 @@ namespace RecordDB.Tests
         public async Task GetDiscRecordsByRecordNameAsync_ShouldReturnDiscs_ForMatchingRecordName()
         {
             // Arrange
-            var expectedDiscs = new List<Disc>
+            var expectedDiscs = new List<ArtistRecordDiscDto>
             {
-                new Disc { DiscId = 5, RecordId = 25, DiscNo = 1 }
+                new ArtistRecordDiscDto { DiscId = 5, RecordId = 25, DiscNo = 1 }
             };
 
             _dbMock
-                .Setup(x => x.GetData<Disc, dynamic>(
+                .Setup(x => x.GetData<ArtistRecordDiscDto, dynamic>(
                     "up_GetDiscRecordsByRecordName",
                     It.IsAny<DynamicParameters>(),
                     CommandType.StoredProcedure))
@@ -78,10 +79,10 @@ namespace RecordDB.Tests
         public async Task SelectSingleDiscAsync_ShouldReturnDisc_WhenFound()
         {
             // Arrange
-            var expectedDisc = new Disc { DiscId = 12, RecordId = 50, DiscNo = 1, Length = 1800 };
+            var expectedDisc = new ArtistRecordDiscDto { DiscId = 12, RecordId = 50, DiscNo = 1, Length = 1800 };
 
             _dbMock
-                .Setup(x => x.GetFirstOrDefault<Disc, dynamic>(
+                .Setup(x => x.GetFirstOrDefault<ArtistRecordDiscDto, dynamic>(
                     "up_SelectSingleDisc",
                     It.IsAny<DynamicParameters>(),
                     CommandType.StoredProcedure))

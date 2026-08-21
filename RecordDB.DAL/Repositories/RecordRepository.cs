@@ -408,5 +408,14 @@ namespace RecordDB.DAL.Repositories
             var records = await _db.GetData<ArtistRecordDiscDto, dynamic>(sproc, parameter);
             return records.ToList();
         }
+
+        public async Task<List<ArtistRecordDiscTrackDto>> SelectTracksByPartialNameAsync(string name)
+        {
+            var sproc = "up_SelectPartialRecordTracks";
+            var parameter = new DynamicParameters();
+            parameter.Add("@Name", name);
+            var records = await _db.GetData<ArtistRecordDiscTrackDto, dynamic>(sproc, parameter);
+            return records.ToList();
+        }
     }
 }

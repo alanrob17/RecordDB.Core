@@ -1,0 +1,61 @@
+@page
+@model RecordDB.Core.Pages.Tracks.SearchModel
+@{
+    ViewData["Title"] = "Search Track";
+}
+
+<div class="page-header justify-content-center text-center">
+    <h1 class="page-title">Search <span>Track</span></h1>
+</div>
+
+<div class="rdb-form-card" style="max-width: 480px; margin-top: 2rem;">
+    <p class="text-center text-muted mb-4" style="font-size: 0.95rem;">
+        Enter a partial or full track name to retrieve matching tracks.
+    </p>
+
+    <form method="post" id="searchForm">
+        @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ContainsKey(string.Empty))
+        {
+            <div class="form-error-banner mb-3">
+                @Html.ValidationSummary(false)
+            </div>
+        }
+
+        <div class="form-group mb-4">
+            <label asp-for="TrackName">Track Name</label>
+            <input type="text"
+                   asp-for="TrackName"
+                   placeholder="e.g. Visions Of Johanna, Rainy Day, Love..."
+                   class="form-control"
+                   style="height: 3rem; border-radius: var(--radius-sm);"
+                   required
+                   autofocus />
+            <span asp-validation-for="TrackName" class="field-validation-error mt-1"></span>
+        </div>
+
+        <button type="submit" class="btn-rdb btn-primary-rdb w-100" style="height: 3.5rem; font-size: 1.05rem; font-weight: 600; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; gap: 0.5rem; transition: transform 0.2s;">
+            <span>🔍</span> Search Tracks
+        </button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Smooth card focus interaction matching other search pages
+        const inputs = document.querySelectorAll('input[type="text"]');
+        const card = document.querySelector('.rdb-form-card');
+
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                card.style.transform = 'translateY(-2px)';
+                card.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
+                card.style.boxShadow = '0 10px 25px rgba(79, 70, 229, 0.15)';
+            });
+            input.addEventListener('blur', () => {
+                card.style.transform = 'none';
+                card.style.boxShadow = 'var(--shadow-card)';
+            });
+        });
+    </script>
+}

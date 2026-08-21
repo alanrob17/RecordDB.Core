@@ -1,6 +1,6 @@
 USE [RecordDB]
 GO
-/****** Object:  UserDefinedTableType [dbo].[TrackTableType]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  UserDefinedTableType [dbo].[TrackTableType]    Script Date: 21/08/2026 3:05:50 PM ******/
 CREATE TYPE [dbo].[TrackTableType] AS TABLE(
 	[DiscId] [int] NULL,
 	[TrackNo] [int] NULL,
@@ -9,7 +9,7 @@ CREATE TYPE [dbo].[TrackTableType] AS TABLE(
 	[Extended] [varchar](255) NULL
 )
 GO
-/****** Object:  UserDefinedFunction [dbo].[ConvertTimeToHHMMSS]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  UserDefinedFunction [dbo].[ConvertTimeToHHMMSS]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -51,7 +51,7 @@ select dbo.ConvertTimeToHHMMSS(96.999, 'mi')
 select dbo.ConvertTimeToHHMMSS(35791394.999, 'hh')
 */
 GO
-/****** Object:  StoredProcedure [dbo].[adm_ArtistInsert]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[adm_ArtistInsert]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -93,7 +93,7 @@ BEGIN
     END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[adm_createDisc]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[adm_createDisc]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -108,7 +108,7 @@ BEGIN
 	INSERT INTO Disc (RecordId, DiscNo) VALUES (@RecordId, @DiscNo)
 END
 GO
-/****** Object:  StoredProcedure [dbo].[adm_GetAllArtists]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[adm_GetAllArtists]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -120,7 +120,7 @@ CREATE PROCEDURE [dbo].[adm_GetAllArtists]
 AS
     SELECT * FROM Artist WHERE FirstName = @FirstName AND LastName = @LastName
 GO
-/****** Object:  StoredProcedure [dbo].[adm_getAllRecordIds]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[adm_getAllRecordIds]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -136,7 +136,7 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [dbo].[adm_getArtist]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[adm_getArtist]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -148,7 +148,7 @@ Select ArtistId, Name as ArtistName
 	from Artist
 	where ArtistId = @ArtistId
 GO
-/****** Object:  StoredProcedure [dbo].[adm_GetArtistAlbums]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[adm_GetArtistAlbums]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -166,7 +166,7 @@ BEGIN
         a.LastName, a.FirstName, r.Recorded DESC
 END
 GO
-/****** Object:  StoredProcedure [dbo].[adm_GetNumberOfDiscs]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[adm_GetNumberOfDiscs]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -179,7 +179,7 @@ AS
 SELECT @DiscNo = (SELECT count (*) FROM Disc WHERE recordId = @RecordId)
 RETURN @DiscNo
 GO
-/****** Object:  StoredProcedure [dbo].[adm_getRecords]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[adm_getRecords]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -193,7 +193,7 @@ select ArtistId, name as RecordName, [field], Recorded
 	Order by Recorded Desc
 
 GO
-/****** Object:  StoredProcedure [dbo].[adm_GetSelectedReviews]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[adm_GetSelectedReviews]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -205,7 +205,7 @@ SELECT rec.RecordId, rec.Review AS RecordReview, rev.Author, rev.Review
 	rec.RecordId = rev.RecordId
 	WHERE rec.Review NOT LIKE '%Pitchfork%'
 GO
-/****** Object:  StoredProcedure [dbo].[adm_GetTotalCDCount]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[adm_GetTotalCDCount]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -237,7 +237,7 @@ BEGIN
 	SELECT @Total AS Total
 END
 GO
-/****** Object:  StoredProcedure [dbo].[adm_InsertSqliteReview]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[adm_InsertSqliteReview]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -261,7 +261,7 @@ VALUES (@ReviewId, @ArtistId, @RecordId, @Name, @RecordName,
 
 RETURN @@IDENTITY
 GO
-/****** Object:  StoredProcedure [dbo].[adm_RecordInsert]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[adm_RecordInsert]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -314,7 +314,7 @@ BEGIN
 END
 RETURN @Result
 GO
-/****** Object:  StoredProcedure [dbo].[adm_sdSelect]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[adm_sdSelect]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -343,7 +343,7 @@ FROM
     Artist
 WHERE [Name] is not null
 GO
-/****** Object:  StoredProcedure [dbo].[adm_SelectAllDiscs]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[adm_SelectAllDiscs]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -353,7 +353,7 @@ AS
 SELECT RecordId, DiscId, DiscNo, FreeDbId, FreeDbDiscId, [Length]
 	FROM Disc
 GO
-/****** Object:  StoredProcedure [dbo].[adm_SelectAllFreeDBItems]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[adm_SelectAllFreeDBItems]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -365,7 +365,7 @@ SELECT Id, Artist, RecordId, Record, DiscId, FreeDbId,
 		OtherFreeDbId, Genre, Revision, Review
 	FROM FreeDB
 GO
-/****** Object:  StoredProcedure [dbo].[adm_SelectAllTracks]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[adm_SelectAllTracks]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -397,7 +397,7 @@ BEGIN
     ORDER BY a.LastName, a.FirstName, r.Recorded, d.DiscNo, t.TrackNo
 END
 GO
-/****** Object:  StoredProcedure [dbo].[adm_UpdateRecord]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[adm_UpdateRecord]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -437,7 +437,7 @@ BEGIN
    END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[adm_UpdateRecordReview]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[adm_UpdateRecordReview]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -455,7 +455,7 @@ UPDATE Record
 	else
 	    select @@identity 'RecordId', 1 'Status', 'Ok' 'StatusStr'
 GO
-/****** Object:  StoredProcedure [dbo].[json_ArtistSelectAll]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[json_ArtistSelectAll]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -467,7 +467,7 @@ SELECT
 FROM Artist AS a
 ORDER BY a.LastName, a.FirstName
 GO
-/****** Object:  StoredProcedure [dbo].[json_InternationalRecordSelectAll]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[json_InternationalRecordSelectAll]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -481,7 +481,7 @@ FROM Artist a INNER JOIN Record r
 	ON a.ArtistId = r.ArtistId
 ORDER BY a.LastName, a.FirstName, r.recorded, r.Name
 GO
-/****** Object:  StoredProcedure [dbo].[json_RecordSelectAll]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[json_RecordSelectAll]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -495,7 +495,7 @@ FROM Artist a INNER JOIN Record r
 	ON a.ArtistId = r.ArtistId
 ORDER BY a.LastName, a.FirstName, r.recorded, r.Name
 GO
-/****** Object:  StoredProcedure [dbo].[sp_2001]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_2001]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -508,7 +508,7 @@ FROM  Artist INNER JOIN
 WHERE (Record.Bought > '12/31/2000')
 ORDER BY Record.Bought DESC
 GO
-/****** Object:  StoredProcedure [dbo].[sp_addArtist]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_addArtist]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -534,7 +534,7 @@ As
 	end
 Return @@identity
 GO
-/****** Object:  StoredProcedure [dbo].[sp_AddNewArtist]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_AddNewArtist]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -555,7 +555,7 @@ As
 SELECT @ArtistId = @@IDENTITY
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_AddNewRecord]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_AddNewRecord]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -581,7 +581,7 @@ INSERT INTO Record
     VALUES (@ArtistID, @Name, @Field, @Recorded, @Label, @Pressing, @Rating, @Discs, @Media, @Bought, @Cost, @CoverName, @Review, @FreeDbId)
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_All]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_All]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -601,7 +601,7 @@ FROM Artist INNER JOIN
    Record ON Artist.ArtistId = Record.ArtistId
 ORDER BY  Artist.LastName,  Artist.FirstName,  Record.Recorded
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CombineNames]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_CombineNames]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -611,7 +611,7 @@ SELECT ArtistId, ltrim(ISNULL(FirstName, '') + ' ' + LastName) AS Name
 FROM  Artist
 ORDER BY LastName, FirstName
 GO
-/****** Object:  StoredProcedure [dbo].[sp_getArtistsListandNone]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_getArtistsListandNone]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -661,7 +661,7 @@ begin
 end
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_getList]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_getList]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -672,7 +672,7 @@ select RecordId, name, field
 from record order by RecordId
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetRecords]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetRecords]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -686,7 +686,7 @@ where ArtistId = @ArtistId
 order by recorded
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_getRecordsListandNone]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_getRecordsListandNone]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -710,7 +710,7 @@ begin
 	select 0 [RecordId], 'none' Name
 end
 GO
-/****** Object:  StoredProcedure [dbo].[sp_getSingleArtist]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_getSingleArtist]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -726,7 +726,7 @@ FROM Artist
 WHERE Artist.ArtistId = @ArtistId
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_getSingleRecord]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_getSingleRecord]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -738,7 +738,7 @@ select [RecordId],[Name], [Field], Recorded, Label, Pressing, Rating, Discs, Bou
 from Record
 where [RecordId]=@Recordid
 GO
-/****** Object:  StoredProcedure [dbo].[sp_getTotalCostForEachArtist]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_getTotalCostForEachArtist]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -756,7 +756,7 @@ AS
 	WHERE t.TotalCost > 0.00
 	ORDER BY t.TotalCost Desc 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_getTotalDiscsForEachArtist]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_getTotalDiscsForEachArtist]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -773,7 +773,7 @@ FROM Artist a,
 	WHERE a.ArtistId = SubQuery.ArtistId 
 ORDER BY SubQuery.TotalDiscs DESC
 GO
-/****** Object:  StoredProcedure [dbo].[sp_getTotalsForEachArtist]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_getTotalsForEachArtist]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -792,7 +792,7 @@ FROM Artist a,
 	WHERE a.ArtistId = SubQuery.ArtistId 
 ORDER BY SubQuery.TotalCost DESC
 GO
-/****** Object:  StoredProcedure [dbo].[sp_getTracks]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_getTracks]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -812,7 +812,7 @@ BEGIN
     ORDER BY d.DiscNo, t.TrackNo
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_NumBoughtIn2000]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_NumBoughtIn2000]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -825,7 +825,7 @@ FROM record
 where Record.Media = 'CD' and Record.bought > '31/12/1999' and Record.bought < '01/01/2001'
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_NumBoughtIn2001]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_NumBoughtIn2001]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -837,7 +837,7 @@ FROM record
 where Record.Media = 'CD' and Record.bought > '01/01/2001'
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Titles]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_Titles]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -850,7 +850,7 @@ inner join record on artist.ArtistId = record.ArtistId
 	return
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_UpdateArtist]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_UpdateArtist]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -871,7 +871,7 @@ As
 	    select @@identity 'ArtistId', 1 'Status', 'Ok' 'StatusStr'
 
 GO
-/****** Object:  StoredProcedure [dbo].[spGetAlbum]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[spGetAlbum]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -885,7 +885,7 @@ as
 		where Record.name = @name
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_AddNewArtist]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_AddNewArtist]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -935,7 +935,7 @@ BEGIN
     END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_AddNewRecord]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_AddNewRecord]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -970,7 +970,7 @@ As
     select
       @RecordId = @@Identity
 GO
-/****** Object:  StoredProcedure [dbo].[up_ArtistByFirstLastName]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_ArtistByFirstLastName]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -983,7 +983,7 @@ select ArtistId, FirstName, LastName, [name]
 from Artist
 where FirstName = @FirstName and LastName = @Lastname;
 GO
-/****** Object:  StoredProcedure [dbo].[up_ArtistDelete]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_ArtistDelete]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -996,7 +996,7 @@ BEGIN
 	RETURN @@ROWCOUNT
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_ArtistDeleteByName]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_ArtistDeleteByName]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1012,7 +1012,7 @@ BEGIN
         SELECT CASE WHEN @@ROWCOUNT > 0 THEN 1 ELSE 0 END AS Deleted;
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_ArtistGetList]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_ArtistGetList]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1042,7 +1042,7 @@ begin
 	select  0 ID, 'none' Name
 end
 GO
-/****** Object:  StoredProcedure [dbo].[up_ArtistsBandTitles]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_ArtistsBandTitles]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1058,7 +1058,7 @@ FROM Artist AS a
 WHERE a.FirstName = 'The'
 ORDER BY LastName
 GO
-/****** Object:  StoredProcedure [dbo].[up_ArtistSelectAll]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_ArtistSelectAll]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1071,7 +1071,7 @@ FROM Artist AS a
 ORDER BY LastName, FirstName
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_ArtistSelectById]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_ArtistSelectById]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1086,7 +1086,7 @@ SELECT ArtistId, LastName, FirstName, [name], biography
 FROM Artist
 WHERE Artist.ArtistId = @ArtistId
 GO
-/****** Object:  StoredProcedure [dbo].[up_ArtistSelectByRecordId]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_ArtistSelectByRecordId]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1105,7 +1105,7 @@ BEGIN
 	WHERE ArtistId = @ArtistId
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_ArtistSelectFull]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_ArtistSelectFull]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1118,7 +1118,7 @@ FROM Artist AS a
 ORDER BY LastName, FirstName
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_CheckArtistExists]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_CheckArtistExists]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1135,7 +1135,7 @@ BEGIN
         SELECT 0 AS [Exists]
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_CheckForTracks]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_CheckForTracks]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1152,7 +1152,7 @@ BEGIN
     WHERE DiscId = @DiscId;
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_CountDiscs]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_CountDiscs]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1417,7 +1417,7 @@ begin
 end
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_deleteArtist]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_deleteArtist]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1434,7 +1434,7 @@ DELETE from Artist
 	where ArtistId = @ArtistId
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_DeleteRecord]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_DeleteRecord]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1449,7 +1449,7 @@ DELETE FROM Record
 	WHERE RecordId = @RecordId
 RETURN @@ROWCOUNT
 GO
-/****** Object:  StoredProcedure [dbo].[up_deleteTrack]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_deleteTrack]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1465,7 +1465,7 @@ AS
 
 	RETURN @@ROWCOUNT
 GO
-/****** Object:  StoredProcedure [dbo].[up_DiscDelete]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_DiscDelete]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1480,7 +1480,7 @@ BEGIN
 	RETURN @@ROWCOUNT
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_getAlbumName]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_getAlbumName]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1493,7 +1493,7 @@ as
 	where record.RecordId = @RecordId
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetAllArtistsAndRecords]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetAllArtistsAndRecords]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1508,7 +1508,7 @@ AS
   a.ArtistId = r.ArtistId
   ORDER By a.LastName, a.FirstName, r.Recorded DESC
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetAllBlurays]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetAllBlurays]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1525,7 +1525,7 @@ as
         a.[ArtistId] = r.[ArtistId] WHERE r.[media] = 'Blu-ray' or r.[media] = 'CD/Blu-ray'
         order by r.[Bought] Desc
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetAllDVDs]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetAllDVDs]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1543,7 +1543,7 @@ as
         order by r.[Bought] Desc
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_getAlphaArtistList]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_getAlphaArtistList]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1606,7 +1606,7 @@ begin
 end
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetArtistAndNumberOfRecords]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetArtistAndNumberOfRecords]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1633,7 +1633,7 @@ INSERT #temp(ArtistId, [Name], DiscCount) values (@ArtistId, @ArtistName, @DiscN
 
 SELECT ArtistId, [Name], DiscCount FROM #temp
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetArtistByName]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetArtistByName]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1647,7 +1647,7 @@ BEGIN
 	SELECT ArtistId, FirstName, LastName FROM Artist WHERE Name = @Name;
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetArtistCount]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetArtistCount]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1659,7 +1659,7 @@ SET NOCOUNT ON;
 
 SELECT COUNT(*) FROM Artist;
 GO
-/****** Object:  StoredProcedure [dbo].[up_getArtistID]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_getArtistID]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1684,7 +1684,7 @@ begin
    where FirstName like @FirstName+'%' and LastName like @LastName+'%'
 end
 GO
-/****** Object:  StoredProcedure [dbo].[up_getArtistIdByName]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_getArtistIdByName]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1712,7 +1712,7 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_getArtistIdFromRecord]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_getArtistIdFromRecord]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1729,7 +1729,7 @@ BEGIN
   WHERE RecordId = @RecordId;
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_getArtistIdFromRecordId]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_getArtistIdFromRecordId]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1742,7 +1742,7 @@ as
    where recordId = @recordId
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_getArtistList]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_getArtistList]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1754,7 +1754,7 @@ SELECT ArtistId, Name
 	ORDER BY LastName, FirstName
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_getArtistListandNone]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_getArtistListandNone]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1818,7 +1818,7 @@ begin
 end
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetArtistNameByArtistId]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetArtistNameByArtistId]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1833,7 +1833,7 @@ SELECT Artist.[Name]
 FROM Artist 
 WHERE ArtistId = @ArtistId
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetArtistNameByRecordId]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetArtistNameByRecordId]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1849,7 +1849,7 @@ FROM Artist a INNER JOIN
                Record r ON a.ArtistId = r.ArtistId 
 WHERE r.RecordId = @RecordId
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetArtistNumberOfRecords]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetArtistNumberOfRecords]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1861,7 +1861,7 @@ as
     from record where ArtistId = @ArtistId
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetArtistRecordByRecordId]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetArtistRecordByRecordId]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1882,7 +1882,7 @@ FROM Artist a INNER JOIN
 WHERE r.RecordId = @recordId
 ORDER BY  a.LastName,  a.FirstName,  r.Recorded
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetArtistRecordEntity]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetArtistRecordEntity]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1904,7 +1904,7 @@ BEGIN
 	WHERE r.RecordId = 2196;
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetArtistRecords]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetArtistRecords]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1945,7 +1945,7 @@ AS
     WHERE a.ArtistId = @ArtistId
     ORDER BY r.Recorded DESC;
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetArtistRecordsWithNoTracks]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetArtistRecordsWithNoTracks]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1975,7 +1975,7 @@ BEGIN
 	ORDER BY a.LastName, a.FirstName, r.Recorded, d.DiscNo
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetArtistRecordTracks]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetArtistRecordTracks]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2006,7 +2006,7 @@ BEGIN
     ORDER BY d.DiscNo, t.TrackNo
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetArtists]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetArtists]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2018,7 +2018,7 @@ SELECT ArtistId, Name
 	ORDER BY LastName, FirstName
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetArtistsByPartialName]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetArtistsByPartialName]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2035,7 +2035,7 @@ BEGIN
 	ORDER BY LastName, FirstName
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetArtistsRecords]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetArtistsRecords]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2052,7 +2052,7 @@ as
   WHERE a.artistid = @artistid
   order by r.Recorded desc
 GO
-/****** Object:  StoredProcedure [dbo].[up_getArtistTitle]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_getArtistTitle]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2063,7 +2063,7 @@ SELECT Name, ArtistId
 FROM Record
 ORDER BY Recorded
 GO
-/****** Object:  StoredProcedure [dbo].[up_getBiography]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_getBiography]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2080,7 +2080,7 @@ FROM Artist
 WHERE ArtistId = @ArtistId
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetBoughtDiscCountForYear]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetBoughtDiscCountForYear]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2092,7 +2092,7 @@ SELECT SUM(Discs)
 	FROM Record 
 	WHERE Bought LIKE '%'+@year+'%';
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetDiscRecordsByRecordName]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetDiscRecordsByRecordName]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2111,7 +2111,7 @@ BEGIN
 	ORDER BY a.LastName, a.FirstName, r.Recorded, DiscNo
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetFaultyArtists]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetFaultyArtists]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2127,7 +2127,7 @@ FROM Artist AS a
 WHERE a.Name Like 'The The%'
 ORDER BY LastName
 GO
-/****** Object:  StoredProcedure [dbo].[up_getField]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_getField]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2158,7 +2158,7 @@ begin
 end
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetFieldNumber]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetFieldNumber]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2170,7 +2170,7 @@ as
 select sum(discs) from record where field=@field
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_getFieldOrdered]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_getFieldOrdered]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2201,7 +2201,7 @@ begin
 end
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetFullArtistByName]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetFullArtistByName]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2215,7 +2215,7 @@ BEGIN
 	SELECT ArtistId, FirstName, LastName, Name, Biography FROM Artist WHERE Name = @Name;
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_getFullArtistList]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_getFullArtistList]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2227,7 +2227,7 @@ FROM Artist
 ORDER BY LastName, FirstName
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetMediaCountByType]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetMediaCountByType]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2264,7 +2264,7 @@ BEGIN
 	END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetNoRecordReview]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetNoRecordReview]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2278,7 +2278,7 @@ SELECT a.ArtistId, A.Name AS ArtistName, r.RecordId, r.Name AS RecordName, r.Rec
 	Record r ON a.ArtistId = r.ArtistId
 	WHERE r.Review IS NULL OR len(Convert(Varchar(8000), r.Review)) < 5
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetNoRecordReviewCount]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetNoRecordReviewCount]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2292,7 +2292,7 @@ SELECT Sum(1)
 	WHERE Review IS NULL OR len(Convert(Varchar(8000), Review)) < 5
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetNumberOfAlbums]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetNumberOfAlbums]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2305,7 +2305,7 @@ from  Record
 where Record.RecordId = @RecordId
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetNumberOfRecordsForYear]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetNumberOfRecordsForYear]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2318,7 +2318,7 @@ AS
 
 	SELECT SUM(discs) AS Count FROM Record WHERE Recorded = @year
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetNumberOfTracks]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetNumberOfTracks]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2334,7 +2334,7 @@ from  Artist inner join
 where Record.RecordId = @RecordId
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetRating]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetRating]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2351,7 +2351,7 @@ as
   ORDER BY a.LastName, a.FirstName, r.Recorded
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetRatingNumber]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetRatingNumber]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2362,7 +2362,7 @@ as
 select count(Rating) from record where Rating='****'
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetRecordById]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetRecordById]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2381,7 +2381,7 @@ FROM Record AS r
 WHERE r.RecordId = @RecordId
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetRecordByName]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetRecordByName]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2393,7 +2393,7 @@ AS
 		FROM Record
 		WHERE Record.Name LIKE '%' + @Name + '%' 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetRecordByPartialName]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetRecordByPartialName]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2409,7 +2409,7 @@ FROM Record AS r INNER JOIN
 	Artist AS a ON r.ArtistId = a.ArtistId
 	WHERE r.Name LIKE '%'+@Name+'%'
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetRecordCountForYear]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetRecordCountForYear]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2430,7 +2430,7 @@ END
 
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetRecordedYearNumber]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetRecordedYearNumber]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2442,7 +2442,7 @@ AS
 SELECT SUM(discs) FROM Record WHERE Recorded = @year
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetRecordList]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetRecordList]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2456,7 +2456,7 @@ SELECT ArtistId, RecordId, [Name], Field,
   ORDER BY ArtistId, Recorded
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_getRecordListandNone]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_getRecordListandNone]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2500,7 +2500,7 @@ BEGIN
     END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetRecordsByArtistId]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetRecordsByArtistId]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2515,7 +2515,7 @@ BEGIN
 	ORDER BY Record.Recorded DESC
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetRecordsByArtistName]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetRecordsByArtistName]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2550,7 +2550,7 @@ BEGIN
     ORDER BY r.Recorded DESC;
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetRecordsByYear]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetRecordsByYear]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2571,7 +2571,7 @@ BEGIN
 	ORDER BY a.LastName, a.FirstName, r.Bought
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetRecordsWithNoTracks]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetRecordsWithNoTracks]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2600,7 +2600,7 @@ BEGIN
 	ORDER BY a.LastName, a.FirstName, r.Recorded, d.DiscNo
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetSingleArtist]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetSingleArtist]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2613,7 +2613,7 @@ from Artist
 where Artist.ArtistId=@ArtistId
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_getSingleArtistAndRecord]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_getSingleArtistAndRecord]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2626,7 +2626,7 @@ select r.RecordId, r.ArtistId, a.Name AS ArtistName, r.[Name], r.[Field], r.Reco
 	Record r ON a.ArtistId = r.ArtistId
 where r.RecordId = @RecordId
 GO
-/****** Object:  StoredProcedure [dbo].[up_getSingleRecord]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_getSingleRecord]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2639,7 +2639,7 @@ from Record
 where RecordId = @RecordId
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetTotalCostOfAllCDs]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetTotalCostOfAllCDs]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2650,7 +2650,7 @@ SET NOCOUNT ON;
 
 SELECT SUM(cost) FROM Record WHERE Media = 'CD'
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetTotalNumberOfAllBlurays]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetTotalNumberOfAllBlurays]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2660,7 +2660,7 @@ as
 select sum(discs) from record where media='Blu-ray'  or media='CD/Blu-ray'
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetTotalNumberOfAllCDs]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetTotalNumberOfAllCDs]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2690,7 +2690,7 @@ DECLARE Total INT;
 */
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetTotalNumberOfAllDVDs]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetTotalNumberOfAllDVDs]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2700,7 +2700,7 @@ as
 select sum(discs) from record where media='DVD' or media='CD/DVD' or media='Blu-ray'  or media='CD/Blu-ray'
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetTotalNumberOfAllRecords]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetTotalNumberOfAllRecords]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2710,7 +2710,7 @@ as
 select sum(discs) from record
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetTotalNumberOfArtists]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetTotalNumberOfArtists]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2720,7 +2720,7 @@ as
 select sum(1) from artist
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetTotalNumberOfRecords]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetTotalNumberOfRecords]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2730,7 +2730,7 @@ as
 select sum(discs) from record where media = 'R'
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetTotalYearCost]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetTotalYearCost]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2749,7 +2749,7 @@ SET @Start=CONVERT(DATETIME, @Datestr1, 101)
 SET @Finish=CONVERT(DATETIME, @Datestr2, 101)
 SELECT SUM(Cost) FROM Record WHERE Bought > @Start AND Bought < @Finish
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetTotalYearNumber]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetTotalYearNumber]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2769,7 +2769,7 @@ set @finish=Convert(datetime, @datestr2, 101)
 select sum(discs) from record where bought > @start and bought < @finish
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetTrackListing]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetTrackListing]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2801,7 +2801,7 @@ BEGIN
 	ORDER BY d.DiscNo, t.TrackNo
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetYear2000]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetYear2000]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2817,7 +2817,7 @@ as
    WHERE (YEAR(r.Bought) > 1999) AND (YEAR(r.Bought) < 2001) order by r.bought desc
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetYear2001]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetYear2001]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2833,7 +2833,7 @@ as
    WHERE (YEAR(r.Bought) > 2000) AND (YEAR(r.Bought) < 2002) order by r.Bought desc
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_Getyear2002]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_Getyear2002]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2849,7 +2849,7 @@ as
     WHERE (YEAR(r.Bought) > 2001) AND (YEAR(r.Bought) < 2003) order by r.bought desc
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetYear2003]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetYear2003]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2865,7 +2865,7 @@ as
    WHERE (YEAR(r.Bought) > 2002) AND (YEAR(r.Bought) < 2004) order by r.Bought desc
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetYear2004]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetYear2004]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2881,7 +2881,7 @@ as
   WHERE (YEAR(r.Bought) > 2003) AND (YEAR(r.Bought) < 2005) order by r.bought desc
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetYear2005]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetYear2005]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2898,7 +2898,7 @@ as
   WHERE (YEAR(r.Bought) > 2004) AND (YEAR(r.Bought) < 2006) order by r.bought desc
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetYear2006]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetYear2006]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2914,7 +2914,7 @@ AS
   WHERE (YEAR(r.Bought) > 2005) AND (YEAR(r.Bought) < 2007) order by r.Bought desc
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetYear2007]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetYear2007]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2930,7 +2930,7 @@ as
   WHERE (YEAR(r.Bought) > 2006) AND (YEAR(r.Bought) < 2008) order by r.Bought desc
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetYear2008]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetYear2008]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2946,7 +2946,7 @@ as
   WHERE (YEAR(r.Bought) > 2007) AND (YEAR(r.Bought) < 2009) order by r.bought desc
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetYear2009]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetYear2009]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2962,7 +2962,7 @@ as
   WHERE (YEAR(r.Bought) > 2008) AND (YEAR(r.Bought) < 2010) order by r.bought desc
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetYear2010]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetYear2010]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2980,7 +2980,7 @@ as
   WHERE (YEAR(r.Bought) > 2009) AND (YEAR(r.Bought) < 2011) order by r.bought desc
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetYear2011]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetYear2011]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2998,7 +2998,7 @@ as
   WHERE (YEAR(r.Bought) > 2010) AND (YEAR(r.Bought) < 2012) order by r.bought desc
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetYear2012]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetYear2012]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3016,7 +3016,7 @@ as
   WHERE (YEAR(r.Bought) > 2011) AND (YEAR(r.Bought) < 2013) order by r.bought desc
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetYear2013]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetYear2013]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3034,7 +3034,7 @@ AS
   WHERE (YEAR(r.Bought) > 2012) AND (YEAR(r.Bought) < 2014) order by r.bought desc
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_GetYear2014]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_GetYear2014]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3052,7 +3052,7 @@ AS
   WHERE (YEAR(r.Bought) > 2013) AND (YEAR(r.Bought) < 2015) order by r.bought desc
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_InsertDisc]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_InsertDisc]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3084,7 +3084,7 @@ BEGIN
 	END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_InsertTrack]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_InsertTrack]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3110,7 +3110,7 @@ BEGIN
     SET @Result = (SELECT TrackId FROM @Inserted)
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_InsertTracks]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_InsertTracks]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3124,7 +3124,7 @@ CREATE PROCEDURE [dbo].[up_InsertTracks]
      FROM @Tracks;
  END	
 GO
-/****** Object:  StoredProcedure [dbo].[up_MissingRecordReview]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_MissingRecordReview]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3139,7 +3139,7 @@ SELECT a.ArtistId, A.Name AS Artist, r.RecordId, r.Name, r.Recorded, r.Discs, r.
 	WHERE r.Review IS NULL OR len(Convert(Varchar(8000), r.Review)) < 5
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_NoBioCount]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_NoBioCount]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3149,7 +3149,7 @@ CREATE PROCEDURE [dbo].[up_NoBioCount]
 AS
 SELECT COUNT(*) FROM Artist WHERE Biography IS NULL;
 GO
-/****** Object:  StoredProcedure [dbo].[up_NoBiographyCount]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_NoBiographyCount]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3159,7 +3159,7 @@ CREATE PROCEDURE [dbo].[up_NoBiographyCount]
 AS
 SELECT @Count = COUNT(*) FROM Artist WHERE Biography IS NULL;
 GO
-/****** Object:  StoredProcedure [dbo].[up_NoRecordReviews]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_NoRecordReviews]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3172,7 +3172,7 @@ SELECT a.Name, r.Name AS Record, r.RecordId
 	WHERE r.Review IS NULL OR len(Convert(Varchar(8000), r.Review)) < 5
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_RecordDBBackup]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_RecordDBBackup]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3204,7 +3204,7 @@ exec sp_addumpdevice 'DISK', 'RecordDBDevice',
 */
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_RecordSelectAll]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_RecordSelectAll]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3221,7 +3221,7 @@ INNER JOIN Artist as a on
 ORDER BY a.LastName, a.FirstName, r.recorded
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_RecordSelectById]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_RecordSelectById]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3240,7 +3240,7 @@ FROM Record AS r INNER JOIN
 	WHERE r.RecordId = @RecordId
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_RecordSelectByIdCore]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_RecordSelectByIdCore]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3258,7 +3258,7 @@ FROM Record AS r INNER JOIN
 	Artist AS a ON r.ArtistId = a.ArtistId
 	WHERE r.RecordId = @RecordId
 GO
-/****** Object:  StoredProcedure [dbo].[up_RecordSelectShow]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_RecordSelectShow]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3638,7 +3638,7 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_RecordSelectShowCore]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_RecordSelectShowCore]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3996,7 +3996,7 @@ BEGIN
 	ORDER BY r.Recorded DESC
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_RecordSelectShowNew]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_RecordSelectShowNew]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4376,7 +4376,7 @@ BEGIN
 	ORDER BY r.Recorded DESC
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_SelectAllCDs]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_SelectAllCDs]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4392,7 +4392,7 @@ from Artist a INNER JOIN Record r ON
 		order by a.LastName, a.FirstName, r.Recorded
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_SelectAllDiscEntities]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_SelectAllDiscEntities]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4409,7 +4409,7 @@ BEGIN
 	ORDER BY a.LastName, a.FirstName, r.Recorded, DiscNo
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_SelectAllDiscs]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_SelectAllDiscs]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4424,7 +4424,7 @@ SELECT r.RecordId, d.DiscId, a.Name AS ArtistName, r.Name, d.DiscNo, d.FreeDbId,
 ORDER BY a.LastName, a.FirstName, r.Recorded, DiscNo
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_SelectAllRecords]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_SelectAllRecords]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4440,7 +4440,7 @@ SELECT a.[name] as [Name], r.[Name] as Title, r.Field,
   order by a.LastName, a.FirstName, r.Recorded
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_SelectAllVinyl]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_SelectAllVinyl]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4457,7 +4457,7 @@ from Artist a INNER JOIN Record r ON
 order by a.LastName, a.FirstName, r.Recorded
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_selectArtistsWithNoBio]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_selectArtistsWithNoBio]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4471,7 +4471,39 @@ WHERE a.biography is null or a.biography like ''
 ORDER BY a.LastName, a.FirstName
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_SelectRecordReviews]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_SelectPartialRecordTracks]    Script Date: 21/08/2026 3:05:50 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE   PROCEDURE [dbo].[up_SelectPartialRecordTracks]
+    @Name NVARCHAR(200)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT a.Name AS ArtistName, 
+           r.RecordId, 
+           r.Name AS Name,
+           d.DiscId,  
+           d.DiscNo, 
+           d.FreeDbDiscId,
+           d.FreeDbId, 
+           d.Length,
+           t.TrackId, 
+           t.TrackNo, 
+           t.Name AS TrackName, 
+           t.TrackLength,
+           t.Extended
+    FROM Artist a
+        INNER JOIN Record r ON a.ArtistId = r.ArtistId
+        INNER JOIN Disc d ON r.RecordId = d.RecordId
+        INNER JOIN Track t ON d.DiscId = t.DiscId
+    WHERE t.Name LIKE '%' + @Name + '%'
+    ORDER BY a.LastName, a.FirstName, r.Recorded, d.DiscNo, t.TrackNo
+END
+GO
+/****** Object:  StoredProcedure [dbo].[up_SelectRecordReviews]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4484,7 +4516,7 @@ SELECT a.[name] as [Name], r.[Name] as Title, r.Review
   order by a.LastName, a.FirstName, r.Recorded
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_SelectRecordReviews2]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_SelectRecordReviews2]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4498,7 +4530,7 @@ SELECT a.[name] as [ArtistName], r.[Name], r.Review
   order by a.LastName, a.FirstName, r.Recorded
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_SelectRecordReviewsCore]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_SelectRecordReviewsCore]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4512,7 +4544,7 @@ SELECT a.[name] as [Name], r.[Name] AS Title, r.Review
   order by a.LastName, a.FirstName, r.Recorded
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_SelectRecordTracks]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_SelectRecordTracks]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4548,7 +4580,7 @@ BEGIN
     ORDER BY r.RecordId, d.DiscNo, t.TrackNo
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_SelectSingleDisc]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_SelectSingleDisc]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4567,7 +4599,7 @@ BEGIN
 	 WHERE DiscId = @DiscId
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_SelectSingleTrack]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_SelectSingleTrack]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4588,7 +4620,7 @@ BEGIN
 	 WHERE TrackId = @TrackId
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_SelectYearRecorded]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_SelectYearRecorded]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4608,7 +4640,7 @@ AS
   ORDER BY a.LastName, a.FirstName
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_UpdateArtist]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_UpdateArtist]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4632,7 +4664,7 @@ As
   
   return @result
 GO
-/****** Object:  StoredProcedure [dbo].[up_UpdateArtistNames]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_UpdateArtistNames]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4651,7 +4683,7 @@ set name = LastName
 where FirstName is null and Name is null
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_UpdateDisc]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_UpdateDisc]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4685,7 +4717,7 @@ BEGIN
 	END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_UpdateDiscLength]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_UpdateDiscLength]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4702,7 +4734,7 @@ BEGIN
 	WHERE DiscId = @DiscId
 END
 GO
-/****** Object:  StoredProcedure [dbo].[up_UpdateDiscRecord]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_UpdateDiscRecord]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4739,7 +4771,7 @@ END
 
 
 GO
-/****** Object:  StoredProcedure [dbo].[up_UpdateRecord]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_UpdateRecord]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4775,7 +4807,7 @@ As
    else
       select @result = 0
 GO
-/****** Object:  StoredProcedure [dbo].[up_UpdateTrack]    Script Date: 20/08/2026 9:57:33 PM ******/
+/****** Object:  StoredProcedure [dbo].[up_UpdateTrack]    Script Date: 21/08/2026 3:05:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON

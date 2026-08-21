@@ -22,40 +22,49 @@ namespace RecordDB.Core.Pages.Tracks
         public int CurrentPage { get; set; }
         public int TotalPages { get; set; }
 
-        /// <summary>True when the list is filtered by a partial record name.</summary>
-        public bool IsSearching => !string.IsNullOrWhiteSpace(SearchTerm);
+        /// <summary>True when the list is filtered by a partial record name or track name.</summary>
+        public bool IsSearching => !string.IsNullOrWhiteSpace(SearchTerm) || !string.IsNullOrWhiteSpace(TrackName);
 
+        /// <summary>True when searching specifically by track name.</summary>
+        public bool IsTrackSearch => !string.IsNullOrWhiteSpace(TrackName);
+
+        /// <summary>Search term for record name search.</summary>
         [BindProperty(SupportsGet = true)]
         public string? SearchTerm { get; set; }
+
+        /// <summary>Search term for track name search.</summary>
+        [BindProperty(SupportsGet = true)]
+        public string? TrackName { get; set; }
 
         public async Task OnGetAsync(int pageNumber = 1)
         {
             List<ArtistRecordDiscTrackDto> all;
 
-            if (IsSearching)
+            if (IsTrackSearch)
             {
-                // Search results by partial record name — no pagination
-                all = (await _trackRepository.SelectArtistRecordTracksAsync(SearchTerm!)).ToList();
-                TotalCount  = all.Count;
-                CurrentPage = 1;
-                TotalPages  = 1;
-                Tracks      = all;
+                // Search results by partial track name
+                all = (await _trackRepository.SelectTracksByPartialNameAsync(TrackName!.Trim())).ToList();
+            }
+            else if (!string.IsNullOrWhiteSpace(SearchTerm))
+            {
+                // Search results by partial record name
+                all = (await _trackRepository.SelectArtistRecordTracksAsync(SearchTerm!.Trim())).ToList();
             }
             else
             {
-                // Full list with pagination
+                // Full list
                 all = (await _trackRepository.SelectAllTrackEntitiesAsync()).ToList();
-
-                TotalCount  = all.Count;
-                CurrentPage = Math.Max(1, pageNumber);
-                TotalPages  = (int)Math.Ceiling(TotalCount / (double)PageSize);
-                CurrentPage = Math.Min(CurrentPage, Math.Max(1, TotalPages));
-
-                Tracks = all
-                    .Skip((CurrentPage - 1) * PageSize)
-                    .Take(PageSize)
-                    .ToList();
             }
+
+            TotalCount  = all.Count;
+            CurrentPage = Math.Max(1, pageNumber);
+            TotalPages  = (int)Math.Ceiling(TotalCount / (double)PageSize);
+            CurrentPage = Math.Min(CurrentPage, Math.Max(1, TotalPages));
+
+            Tracks = all
+                .Skip((CurrentPage - 1) * PageSize)
+                .Take(PageSize)
+                .ToList();
         }
     }
 }
