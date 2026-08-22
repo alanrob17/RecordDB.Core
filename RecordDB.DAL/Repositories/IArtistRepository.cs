@@ -11,6 +11,8 @@ namespace RecordDB.DAL.Repositories
         Task<IEnumerable<Artist>> GetArtistsByPartialNameAsync(string name);
         Task<IEnumerable<Artist>> GetArtists();
         Task<List<Artist>> GetArtistListAsync();
+        Task<IEnumerable<Artist>> GetArtistsWithNoBiographyAsync();
+        Task<Artist> GetArtistWithNoBiographyAsync(string name);
         Task<List<Artist>> SelectAsync();
         Task<Artist> SelectAsync(int artistId);
         Task<List<Artist>> SelectArtistWithNoBioAsync();

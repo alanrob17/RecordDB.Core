@@ -44,6 +44,21 @@ namespace RecordDB.DAL.Repositories
             return artists.ToList();
         }
 
+        public async Task<IEnumerable<Artist>> GetArtistsWithNoBiographyAsync()
+        {
+            string sproc = "up_SelectArtistsWithNoBiography";
+            return await _db.GetData<Artist, dynamic>(sproc, new { });
+        }
+
+        public async Task<Artist> GetArtistWithNoBiographyAsync(string name)
+        {
+            string sproc = "up_SearchForArtistWithNoBiography";
+            var parameter = new DynamicParameters();
+            parameter.Add("@Name", name);
+            var artist = await _db.GetFirstOrDefault<Artist, dynamic>(sproc, parameter);
+            return artist ?? null;
+        }
+
         public async Task<List<Artist>> SelectAsync()
         {
             string sproc = "up_ArtistSelectAll";

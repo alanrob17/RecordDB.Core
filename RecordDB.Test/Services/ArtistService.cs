@@ -24,6 +24,9 @@ namespace RecordDB.Test.Services
             //await GetArtistsAsync();
             //await GetArtists();
             // await GetArtistListAsync();
+            //await GetArtistsWithNoBiographyAsync();
+            await GetArtistWithNoBiographyAsync("Jesse Colin Young");
+
             //await ShowArtistsAsync();
             //await SelectAsync();
             //await GetArtistNamesAsync();
@@ -31,7 +34,7 @@ namespace RecordDB.Test.Services
             //await SelectArtistWithNoBioAsync();
             // await InsertAsync();
             // await Insert2Async();
-            await UpdateArtistAsync();
+            // await UpdateArtistAsync();
             //await UpdateArtist2Async();
             //await GetArtistIdAsync();
             //await GetArtistId2Async();
@@ -103,6 +106,29 @@ namespace RecordDB.Test.Services
                 }
 
                 Console.WriteLine($"ArtistId: {artist.ArtistId}, Name: {artist.Name}, Biography: {biography}");
+            }
+        }
+
+        public async Task GetArtistsWithNoBiographyAsync()
+        {
+            IEnumerable<Artist> artists = await _artistRepository.GetArtistsWithNoBiographyAsync();
+
+            foreach (Artist artist in artists)
+            {
+                Console.WriteLine($"ArtistId: {artist.ArtistId}, Name: {artist.Name}");
+            }
+        }
+
+        public async Task GetArtistWithNoBiographyAsync(string name)
+        {
+            Artist artist = await _artistRepository.GetArtistWithNoBiographyAsync(name);
+            if (artist != null)
+            {
+                Console.WriteLine($"ArtistId: {artist.ArtistId}, Name: {artist.Name}");
+            }
+            else
+            {
+                Console.WriteLine($"No artist found with the name '{name}' and no biography.");
             }
         }
 

@@ -14,6 +14,8 @@ namespace RecordDB.Test.Services
         Task GetArtistsAsync();
         Task GetArtists();
         Task GetArtistListAsync();
+        Task GetArtistsWithNoBiographyAsync();
+        Task GetArtistWithNoBiographyAsync(string name);
         Task ShowArtistsAsync();
         Task SelectAsync();
         Task GetArtistNamesAsync();
